@@ -1,0 +1,2 @@
+<p><strong>Avís automàtic</strong></p>
+<p>S'han exhaurit les entrades per el dia <?php echo $sessio->dia; ?> a les <?php echo $sessio->hora; ?> hores del producte "<?php echo $sessio->producte->title_ca; ?>".</p>

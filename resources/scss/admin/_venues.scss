@@ -1,0 +1,172 @@
+#drawing-table {
+
+	width: 100%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	table-layout: fixed;
+    background: #ccc;
+    //height: 100%;
+
+	td {
+
+		border: 1px solid #e0e0e0;
+		background: #eee;
+		//width: 19px;
+		//height: 19px;
+        width: 2%;
+        height: 0;
+        padding-top: 100%;
+		height: 20px;
+		cursor: pointer;
+		color: #FFF;
+		text-align: center;
+		vertical-align: middle;
+		padding: 0;
+        font-size: 0;
+        position: relative;
+
+		span {
+            position: absolute;
+            height: 50%;
+            left: 0;
+            line-height: 11px;
+			display: block;
+			height: 11px;
+			width: 100%;
+			overflow: hidden;
+			font-size: 9px;
+		}
+		span.f {
+            background: #999;
+            top: 0;
+		}
+		span.s {
+            background: #aaa;
+            top: 50%;
+		}
+
+	}
+
+	td[data-z="2"] span {
+		background: #777;
+	}
+	td[data-z="3"] span {
+		background: #555;
+	}
+	td[data-z="4"] span {
+		background: #333;
+	}
+
+}
+
+
+.escenari {
+	background: #ddd;
+	font-size: 12px;
+	text-align: center;
+	padding: 6px 0;
+	color: #666;
+	letter-spacing: 8px;
+	//width: 801px;
+}
+/*
+.controls_pintar_mapa {
+	text-align: center;
+}
+*/
+
+
+/*
+#planol-reserva {
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	table-layout: fixed;
+	border-spacing: 2px;
+	border-collapse: separate;
+	width: 70%;
+	height: 280px;
+	margin: 15px auto 0 auto;
+	position: relative;
+
+	td {
+		font-size: 0;
+		width: 2%;
+		height: 2%;
+		border-radius: 3px 3px 1px 1px;
+		&.si {
+			background-image: url("img/butaca.png");
+			background-size: 100% 100%;
+			background-position: bottom center;
+			cursor:pointer;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -o-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			-ms-interpolation-mode: nearest-neighbor;
+			image-rendering: pixelated;
+			background-color: rgba(mix(#6f9d78,#000,30%),.2);
+			&[data-z="2"] {
+				background-color: rgba(mix(#84ac6e,#000,30%),.25);
+			}
+			&[data-z="3"] {
+				background-color: rgba(mix(#a0ad53,#000,30%),.3);
+			}
+			&[data-z="4"] {
+				background-color: rgba(mix(#bbb652,#000,30%),.35);
+			}
+		}
+		&.selected {
+			background-color: $blau !important;
+		}
+		&.cistell {
+			background-color: $blau !important;
+			cursor: default;
+		}
+		&.reserva {
+			background-color: rgba(#bf576e,.8) !important;
+			cursor:not-allowed;
+		}
+		&.cescenari {
+			margin: 0;
+			padding: 0;
+			line-height: 10px;
+			font-size: 10px;
+			text-align: center;
+			color: #FFF;
+			background: rgba(#000,.2);
+		}
+	}
+	&:after {
+		display: block;
+		position: absolute;
+		width: 100%;
+		font-size: 10px;
+		padding: 2px 0;
+		bottom: -20px;
+		text-align: center;
+		background: rgba(#000,.2);
+		color: #FFF;
+		content: 'Escenari';
+		border-radius: 2px;
+	}
+}
+.tooltip-planol {
+	position: absolute;
+	background: #000;
+	color: #FFF;
+	padding: 4px 7px;
+	border-radius: 2px;
+	span {
+		font-weight: bold;
+		color: $blau;
+	}
+}
+*/

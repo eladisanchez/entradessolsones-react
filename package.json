@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host",
+        "build": "vite build",
+        "watch": "vite --watch"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.2.1",
+        "axios": "^1.6.1",
+        "laravel-vite-plugin": "^1.0.0",
+        "sass": "^1.71.1",
+        "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "@inertiajs/react": "^1.0.14",
+        "bootstrap": "^4.6.2",
+        "react-dom": "^18.2.0"
+    }
+}

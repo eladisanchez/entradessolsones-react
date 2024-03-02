@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="696px" height="686px" viewBox="0 0 696 686" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 96</title>
+    <defs>
+        <polygon id="path-1" points="691 5 691 537.773 341 681 5 537.773 5 5"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-96">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Clip-95" fill="#02B778" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
