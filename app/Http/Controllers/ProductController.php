@@ -43,11 +43,11 @@ class ProductController extends BaseController {
 			'others' => $altres
 		);
 
-		// return Inertia::render('Products/Index', [
-        //     'products' => $products,
-        // ]);
+		return Inertia::render('Products/Index', [
+            'products' => $products,
+        ]);
 		
-		return view('index',array('products' => $products));
+		// return view('index',array('products' => $products));
 
 	}
 
