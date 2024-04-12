@@ -23,7 +23,7 @@ class AdminExtractController extends BaseController
 	public function index(): View
 	{
 
-		$users = User::withRole('entity')->pluck('username', 'id')->toArray();
+		$users = User::withRole('organizer')->pluck('username', 'id')->toArray();
 		$users = [null => '-'] + $users;
 		$products = Product::get()->pluck('title_ca', 'id')->toArray();
 		$products = [null => '-'] + $products;

@@ -61,7 +61,7 @@
                         </td>
 
                         <td>
-                            <strong>{{ $extract->totalsales - $extract->totalRefunds }} €</strong>
+                            <strong>{{ $extract->total_sales - $extract->totalRefunds }} €</strong>
                         </td>
 
                         <td class="text-right">

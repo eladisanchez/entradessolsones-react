@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Rate;
 use App\Models\Order;
@@ -15,8 +16,10 @@ use Auth;
 use Entrust;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 
-class CartController extends BaseController {
+class CartController extends BaseController
+{
 
 
 	protected $layout = 'cistell';
@@ -28,10 +31,20 @@ class CartController extends BaseController {
 	public function show(): View
 	{
 
-		return view('cistell',array(
-			'cistell' => Cart::content()
-		));
+		return view(
+			'cistell',
+			array(
+				'cistell' => Cart::content()
+			)
+		);
 
+	}
+
+	public function apiCart()
+	{
+		return response()->json([
+			'cart' => Cart::content()
+		]);
 	}
 
 	/**
@@ -39,18 +52,21 @@ class CartController extends BaseController {
 	 */
 	public function convertToPack(Product $product): void
 	{
-		
+
 		$packs = $product->packs;
 
 		foreach ($packs as $pack) {
 
-			$keys = $pack->productesDelPack->modelKeys();
+			$keys = $pack->packProducts->modelKeys();
 			$rates = $pack->rates;
+
+			if (!$rates)
+				continue;
 
 			foreach ($rates as $rate) {
 
 				$preu = $rate->pivot->preu;
-				$rows = Cart::search(function($k,$v) use ($rate) {
+				$rows = Cart::search(function ($k, $v) use ($rate) {
 					return $k->options->id_Rate == $rate->id;
 				});
 
@@ -63,7 +79,7 @@ class CartController extends BaseController {
 
 						$rowid = $row->rowId;
 
-						if( in_array($row->id,$keys) && !in_array($row->id,$keysCart)) {
+						if (in_array($row->id, $keys) && !in_array($row->id, $keysCart)) {
 
 							$prods['row'][] = $rowid;
 							$prods['qty'][] = $row->qty;
@@ -80,34 +96,40 @@ class CartController extends BaseController {
 
 					}
 
-					if ( isset($prods["row"]) && (count($prods['row']) == count($keys)) ) {
+					if (isset($prods["row"]) && (count($prods['row']) == count($keys))) {
 
 						$min_entrades = min($prods['qty']);
-						
-						Cart::add($pack->id, $pack->title, $min_entrades, $preu, 0, array(
-							'name' => $pack->name, 
-							'parent' => 0,
-							'rate' => $rate,
-							'target' => $pack->target,
-							'reserves' => $prods['reserves']
-							)
-						)->associate('App\Producte');
 
-						for ( $i=0; $i<count($prods['row']); $i++ ) {
+						Cart::add(
+							$pack->id,
+							$pack->title,
+							$min_entrades,
+							$preu,
+							0,
+							array(
+								'name' => $pack->name,
+								'parent' => 0,
+								'rate' => $rate,
+								'target' => $pack->target,
+								'reserves' => $prods['reserves']
+							)
+						)->associate('App\Models\Product');
+
+						for ($i = 0; $i < count($prods['row']); $i++) {
 							$qty = $prods['qty'][$i] - $min_entrades;
-							if ($qty>0) {
+							if ($qty > 0) {
 								Cart::update($prods['row'][$i], $qty);
 							} else {
 								Cart::remove($prods['row'][$i]);
 							}
-							
+
 						}
 
 					}
 
 				}
 
-			}	
+			}
 
 		}
 	}
@@ -116,103 +138,107 @@ class CartController extends BaseController {
 	/**
 	 * Add standard item
 	 */
-	public function addItems(): RedirectResponse
+	public function add(): JsonResponse
 	{
 
-		$product_id = request()->input('product');
-		$product = Product::findOrFail($product_id);
-		
-		$day = request()->input('day');
-		$hour = request()->input('hour');
-		$tarifes = request()->input('rate');
-		$qtys = request()->input('qty');
-
-		if ($product->parent_id>0) {
-			$parent = $product->parent_id;
-		} else {
-			$parent = $product->id;
+		$seats = request()->input('seats');
+		if ($seats) {
+			$this->addEvent($seats);
 		}
 
-		$i=0;
+		$product_id = request()->input('product_id');
+		$product = Product::findOrFail($product_id);
 
-		// No s'han definit quantitats
+		$day = request()->input('day');
+		$hour = request()->input('hour');
+		$rates = request()->input('rates');
+		$qtys = request()->input('qty');
+
 		if (!$qtys) {
 			return redirect()->back();
 		}
 
 		// Comprovar mímim d'entrades per a totes les tarifes
 		$totalqtys = array_sum($qtys);
-		if ($totalqtys < $product->minimEntrades) {
-			return redirect()->back()->with(array('message' => trans('textos.minimEntrades').$product->minimEntrades ));
+		if ($totalqtys < $product->min_tickets) {
+			return response()->json([
+				'error' => trans('textos.minimEntrades') . $product->min_tickets
+			], 405);
 		}
 
 		// Màxim d'entrades
-		$alCistell = Cart::search(function($k,$v) use ($product_id,$day,$hour) {
+		$alCistell = Cart::search(function ($k, $v) use ($product_id, $day, $hour) {
 			return $k->id == $product_id && $k->options->dia == $day && $k->options->hora == $hour;
 		});
 		$qtyCistell = 0;
-		foreach($alCistell as $prod) {
+		foreach ($alCistell as $prod) {
 			$qtyCistell += $prod->qty;
 		}
-		if ($totalqtys+$qtyCistell>$product->maximEntrades) {
-			return redirect()->back()->with(array('message' => trans('textos.maximEntrades',['max' => $product->maximEntrades ])));
+		if ($totalqtys + $qtyCistell > $product->max_tickets) {
+			return response()->json([
+				'error' => trans('textos.max_tickets', ['max' => $product->max_tickets])
+			], 405);
 		}
 
+		foreach ($qtys as $i => $qty) {
 
-		// Per cada quantitat
-		foreach($qtys as $qty) {
+			if ($qty <= 0)
+				continue;
 
-			// Si s'ha definit una quantitat vàlida
-			if($qty>0) {
+			$rate_id = $rates[$i] ?? null;
+			if (!$rate_id)
+				continue;
 
-				// Model Rate
-				$rate_id = $tarifes[$i];
-				$rate = Rate::find($rate_id);
+			$rate = Rate::findOrFail($rate_id);
 
-				$preu = Rate::with('product')->get()->find($rate_id)->producte->find($product->id)->pivot->preu;
-				if ( Session::has('codi.p'.$product->id.'_t'.$rate->id) ) {
-					$preu = $preu * (1 - Session::get('codi.descompte')/100 );
-				}
-				
+			$price = DB::table('product_rate')
+				->where('product_id', $product_id)
+				->where('rate_id', $rate_id)
+				->pluck('price')[0];
 
-				Cart::add(
-					$product->id, 
-					$product->title, 
-					$qty, 
-					$preu,
-					0,
-					[
-						'name' => $product->name, 
-						'id_producte' => $product->id,
-						'parent' => $parent,
-						'day' => $day, 
-						'hour' => $hour, 
-						'rate' => $rate,
-						'id_rate' => $rate->id,
-						'target' => $product->target
-					]
-				)->associate('App\Producte');
-
+			if (Session::has('coupon.p' . $product_id . '_t' . $rate_id)) {
+				$price *= 1 - Session::get('coupon.discount') / 100;
 			}
 
-			$i++;
+			try {
+
+				Cart::instance('shopping')->add(
+					$product->id,
+					$product->title,
+					$qty,
+					$price,
+					[
+						'name' => $product->name,
+						'product_id' => $product->id,
+						'day' => $day,
+						'hour' => $hour,
+						'rate' => $rate->title,
+						'rate_id' => $rate_id,
+					]
+				)->associate('\App\Models\Product');
+
+			} catch (\Exception $e) {
+				return response()->json([
+					'error' => 'Hi ha hagut un error a l\'afegir el producte al cistell'
+				], 500);
+			}
 
 		}
 
 
 		$this->convertToPack($product);
 
-		$quantitats = array_combine($tarifes, $qtys);
-		Session::put('qty', $quantitats);
-	
+		// $quantitats = array_combine($rates, $qtys);
+		// Session::put('qty', $quantitats);
 
-		$url = URL::route('product',[
-			'name' => $product->name,
-			'day' => $day,
-			'hour' => $hour
+		// return Inertia::render('Products/Index', [
+		//     'cart' => Cart::content(),
+		// ]);
+
+		return response()->json([
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total()
 		]);
-
-		return redirect()->to($url)->with('itemAdded',true);		
 
 	}
 
@@ -220,72 +246,60 @@ class CartController extends BaseController {
 	/**
 	 * Add product with seats
 	 */
-	public function addEvent(): RedirectResponse
+	public function addEvent(array $seats): JsonResponse
 	{
 
-		$product_id = request()->input('product');
-		$product = Product::find($product_id);
-
-		if(!$product) {
-			return Redirect::back()->with('message', 'L\'esdeveniment encara no està obert.');
-		}
+		$product_id = request()->input('product_id');
+		$product = Product::findOrFail($product_id);
 
 		$day = request()->input('day');
 		$hour = request()->input('hour');
 
-		//$rate = Rate::find(request()->input('rate'));
-
-		$preus = [];
-		foreach($product->rates as $rate) 
-		{
-			// Agafar tots els preus de la base de dades
+		$prices = [];
+		foreach ($product->rates as $rate) {
 			$preus_t = DB::table('product_rate')
-				->where('producte_id', $product->id)
+				->where('product_id', $product->id)
 				->where('rate_id', $rate->id)
-				->pluck('preuzona');
-			$preus_t = explode(',',$preus_t[0]);
-			$preus[$rate->id] = $preus_t;
+				->pluck('pricezone');
+			$preus_t = explode(',', $preus_t[0]);
+			$prices[$rate->id] = $preus_t;
 		}
-		
 
-		if (!request()->has('localitats')) {
-			return Redirect::back()->with('message', 'Selecciona els seients per afegir-los al cistell.');
-		}
-		$localitats = json_decode(request()->input('localitats'));
+		foreach ($seats as $seat) {
 
-		// Per cada localitat
-		foreach($localitats as $loc) {
+			$rate_id = $seat['r'];
 
-			$preu = $preus[$loc->t][$loc->z-1];
-			$rate = Rate::find($loc->t);
+			$price = $prices[$rate_id][$seat['z'] - 1];
+			$rate = Rate::find($rate_id);
 
-			//$preu = Rate::with('product')->get()->find($loc->t)->producte->find($product->id)->pivot->preu;
-			if ( Session::has('codi.p'.$product->id.'_t'.$loc->t) ) {
-				$preu = $preu * (1 - Session::get('codi.descompte')/100 );
+			if (Session::has('coupon.p' . $product->id . '_t' . $rate_id)) {
+				$price *= 1 - Session::get('coupon.discount') / 100;
 			}
 
-			$rate_id = $loc->t;
-			unset($loc->t);
-
-			// Afegir al cistell
-			$cartItem = Cart::add($product->id, $product->title, 1, $preu, 0, array(
-				'name' => $product->name, 
-				'id_producte' => $product->id,
-				'parent' => $product->id,
-				'day' => $day, 
-				'hour' => $hour, 
-				'rate' => $rate,
-				'id_Rate' => $rate_id,
-				'localitat' => $loc,
-				'target' => $product->target)
-			)->associate('App\Producte');
-				
+			Cart::add(
+				$product->id,
+				$product->title,
+				1,
+				$price,
+				[
+					'name' => $product->name,
+					'product_id' => $product->id,
+					'day' => $day,
+					'hour' => $hour,
+					'rate' => $rate->title,
+					'rate_id' => $rate_id,
+					'seat' => ['s' => $seat['s'], 'f' => $seat['f']]
+				]
+			)->associate('\App\Models\Product');
 
 		}
 
 		$this->convertToPack($product);
 
-		return redirect()->back()->with('itemAdded',true);
+		return response()->json([
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total()
+		]);
 
 	}
 
@@ -298,46 +312,51 @@ class CartController extends BaseController {
 
 		// Comprovem si el producte és realment un pack
 		$pack = Product::find(request()->input('id_pack'));
-		if($pack)
-		{
+		if ($pack) {
 
 			// Info del pack que estem reservant guardada a la sessió
-			$sessio = Session::get('pack'.$pack->id);
+			$sessio = Session::get('pack' . $pack->id);
 
 			$qtys = $sessio['qtys'];
-			$tarifes = $sessio['tarifes'];
+			$rates = $sessio['tarifes'];
 
 			$bookings = $sessio['reserves'];
 
-			$i=0;
+			$i = 0;
 
 			// Per cada una de les quantitats/tarifes
-			foreach($qtys as $qty) {
+			foreach ($qtys as $qty) {
 
 				// Si s'ha definit una quantitat vàlida
-				if($qty>0) {
+				if ($qty > 0) {
 
 					// Model Rate
-					$rate_id = $tarifes[$i];
+					$rate_id = $rates[$i];
 					$rate = Rate::find($rate_id);
 					$preu = $rate->producte()->where('productes.id', '=', $pack->id)->first()->pivot->preu;
 
 					//$preu = Rate::with('product')->get()->find($rate_id)->producte->find($product->id)->pivot->preu;
-					if ( Session::has('codi.p'.$pack->id.'_t'.$rate_id) ) {
-						$preu = $preu * (1 - Session::get('codi.descompte')/100 );
+					if (Session::has('codi.p' . $pack->id . '_t' . $rate_id)) {
+						$preu = $preu * (1 - Session::get('codi.descompte') / 100);
 					}
 
 					// Afegir al cistell
-					$cartItem = Cart::add($pack->id, $pack->title, $qty, $preu, 0, array(
-						'name' => $pack->name, 
-						'id_producte' => $pack->id,
-						'parent' => 0,
-						'rate' => $rate, 
-						'id_Rate' => $rate->id,
-						'target' => $pack->target,
-						'reserves' => $bookings
+					$cartItem = Cart::add(
+						$pack->id,
+						$pack->title,
+						$qty,
+						$preu,
+						0,
+						array(
+							'name' => $pack->name,
+							'id_producte' => $pack->id,
+							'parent' => 0,
+							'rate' => $rate,
+							'id_Rate' => $rate->id,
+							'target' => $pack->target,
+							'reserves' => $bookings
 						)
-					)->associate('App\Producte');
+					)->associate('\App\Models\Product');
 
 				}
 
@@ -345,7 +364,7 @@ class CartController extends BaseController {
 
 			}
 
-			Session::forget('pack'.$pack->id);
+			Session::forget('pack' . $pack->id);
 
 		}
 
@@ -354,50 +373,56 @@ class CartController extends BaseController {
 	}
 
 
-	public function confirm() 
-	{	
+	public function confirm()
+	{
 
-		$order = Order::where('sessio',Session::getId())->where('pagat',0)->where('pagament','targeta')->orderBy('created_at', 'desc')->first();
-		if($order) {
-			return redirect()->route('checkout-tpv-ko',['id'=>$order->id]);
+		$order = Order::where('session', Session::getId())->where('paid', 0)->where('payment', 'targeta')->orderBy('created_at', 'desc')->first();
+		if ($order) {
+			return redirect()->route('checkout-tpv-ko', ['id' => $order->id]);
 		}
-		$last = false;
-		if(Auth::check()) {
-			if(!(Entrust::hasRole(['admin','entitat']))) {
-				$last = Auth::user()->comandes->last();
+		$lastOrder = false;
+		if (Auth::check()) {
+			if (!(Entrust::hasRole(['admin', 'organizer']))) {
+				$lastOrder = Auth::user()->comandes->last();
 			} else {
-				$last = (object) [
-					'name'=>Auth::user()->username,
-					'email'=>Auth::user()->email
+				$lastOrder = (object) [
+					'name' => Auth::user()->username,
+					'email' => Auth::user()->email
 				];
 			}
 		}
-		return view('confirmacio')->with(compact('last'));
+		return Inertia::render('Checkout', [
+			'lastOrder' => $lastOrder,
+		]);
 	}
 
 
 	/**
 	 * Remove item from cart
 	 */
-	public function removeItem(): RedirectResponse
+	public function removeRow(): JsonResponse
 	{
-		$rowid = request()->input('rowid');
-		$cartitem = Cart::content()->where('rowId',$rowid);
-		if($cartitem->isNotEmpty()){
-			Cart::remove($rowid);
+		$rowid = request()->input('rowId');
+		$cartitem = Cart::instance('shopping')->content()->where('rowId', $rowid);
+		if ($cartitem->isNotEmpty()) {
+			Cart::instance('shopping')->remove($rowid);
 		}
-		return redirect()->back();
+
+		return response()->json([
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total()
+		]);
 	}
-	
+
 
 	/**
 	 * Update cart row (not using)
 	 */
 	public function updateItem($rowId): RedirectResponse
 	{
-		$cartitem = Cart::content()->where('rowId',$rowId);
-		if($cartitem->isNotEmpty()){
-			Cart::remove($rowId);
+		$cartitem = Cart::instance('shopping')->content()->where('rowId', $rowId);
+		if ($cartitem->isNotEmpty()) {
+			Cart::instance('shopping')->remove($rowId);
 		}
 		return redirect()->route('cistell');
 	}
@@ -406,12 +431,17 @@ class CartController extends BaseController {
 	/**
 	 * Delete all cart rows
 	 */
-	public function emptyCart(): RedirectResponse
+	public function destroy(): JsonResponse
 	{
-		Cart::destroy();
-		Session::forget('codi');
-		Session::forget('qty');
-		return redirect()->route('cistell');
+		Cart::instance('shopping')->destroy();
+		// Session::forget('coupon');
+		//Session::forget('qty');
+		return response()->json([
+			'items' => Cart::content(),
+			'total' => Cart::total(),
+			'message' => 'Cistell buidat'
+		]);
+
 	}
 
 }

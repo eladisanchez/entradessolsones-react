@@ -28,7 +28,7 @@
                         @if ($usuari->hasRole('admin'))
                             Administrador
                         @endif
-                        @if ($usuari->hasRole('entitat'))
+                        @if ($usuari->hasRole('organizer'))
                             Organitzador
                         @endif
                         @if ($usuari->hasRole('validator'))
@@ -81,7 +81,7 @@
                     <label class="custom-control-label" for="checkAdmin">Administrador</label>
                 </div>
                 <div class="custom-control custom-radio">
-                    {{ Form::radio('role', 'entitat', null, ['id' => 'checkEntitat', 'class' => 'custom-control-input']) }}
+                    {{ Form::radio('role', 'organizer', null, ['id' => 'checkEntitat', 'class' => 'custom-control-input']) }}
                     <label class="custom-control-label" for="checkEntitat">Organitzador</label>
                 </div>
                 <div class="custom-control custom-radio">

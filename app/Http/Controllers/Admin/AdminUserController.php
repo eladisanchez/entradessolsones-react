@@ -24,7 +24,7 @@ class AdminUserController extends BaseController
 	public function index(): View
 	{
 		$admins = User::withRole('admin')->where('id', '<>', 1)->get();
-		$entities = User::withRole('entitat')->get();
+		$entities = User::withRole('organizer')->get();
 		$validators = User::withRole('validator')->get();
 		$users = $admins->merge($entities)->merge($validators);
 		return view('admin.user.index', ['users' => $users]);
@@ -38,7 +38,7 @@ class AdminUserController extends BaseController
 	public function indexClients(): View
 	{
 		$users = User::whereDoesntHave('roles', function ($query) {
-			$query->where('name', 'admin')->orWhere('name', 'entity');
+			$query->where('name', 'admin')->orWhere('name', 'organizer');
 		})->paginate(30);
 		return view('admin.user.index', ['usuaris' => $users]);
 	}
@@ -57,7 +57,7 @@ class AdminUserController extends BaseController
 		if (request()->input('role') == 'admin') {
 			$user->attachRole(1);
 		}
-		if (request()->input('role') == 'entity') {
+		if (request()->input('role') == 'organizer') {
 			$user->attachRole(3);
 		}
 		if (request()->input('role') == 'validator') {
@@ -112,7 +112,7 @@ class AdminUserController extends BaseController
 			$user->detachRole(6);
 			$user->attachRole(1);
 		}
-		if (request()->input('role') == 'entity' && !$user->hasRole('entity')) {
+		if (request()->input('role') == 'organizer' && !$user->hasRole('organizer')) {
 			$user->detachRole(1);
 			$user->detachRole(6);
 			$user->attachRole(3);

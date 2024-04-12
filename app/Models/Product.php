@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Session;
@@ -11,24 +12,24 @@ use App\Scopes\TranslatedScope;
 use Auth;
 use App\Models\Booking;
 
-class Product extends Model {
+class Product extends Model
+{
 
     use SoftDeletes;
 
-	protected $table = 'products';
+    protected $table = 'products';
     protected $guarded = array('id');
-    protected $hidden = array('created_at', 'updated_at');
-    protected $appends = array('title','description','summary','price','pricezone');
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+    protected $appends = ['title', 'description', 'summary', 'schedule', 'price', 'pricezone'];
+    protected $with = ['organizer', 'rates'];
     public $language;
 
 
-    protected static function boot() {
-
+    protected static function boot()
+    {
         parent::boot();
         static::addGlobalScope(new AscorderScope);
         static::addGlobalScope(new TranslatedScope);
-        
-
     }
 
     public function __construct()
@@ -36,69 +37,59 @@ class Product extends Model {
         $this->language = LaravelLocalization::setLocale();
     }
 
-
     // Get Product by URL
-    public function scopeUrl($query,$url)
+    public function scopeUrl($query, $url)
     {
-        return $query->where('name',$url)->first();
+        return $query->where('name', $url)->first();
     }
 
     // Filtra per target
-    public function scopeOfTarget($query,$target)
+    public function scopeOfTarget($query, $target)
     {
-        return $query->where('target',$target);
+        return $query->where('target', $target);
     }
-
-
 
     public function getTitleAttribute()
     {
-        return $this->{'title_'.$this->language} ?? $this->{'title_'.config('app.locale')};
+        return $this->{'title_' . $this->language} ?? $this->{'title_' . config('app.locale')};
     }
-
 
     public function getDescriptionAttribute()
     {
-        return $this->{'description_'.$this->language} ?? $this->{'description_'.config('app.locale')};
+        return $this->{'description_' . $this->language} ?? $this->{'description_' . config('app.locale')};
     }
     public function getScheduleAttribute()
     {
-        return $this->{'schedule_'.$this->language} ?? $this->{'schedule_'.config('app.locale')};
+        return $this->{'schedule_' . $this->language} ?? $this->{'schedule_' . config('app.locale')};
     }
     public function getSummaryAttribute()
     {
-        return $this->{'summary_'.$this->language} ?? $this->{'summary_'.config('app.locale')};
+        return $this->{'summary_' . $this->language} ?? $this->{'summary_' . config('app.locale')};
     }
 
-
-	public function rates()
+    public function productRates()
     {
-        return $this->belongsToMany(\App\Models\Rate::class,'product_rate')->orderBy('order')->withPivot('price','pricezone');
+        return $this->hasMany(ProductRate::class);
     }
-
 
     public function getPriceAttribute($value)
     {
-        
-        if (isset($this->pivot->preu))
-        {
-            if ($this->pivot->preu >0)
-            {
+
+        if (isset($this->pivot->preu)) {
+            if ($this->pivot->preu > 0) {
                 // Preu amb codi de descompte
-                if ( Session::has('coupon.p'.$this->id.'_t'.$this->pivot->rate_id) )
-                {
-                    $preuDescompte = $this->pivot->preu * (1 - Session::get('coupon.p'.$this->id.'_t'.$this->pivot->rate_id)/100 );
-                    return number_format($preuDescompte,2,',','.').' €';
+                if (Session::has('coupon.p' . $this->id . '_t' . $this->pivot->rate_id)) {
+                    $preuDescompte = $this->pivot->preu * (1 - Session::get('coupon.p' . $this->id . '_t' . $this->pivot->rate_id) / 100);
+                    return number_format($preuDescompte, 2, ',', '.') . ' €';
                 }
                 // Preu normal
-                else
-                {
-                    return number_format($this->pivot->price,2,',','.').' €';
+                else {
+                    return number_format($this->pivot->price, 2, ',', '.') . ' €';
                 }
             }
             // Gratis
             return trans('textos.gratis');
-            
+
         }
 
         return '';
@@ -108,58 +99,59 @@ class Product extends Model {
 
     public function getPricezoneAttribute($value)
     {
-        return $this->pivot?$this->pivot->pricezone:null;
+        return $this->pivot ? $this->pivot->pricezone : null;
     }
-  
+
 
     public function category()
     {
-        return $this->belongsTo(\App\Models\Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
 
     // Si és un pack
     public function packs()
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'products_packs', 'product_id', 'pack_id');
+        return $this->belongsToMany(Product::class, 'products_packs', 'product_id', 'pack_id');
     }
     public function packProducts()
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'products_packs', 'pack_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'products_packs', 'pack_id', 'product_id');
     }
 
-
-    // Si és una variant
-    public function variants()
+    public function tickets(): HasMany
     {
-        return $this->hasMany(Product::class)->where('parent_id', 0);
-    }
-    public function parent()
-    {
-        return $this->belongsTo(\App\Models\Product::class,'parent_id');
-    }
-
-    public function tickets()
-    {
-
         $datetime = new \DateTime('today');
-        return $this->hasMany(Ticket::class)->where('day','>=',$datetime)->whereNull('cancelled');
-        if(Auth::user()&&(Auth::user()->hasRole('admin')||Auth::user()->hasRole('entity')))
+        return $this->hasMany(Ticket::class)->where('day', '>=', $datetime)->whereNull('cancelled');
+        if (Auth::user() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('organizer')))
             return $this->hasMany(Ticket::class);
         else
-            return $this->hasMany(Ticket::class)->where('day','>',$datetime);
-        
+            return $this->hasMany(Ticket::class)->where('day', '>', $datetime);
+
+    }
+
+    public function previousTickets()
+    {
+        $datetime = new \DateTime('today');
+        return $this->hasMany(Ticket::class)->where('day', '<', $datetime)->whereNull('cancelled');
+    }
+
+    public function rates()
+    {
+        return $this->belongsToMany(Rate::class, 'product_rate')
+            ->using(ProductRate::class)
+            ->withPivot('price', 'pricezone');
     }
 
 
     public function venue()
     {
-        return $this->belongsTo(\App\Models\Venue::class)->where('id','!=',0)->withTrashed();
+        return $this->belongsTo(Venue::class)->where('id', '!=', 0)->withTrashed();
     }
 
     public function coupons()
     {
-        return $this->hasMany(\App\Models\Coupon::class)->where('rate_id',$this->rate->id);
+        return $this->hasMany(Coupon::class)->where('rate_id', $this->rate->id);
     }
 
 
@@ -167,24 +159,36 @@ class Product extends Model {
     public function availableDays()
     {
         $datetime = new \DateTime('today');
-        return Ticket::where('product_id',$this->id)->where('day','>=',$datetime)->whereNull('cancelled')->groupBy('day')->pluck('day');
+        return Ticket::where('product_id', $this->id)->where('day', '>=', $datetime)->whereNull('cancelled')->groupBy('day')->pluck('day');
+    }
+
+
+    public function allTickets()
+    {
+        $datetime = new \DateTime('today');
+        $tickets = Ticket::where('product_id', $this->id)->where('day', '>=', $datetime)->whereNull('cancelled')->get();
+        return $tickets->groupBy(function ($date) {
+            return \Carbon\Carbon::parse($date->day)->format('Y-m-d');
+        });
     }
 
 
 
-    public function ticketsDay($day,$hour=NULL)
+    public function ticketsDay($day, $hour = NULL)
     {
 
         $ref = $this;
-        if($this->parent_id>0) { $ref = $this->parent; }
-
-        if ($hour) {
-            return $ref->hasMany(Ticket::class)->where('day',$day)->where('hour',$hour)->whereNull('cancelled')->first();
+        if ($this->parent_id > 0) {
+            $ref = $this->parent;
         }
 
-        return $ref->hasMany(Ticket::class)->where('day',$day)->whereNull('cancelled')->get();
+        if ($hour) {
+            return $ref->hasMany(Ticket::class)->where('day', $day)->where('hour', $hour)->whereNull('cancelled')->first();
+        }
 
-        
+        return $ref->hasMany(Ticket::class)->where('day', $day)->whereNull('cancelled')->get();
+
+
     }
 
 
@@ -195,8 +199,8 @@ class Product extends Model {
 
     public function bookingsByPaymentMethod($payment)
     {
-        $bookings = Booking::where('product_id',$this->id)->whereNull('deleted_at')->whereHas('order',function($q) use ($payment){
-            $q->where('pagament',$payment)->whereNull('deleted_at');
+        $bookings = Booking::where('product_id', $this->id)->whereNull('deleted_at')->whereHas('order', function ($q) use ($payment) {
+            $q->where('pagament', $payment)->whereNull('deleted_at');
         })->sum('numEntrades');
         return $bookings;
     }
@@ -204,7 +208,12 @@ class Product extends Model {
 
     public function organizer()
     {
-        return $this->belongsTo(\App\Models\User::class,'user_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
+    public function getBuyablePrice($options = null)
+    {
+        return $this->price;
     }
 
 

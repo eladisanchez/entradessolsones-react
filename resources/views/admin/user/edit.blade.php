@@ -46,7 +46,7 @@
                             <label class="custom-control-label" for="checkAdmin">Administrador</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            {{ Form::radio('role', 'entity', $user->hasRole('entitat'), ['id' => 'checkEntitat', 'class' => 'custom-control-input']) }}
+                            {{ Form::radio('role', 'organizer', $user->hasRole('organizer'), ['id' => 'checkEntitat', 'class' => 'custom-control-input']) }}
                             <label class="custom-control-label" for="checkEntitat">Organitzador</label>
                         </div>
                         <div class="custom-control custom-radio">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    @if ($user->hasRole('entitat'))
+                    @if ($user->hasRole('organizer'))
                         <div class="form-group">
                             <label for="condicions">Condicions de l'organitzador</label>
                             {{ Form::textarea('condicions', null, [
@@ -77,7 +77,7 @@
         </div>
         <div class="col-md-4">
 
-            @if ($user->hasRole('entity'))
+            @if ($user->hasRole('organizer'))
 
                 <div class="card">
 

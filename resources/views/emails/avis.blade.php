@@ -1,6 +1,6 @@
 <html>
 
-<p>Nova comanda a Entrades Solsonès</p>
+<p>Nova comanda a {{ config('app.name') }}</p>
 
 <p>
 	<strong>Data de la comanda:</strong> {{$order->created_at->format('d/m/Y')}}<br>

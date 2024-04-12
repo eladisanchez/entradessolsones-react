@@ -96,15 +96,15 @@
 			src="https://code.jquery.com/jquery-3.7.0.min.js"
 			integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
 			crossorigin="anonymous"></script>
-		<script src="{{ asset('js/admin/vendor/jquery-ui.min.js') }}"></script>
+		<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 		<script src="https://cdn.tiny.cloud/1/9jg5iq7bd9mj4sqf4nt5i147e73xqcv6vcgkjk4rvvxh7wln/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 		<script src="https://kit.fontawesome.com/d64d6b5aa5.js" crossorigin="anonymous"></script>		
 
-		{{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/ca.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js"></script>
-		<script src="{{ asset('js/admin/main.js') }}"></script> --}}
+		@vite('resources/js/admin/app.js')
 
 		@yield('codispeu')
 

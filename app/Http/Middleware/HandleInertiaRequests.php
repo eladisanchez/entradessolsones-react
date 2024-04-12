@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,7 +38,11 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'csrf_token' => csrf_token(),
+            'cart' => [
+                'items' => Cart::instance('shopping')->content(),
+                'total' => Cart::instance('shopping')->total()
+            ]
         ]);
     }
 }

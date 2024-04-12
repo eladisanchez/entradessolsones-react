@@ -1,0 +1,21 @@
+@use '@/styles' as *;
+
+.grid {
+    display: grid;
+    gap: $grid-gutter-width;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    
+}
+.productGrid {
+    @include media-query('sm') {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        column-gap: $grid-gutter-width;
+    }
+}
+.twoColumns {
+    @include media-query('sm') {
+        grid-template-columns: 3fr 9fr;
+        column-gap: $grid-gutter-width;
+    }
+}

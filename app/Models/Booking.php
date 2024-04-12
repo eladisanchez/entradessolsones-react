@@ -17,11 +17,11 @@ class Booking extends Model {
 
 	protected $table = 'bookings';
 	protected $guarded = ['id','product_id'];
-	protected $hidden = ['created_at', 'updated_at','uniqid'];
-	protected $appends = ['hour'];
-	protected $dates = [
-        'day'
-	];
+	protected $hidden = ['updated_at','uniqid'];
+	protected $casts = [
+        'day' => 'datetime:Y-m-d',
+        'hour' => 'datetime:H:i'
+    ];
 
 	public function getHourAttribute($value)
 	{

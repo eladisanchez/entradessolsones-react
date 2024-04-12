@@ -67,13 +67,13 @@
             <div class="row">
 
                 <div class="form-group col-2">
-                    {{ Form::label('minimEntrades', 'Mínim entrades') }}
-                    {{ Form::number('minimEntrades', 1, ['class' => 'form-control']) }}
+                    {{ Form::label('min_tickets', 'Mínim entrades') }}
+                    {{ Form::number('min_tickets', 1, ['class' => 'form-control']) }}
                     <small class="form-text text-muted">Mínim d'entrades que s'han de reservar per comanda.</small>
                 </div>
                 <div class="form-group col-2">
-                    {{ Form::label('maximEntrades', 'Màxim entrades') }}
-                    {{ Form::number('maximEntrades', 10, ['class' => 'form-control']) }}
+                    {{ Form::label('max_tickets', 'Màxim entrades') }}
+                    {{ Form::number('max_tickets', 10, ['class' => 'form-control']) }}
                     <small class="form-text text-muted">Màxim d'entrades que es poden reservar per comanda.</small>
                 </div>
                 <div class="form-group col-2">

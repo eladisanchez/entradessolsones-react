@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Producte;
 use LaravelLocalization;
 use Session;
 
@@ -15,15 +14,21 @@ class Rate extends Model
 
     protected $table = 'rates';
     protected $guarded = ['id'];
-    protected $hidden = ['created_at', 'updated_at', 'name'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'name', 'ambdescompte'];
     protected $appends = ['title', 'description'];
 
 
     public function product()
     {
-        return $this->belongsToMany('App\Models\Product', 'product_rate')->withPivot('price', 'pricezone');
+        return $this->belongsToMany(Product::class, 'product_rate')
+            ->using(ProductRate::class)
+            ->withPivot('price', 'pricezone');
     }
 
+    public function productRates()
+    {
+        return $this->hasMany(ProductRate::class);
+    }
 
     public function getTitleAttribute()
     {
@@ -50,9 +55,9 @@ class Rate extends Model
     public function getPriceAttribute($value)
     {
 
-        if ($this->pivot->price > 0) {
+        if ($this->pivot && $this->pivot->price > 0) {
             // Preu amb codi de descompte
-            if (Session::has('codi.p' . $this->pivot->producte_id . '_t' . $this->id)) {
+            if (Session::has('codi.p' . $this->pivot->product_id . '_t' . $this->id)) {
                 $priceDescompte = $this->pivot->price * (1 - Session::get('codi.descompte') / 100);
                 return number_format($priceDescompte, 2, ',', '.') . ' €';
             }
@@ -70,7 +75,7 @@ class Rate extends Model
     public function getPreuvalueAttribute($value)
     {
 
-        if ($this->pivot->price > 0) {
+        if ($this->pivot && $this->pivot->price > 0) {
             // Preu amb codi de descompte
             if (Session::has('codi.p' . $this->pivot->producte_id . '_t' . $this->id)) {
                 $priceDescompte = $this->pivot->price * (1 - Session::get('codi.descompte') / 100);
@@ -90,7 +95,7 @@ class Rate extends Model
     public function getPricezoneAttribute($value)
     {
 
-        if ($this->pivot->pricezone) {
+        if ($this->pivot && $this->pivot->pricezone) {
             return $this->pivot->pricezone;
         } else {
             return $this->pivot->price . ',' . $this->pivot->price . ',' . $this->pivot->price . ',' . $this->pivot->price;
@@ -103,7 +108,7 @@ class Rate extends Model
 
         $i = $zona - 1;
 
-        if ($this->pivot->pricezone) {
+        if ($this->pivot && $this->pivot->pricezone) {
             $prices = explode(',', $this->pricezone);
             return $prices[$i];
         } else {

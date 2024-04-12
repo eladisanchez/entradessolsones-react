@@ -17,6 +17,9 @@ class Extract extends Model
         'date_start' => 'date',
         'date_end' => 'date'
     ];
+    protected $append = [
+        'total_sales'
+    ];
 
     public function user()
     {
@@ -96,7 +99,7 @@ class Extract extends Model
                 }
             })->get();
         $total = $bookings->reduce(function ($total, $item) {
-            return $total + $item->numEntrades * $item->preu;
+            return $total + $item->tickets * $item->preu;
         });
         return $total;
     }

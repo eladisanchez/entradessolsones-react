@@ -86,7 +86,7 @@ class AdminProductController extends BaseController
 		$product = Product::findOrFail($id);
 		$cats = Category::pluck('title_ca', 'id');
 		$venues = [null => '-'] + Venue::pluck('name', 'id')->toArray();
-		$entities = [null => '-'] + User::withRole('entity')->pluck('username', 'id')->toArray();
+		$entities = [null => '-'] + User::withRole('organizer')->pluck('username', 'id')->toArray();
 		$products = Product::where('id', '<>', $product->id)->pluck('title_ca', 'id')->toArray();
 		return view('admin.product.edit', [
 			'product' => $product,

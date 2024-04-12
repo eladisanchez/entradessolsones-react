@@ -41,21 +41,21 @@ class AdminTicketController extends Controller
 		$days = array();
 
 		foreach ($tickets as $ticket) {
-			$diastring = $ticket->day->toDateString();
-			$days[$diastring]['day'] = $ticket->day->format('D d/m/Y');
-			$days[$diastring]['hours'][] = [
+			$daystring = $ticket->day->toDateString();
+			$days[$daystring]['day'] = $ticket->day->format('D d/m/Y');
+			$days[$daystring]['hours'][] = [
 				'hour' => $ticket->hour->format('H:i'),
 				'tickets' => $ticket->tickets,
 				'available' => $ticket->available,
 				'language' => $ticket->language,
 				'cancelled' => $ticket->cancelled
 			];
-			if (!isset($days[$diastring]['disponiblesDia'])) {
-				$days[$diastring]['disponiblesDia'] = 0;
-				$days[$diastring]['entradesDia'] = 0;
+			if (!isset($days[$daystring]['disponiblesDia'])) {
+				$days[$daystring]['disponiblesDia'] = 0;
+				$days[$daystring]['entradesDia'] = 0;
 			}
-			$days[$diastring]['disponiblesDia'] += $ticket->disponibles;
-			$days[$diastring]['entradesDia'] += $ticket->entrades;
+			$days[$daystring]['disponiblesDia'] += $ticket->disponibles;
+			$days[$daystring]['entradesDia'] += $ticket->entrades;
 		}
 
 		return view('admin.ticket.index', [
@@ -80,20 +80,20 @@ class AdminTicketController extends Controller
 
 		$days = array();
 		foreach ($tickets as $ticket) {
-			$diastring = $ticket->day->toDateString();
-			$days[$diastring]['day'] = $ticket->day->format('Y-m-d');
-			$days[$diastring]['hores'][] = array(
+			$daystring = $ticket->day->toDateString();
+			$days[$daystring]['day'] = $ticket->day->format('Y-m-d');
+			$days[$daystring]['hores'][] = array(
 				'hour' => $ticket->hour->format('H:i'),
-				'horaok' => $ticket->hour->toTimeString(),
+				'hourok' => $ticket->hour->toTimeString(),
 				'entrades' => $ticket->entrades,
 				'disponibles' => $ticket->disponibles
 			);
-			if (!isset($days[$diastring]['disponiblesDia'])) {
-				$days[$diastring]['disponiblesDia'] = 0;
-				$days[$diastring]['entradesDia'] = 0;
+			if (!isset($days[$daystring]['disponiblesDia'])) {
+				$days[$daystring]['disponiblesDia'] = 0;
+				$days[$daystring]['entradesDia'] = 0;
 			}
-			$days[$diastring]['disponiblesDia'] += $ticket->disponibles;
-			$days[$diastring]['entradesDia'] += $ticket->entrades;
+			$days[$daystring]['disponiblesDia'] += $ticket->disponibles;
+			$days[$daystring]['entradesDia'] += $ticket->entrades;
 		}
 
 		return view(
@@ -113,14 +113,14 @@ class AdminTicketController extends Controller
 	public function store(Request $request): RedirectResponse
 	{
 
-		// Data i hora obligatòries
-		$validator = $request->validate([
-			'data-inici' => 'required',
+		// Data i hour obligatòries
+		$request->validate([
+			'day' => 'required',
 			'hour' => 'required',
 		]);
 
-		$product_id = request()->input('Product_id');
-		$product = Product::find($product_id);
+		$product_id = request()->input('product_id');
+		$product = Product::findOrFail($product_id);
 
 		// Dies de la setmana. X generar calendaris ràpidament
 		$w = [0, 1, 2, 3, 4, 5, 6];
@@ -133,17 +133,17 @@ class AdminTicketController extends Controller
 		}
 
 		// Periode
-		$begin = new DateTime(request()->input('data-inici'));
-		$end = request()->has('data-fi') ?
-			new DateTime(request()->input('data-fi')) :
-			new DateTime(request()->input('data-inici'));
+		$begin = new DateTime(request()->input('day'));
+		$end = request()->has('day-end') ?
+			new DateTime(request()->input('day-end')) :
+			new DateTime(request()->input('day'));
 
 		$end->modify('+1 day'); // Include last day
 
 		$interval = new DateInterval('P1D');
 		$period = new DatePeriod($begin, $interval, $end);
 
-		$entradesCreades = 0;
+		$createdTickets = 0;
 
 		// With hour
 		if (request()->input('hour')):
@@ -152,36 +152,36 @@ class AdminTicketController extends Controller
 
 			foreach ($period as $dt) {
 
-				$dia = $dt->format("Y-m-d");
-				$diaw = $dt->format('w');
+				$day = $dt->format("Y-m-d");
+				$dayw = $dt->format('w');
 
-				$ticket = Ticket::where("Product_id", $product_id)
-					->where("dia", $dia)->where("hora", request()->input('hour'))->first();
+				$ticket = Ticket::where("product_id", $product_id)
+					->where("day", $day)->where("hour", request()->input('hour'))->first();
 
-				if ($product->venue || in_array($diaw, $w)) {
+				if ($product->venue || in_array($dayw, $w)) {
 
 					if ($ticket === null) {
 
 						$ticket = new Ticket;
 						$ticket->product_id = $product_id;
-						$ticket->day = $dia;
+						$ticket->day = $day;
 						$ticket->hour = $hour;
 
 						if (!$product->venue) {
 
-							$ticket->language = request()->input('idioma');
-							$ticket->tickets = request()->input('entrades');
+							$ticket->language = request()->input('language');
+							$ticket->tickets = request()->input('tickets');
 
 						} else {
 
-							$localitats = $product->espai->seats;
+							$localitats = $product->venue->seats;
 							$ticket->seats = $localitats;
-							$ticket->entrades = count(json_decode($product->espai->seats));
+							$ticket->tickets = count(json_decode($product->venue->seats));
 
 						}
 
 						$ticket->save();
-						$entradesCreades++;
+						$createdTickets++;
 
 					}
 
@@ -192,7 +192,7 @@ class AdminTicketController extends Controller
 		endif;
 
 		return redirect()->route('admin.ticket.index', $product_id)
-			->with('message', $entradesCreades . ' entrades creades del ' . $begin->format('d/m/Y') . ' al ' . $end->format('d/m/Y'));
+			->with('message', $createdTickets . ' entrades creades del ' . $begin->format('d/m/Y') . ' al ' . $end->format('d/m/Y'));
 
 	}
 
@@ -200,10 +200,10 @@ class AdminTicketController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(string $id, string $dia, string $hour): View
+	public function edit(string $id, string $day, string $hour): View
 	{
 
-		$ticket = Ticket::where("product_id", $id)->where("dia", $dia)->where("hora", $hour)->first();
+		$ticket = Ticket::with('product')->where("product_id", $id)->where("day", $day)->where("hour", $hour)->firstOrFail();
 		$product = $ticket->product;
 
 		if ($product->venue) {
@@ -227,7 +227,7 @@ class AdminTicketController extends Controller
 		}
 
 		$ticket = Ticket::where("Product_id", request()->input('Product_id'))
-			->where("dia", request()->input('day'))->where("hora", request()->input('hour'))
+			->where("day", request()->input('day'))->where("hour", request()->input('hour'))
 			->update(
 				array(
 					'entrades' => $entrades,
@@ -324,7 +324,7 @@ class AdminTicketController extends Controller
 			// Mark tickets cancelled
 			Ticket::where("product_id", $id)
 				->where("day", $day)
-				->where("hora", $hour)
+				->where("hour", $hour)
 				->update(['cancelled' => 1]);
 
 			return redirect()->route('admin.ticket.index', $id)
@@ -358,7 +358,7 @@ class AdminTicketController extends Controller
 	{
 		$product = Product::find($id);
 		$tickets = $product->ticketsDay($day, $hour);
-		return view('admin.ticket.map', ['entrades' => $tickets]);
+		return view('admin.ticket.map', ['tickets' => $tickets]);
 	}
 
 }

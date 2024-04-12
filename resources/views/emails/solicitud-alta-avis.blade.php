@@ -1,7 +1,7 @@
 <p>Nova sol·licitud d'entitat:</p>
 
 <p>
-    <strong>Nom de l'entitat:</strong> {{ $request['entitat'] }}<br>
+    <strong>Nom de l'entitat:</strong> {{ $request['organizer'] }}<br>
     <strong>Persona de contacte:</strong> {{ $request["nom"] }}<br>
     <strong>Email:</strong> {{ $request["email"] }}<br>
     <strong>Telèfon:</strong> {{ $request["telefon"] }}

@@ -1,0 +1,7 @@
+@use '@/styles.scss' as *;
+
+.card {
+    background: #FFF;
+    padding: $spacer*3;
+    border-radius: $spacer;
+}

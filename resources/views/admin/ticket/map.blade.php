@@ -53,7 +53,7 @@
     </head>
     <body>
 
-        <h2>{{$entrades->producte->title}} - {{\App\Helpers\Common::data($entrades->dia)}} - {{$entrades->hora->format('H.i \h')}}</h2>
+        <h2>{{$tickets->product->title}} - {{\App\Helpers\Common::data($tickets->day)}} - {{$tickets->hour->format('H.i \h')}}</h2>
 
         <table id="planol-reserva">
 
@@ -62,9 +62,9 @@
         <div class="escenari">ESCENARI</div>
 
         <script>
-        var localitats = {!! $entrades->seats !!};
-        var localitatsReservades = {!! json_encode($entrades->seatsReservades) !!};
-        var distancia_social = {{$entrades->producte->distancia_social}};
+        var localitats = {!! $tickets->seats !!};
+        var localitatsReservades = {!! json_encode($tickets->seatsReservades) !!};
+        var distancia_social = {{$tickets->product->social_distance}};
         </script>
 
         <script

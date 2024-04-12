@@ -1,0 +1,39 @@
+@use "variables" as *;
+
+@mixin make-col(
+    $size: 12,
+    $columns: $grid-columns,
+    $gutter-width: $grid-gutter-width
+) {
+    grid-column: span $size;
+    padding-right: $gutter-width / 2;
+    padding-left: $gutter-width / 2;
+}
+
+@mixin media-query($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+        @media (min-width: map-get($breakpoints, $breakpoint)) {
+            @content;
+        }
+    } @else {
+        @error "Breakpoint #{$breakpoint} no definit.";
+    }
+}
+
+@mixin media-query-range($start, $end) {
+    $start-value: map-get($breakpoints, $start);
+    $end-value: map-get($breakpoints, $end);
+
+    @if $start-value and $end-value {
+        @media (min-width: $start-value) and (max-width: ($end-value - 1px)) {
+            @content;
+        }
+    } @else {
+        @if not $start-value {
+            @error "Breakpoint #{$start} no definit.";
+        }
+        @if not $end-value {
+            @error "Breakpoint #{$end} no definit.";
+        }
+    }
+}

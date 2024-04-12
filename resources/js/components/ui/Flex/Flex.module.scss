@@ -1,0 +1,29 @@
+.flex {
+    display: flex;
+}
+
+$justify-content-props: flex-start, flex-end, center, space-between,
+    space-around, space-evenly;
+$align-items-props: flex-start, flex-end, center, baseline, stretch;
+$flex-direction-props: row, row-reverse, column, column-reverse;
+
+// Genera classes per justify-content
+@each $justify-content in $justify-content-props {
+    .justify-#{$justify-content} {
+        justify-content: #{$justify-content};
+    }
+}
+
+// Genera classes per align-items
+@each $align-items in $align-items-props {
+    .align-#{$align-items} {
+        align-items: #{$align-items};
+    }
+}
+
+// Genera classes per flex-direction
+@each $flex-direction in $flex-direction-props {
+    .flex-#{$flex-direction} {
+        flex-direction: #{$flex-direction};
+    }
+}

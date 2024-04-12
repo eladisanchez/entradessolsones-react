@@ -64,7 +64,7 @@ class OrderController extends BaseController
 			$orderError->delete();
 		}
 
-		$rules = !Entrust::hasRole(['admin', 'entitat']) ? [
+		$rules = !Entrust::hasRole(['admin', 'organizer']) ? [
 			'condicions' => 'accepted',
 			'name' => 'required',
 			'telefon' => 'required',
@@ -291,7 +291,7 @@ class OrderController extends BaseController
 						Mail::send('emails.avis', array('order' => $order), function ($message) use ($order) {
 							$message->from(config('mail.from.address'), config('mail.from.name'));
 							$message->to(config('mail.from.address'));
-							$message->subject('Nova comanda a Entrades Solsonès (' . $order->email . ')');
+							$message->subject('Nova comanda a '.config('app.name').' (' . $order->email . ')');
 						});
 
 					} catch (\Exception $e) {

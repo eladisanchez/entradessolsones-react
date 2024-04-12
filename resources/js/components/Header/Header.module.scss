@@ -1,0 +1,111 @@
+@use '@/styles.scss' as *;
+
+.top {
+    background: $dark-color;
+    color: #fff;
+    font-size: 0.8125rem;
+    padding: 14px 0;
+    position: relative;
+    z-index: 10;
+    display: none;
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    @include media-query('sm') {
+        display: block;
+    }
+}
+.langnav {
+    a {
+        margin-right: $spacer * 2;
+    }
+}
+.topnav {
+    a {
+        margin-left: $spacer * 2;
+    }
+}
+.logo {
+    a {
+        display: block;
+        svg {
+            display: block;
+        }
+    }
+}
+
+.header {
+    background-color: rgba($primary-color, 0.9);
+    color: #fff;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    > div {
+        position: relative;
+        z-index: 1;
+        padding-top: $spacer*1.5;
+        padding-bottom: $spacer*1.5;
+    }
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.homeheader {
+    position: relative;
+    background-image: url("/assets/img/home-bg.jpg");
+    background-position: center bottom;
+    background-size: cover;
+    height: 304px;
+    margin-bottom: -28px;
+    &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0%;
+        right: 0%;
+        top: 0%;
+        height: 300px;
+        z-index: 0;
+        background: linear-gradient(
+            180deg,
+            $primary-color 14.87%,
+            rgba($primary-color, 0.64) 36.16%,
+            rgba($primary-color, 0) 80.36%
+        );
+    }
+}
+
+.cartButton {
+    background: transparent;
+    border: 0;
+    position: relative;
+    cursor: pointer;
+}
+.cartQty {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    display: block;
+    background: $danger-color;
+    border-radius: 14px;
+    color: #FFF;
+    top: -6px;
+    right: -4px;
+    text-align: center;
+    font-size: 0.75rem;
+    padding-top: 2px;
+}

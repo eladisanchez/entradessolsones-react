@@ -6,11 +6,11 @@
 
     <div class="wrapper">
 
-        <h1>{{ $entrada->producte->title }}</h1>
+        <h1>{{ $ticket->product->title }}</h1>
 
         @include('admin.menus.productes', ['product' => $product, 'active' => 'entrades'])
 
-        <p class="lead mt-4">Entrades per al {{ $entrada->dia->format('d/m/Y') }} a les {{ $entrada->hora->format('H:i') }} h
+        <p class="lead mt-4">Entrades per al {{ $ticket->day->format('d/m/Y') }} a les {{ $ticket->hour->format('H:i') }} h
             </h2>
 
             <!-- Editor d'espais -->
@@ -78,13 +78,13 @@
 
                 </div>
 
-                {{ Form::open(['action' => ['TicketController@update']]) }}
+                {{ Form::open(['route' => ['admin.ticket.update']]) }}
 
-                {{ Form::hidden('producte_id', $entrada->producte->id) }}
-                {{ Form::hidden('dia', $entrada->dia->toDateString()) }}
-                {{ Form::hidden('hora', $entrada->hora->toTimeString()) }}
+                {{ Form::hidden('product_id', $ticket->product_id) }}
+                {{ Form::hidden('day', $ticket->day->toDateString()) }}
+                {{ Form::hidden('hour', $ticket->hour->toTimeString()) }}
 
-                {{ Form::hidden('localitats', $entrada->seats, ['id' => 'localitats']) }}
+                {{ Form::hidden('seats', $ticket->seats, ['id' => 'localitats']) }}
 
                 <p>Entrades generades: <span id="count-seients" class="text-info">0</span></p>
 
@@ -96,20 +96,20 @@
 
                 <p class="d-flex mb-5">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Enrere</a>
-                    <a href="{{ action('\App\Http\Controllers\ProductController@index', [$entrada->producte->name, $entrada->dia->toDateString(), $entrada->hora->toTimeString()]) }}"
+                    <a href="{{ route('admin.product.index', [$ticket->product->name, $ticket->day->toDateString(), $ticket->hour->toTimeString()]) }}"
                         class="btn btn-outline-secondary">Reserva</a>
                 </p>
 
-                @if (count($entrada->seatsReservades))
+                @if (count($ticket->bookedSeats))
                     <div class="alert alert-info">
                         <p>
-                        <p class="h5 mb-4">Hi ha <strong>{{ $entrada->bookings() }} entrades</strong> reservades.
+                        <p class="h5 mb-4">Hi ha <strong>{{ $ticket->bookings() }} entrades</strong> reservades.
                         <p>
-                        <p><a href="{{ url('/admin/excel?dia=' . $entrada->dia->toDateString() . '&hora=' . $entrada->hora->toTimeString() . '&producte_id=' . $entrada->producte_id) }}"
+                        <p><a href="{{ url('/admin/excel?dia=' . $ticket->day->toDateString() . '&hora=' . $ticket->hour->toTimeString() . '&product_id=' . $ticket->product_id) }}"
                                 class="btn btn-info btn-block">Descarrega l'Excel de reserves</a></p>
                         </p>
                     </div>
-                    @if ($entrada->cancelat)
+                    @if ($ticket->cancelled)
                         <div class="alert alert-danger">
                             Sessió cancel·lada.
                         </div>
@@ -119,7 +119,7 @@
                             <p>Si es cancel·la la sessió s'enviarà un email als usuaris que hagin comprat entrades per
                                 aquest dia/hora amb un enllaç per poder generar la devolució.</p>
                             <form
-                                action="{{ action('TicketController@destroy', [$entrada->producte->id, $entrada->dia->toDateString(), $entrada->hora->toTimeString()]) }}"
+                                action="{{ route('admin.ticket.destroy', [$ticket->product_id, $ticket->day->toDateString(), $ticket->hour->toTimeString()]) }}"
                                 method="post">
                                 @csrf
                                 <p><strong>Omple els següents camps per canviar de dia i hora la sessió</strong></p>
@@ -133,7 +133,7 @@
                     @endif
                 @else
                     <form
-                        action="{{ action('TicketController@destroy', [$entrada->producte->id, $entrada->dia->toDateString(), $entrada->hora->toTimeString()]) }}"
+                        action="{{ route('admin.ticket.destroy', [$ticket->product_id, $ticket->day->toDateString(), $ticket->hour->toTimeString()]) }}"
                         method="post">
                         @csrf
                         <button class="btn btn-danger">Elimina la sessió</button>
@@ -149,7 +149,7 @@
 
 
     <script>
-        seientsGuardats = {!! $entrada->seats !!}
+        seientsGuardats = {!! $ticket->seats !!}
     </script>
 
 

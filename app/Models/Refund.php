@@ -18,7 +18,7 @@ class Refund extends Model {
 
     public function comanda()
     {
-        return $this->belongsTo('App\Comanda');
+        return $this->belongsTo(Order::class);
     }
 
     public function reserves()
@@ -28,7 +28,7 @@ class Refund extends Model {
 
     public function producte()
     {
-        return $this->belongsTo('App\Producte');
+        return $this->belongsTo(Product::class);
     }
 
 

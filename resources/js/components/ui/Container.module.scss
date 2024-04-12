@@ -1,0 +1,17 @@
+@use "@/styles" as *;
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 $spacer*2;
+    @each $breakpoint, $max-width in $container-max-widths {
+        @if $max-width != null {
+            @media (min-width: map-get($breakpoints, $breakpoint)) {
+                max-width: $max-width;
+            }
+        }
+    }
+    @include media-query('sm') {
+        padding: 0;
+    }
+}

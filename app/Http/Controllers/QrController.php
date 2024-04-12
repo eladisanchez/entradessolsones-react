@@ -116,7 +116,7 @@ class QrController extends BaseController
 
         // User can scan this code
         // $isentitat = $request->user()->productes->contains($booking->product_id);
-        $is_entity = $request->user()->hasRole('entitat');
+        $is_entity = $request->user()->hasRole('organizer');
         $is_admin = $request->user()->hasRole('admin');
         $is_validator = $request->user()->hasRole('validator');
 

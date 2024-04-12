@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrController;
@@ -18,6 +19,10 @@ use App\Http\Controllers\QrController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+Route::get('/cart',[CartController::class,'apiCart']);
+Route::get('/cart/destroy',[CartController::class,'destroy']);
+Route::post('/cart/add',[CartController::class,'add']);
 
 Route::group(['middleware'=>['cors']],function(){
 

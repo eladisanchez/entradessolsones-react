@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminExtractController;
 use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\VenueMapController;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 /*
@@ -34,6 +35,9 @@ use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 	// Analítiques
 	Route::get('excel', [AdminController::class, 'excelExport'])->name('analytics');
+
+	// Gràfics d'ús
+	Route::get('dades',[AdminController::class,'data'])->name('data');
 
 	// Llista de productes
 	Route::get('productes', [AdminProductController::class, 'index'])->name('product.index');

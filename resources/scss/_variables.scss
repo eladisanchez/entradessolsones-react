@@ -1,0 +1,44 @@
+$colors: (
+    primary: #007fb6,
+    secondary: #21cbb7,
+    success: #28a745,
+    danger: #dc3545,
+    warning: #ffc107,
+    info: #939b9c,
+    light: #efede9,
+    white: #FFFFFF,
+    dark: #132437,
+);
+
+$primary-color: map-get($colors, primary);
+$secondary-color: map-get($colors, secondary);
+$success-color: map-get($colors, success);
+$danger-color: map-get($colors, danger);
+$warning-color: map-get($colors, warning);
+$info-color: map-get($colors, info);
+$light-color: map-get($colors, light);
+$dark-color: map-get($colors, dark);
+$body-color: $dark-color;
+
+$text-font: "DM Sans", sans-serif;
+$heading-font: "DM Sans", serif;
+
+$spacer: 0.5rem;
+$grid-gutter-width: $spacer*2;
+
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px,
+);

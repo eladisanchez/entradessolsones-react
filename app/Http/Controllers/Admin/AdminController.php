@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Exports\AnalyticsExport;
+use App\Exports\DataExport;
 
 class AdminController extends BaseController 
 {
@@ -68,5 +69,9 @@ class AdminController extends BaseController
         
     }  
 
+    public function data(): BinaryFileResponse
+    {
+        return Excel::download(new DataExport, 'data.xlsx');
+    }
 
 }

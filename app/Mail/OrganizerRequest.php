@@ -34,6 +34,6 @@ class OrganizerRequest extends Mailable
     public function build()
     {
         return $this->view('emails.solicitud-alta')->with('text',$this->text)
-        ->subject('Sol·licitud Entrades Solsonès '.$this->inputs["entitat"]);
+        ->subject('Sol·licitud '.config('app.name').' '.$this->inputs["entitat"]);
     }
 }

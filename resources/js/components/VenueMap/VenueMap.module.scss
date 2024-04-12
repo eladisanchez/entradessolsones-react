@@ -1,0 +1,47 @@
+.map {
+    display: grid;
+    gap: 3px;
+    width: 500px;
+}
+.seat {
+    border-radius: 35% 35% 10% 10%;
+    aspect-ratio: 1;
+    background: #ddd;
+    position: relative;
+    &:hover {
+        background: #a3a3a3;
+    }
+    &.booked {
+        background: #d60916;
+        cursor: not-allowed;
+    }
+    &.selected {
+        background: #0aa10a;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        width: 70%;
+        height: 25%;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 25% 25% 10% 10%;
+        background: #FFF;
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        border-top: 1px solid #ffffff6d;
+        width: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 60%;
+    }
+}
+
+.tools {
+    button {
+        border: 1px solid #aaa;
+    }
+}

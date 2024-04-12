@@ -1,0 +1,14 @@
+@use '../../styles' as *;
+
+.input {
+    label {
+        display: block;
+        margin-bottom: $spacer/2;
+    }
+    input {
+        border: 1px solid $dark-color;
+        padding: $spacer/2 $spacer;
+        border-radius: $spacer/2;
+        background: #FFF;
+    }
+}

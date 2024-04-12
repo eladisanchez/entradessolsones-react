@@ -76,13 +76,13 @@
                 <div class="row">
 
                     <div class="form-group col-3">
-                        {{ Form::label('data-inici', 'Data inicial', ['class' => 'control-label']) }}
-                        {{ Form::date('data-inici', null, ['class' => 'date form-control']) }}
+                        {{ Form::label('day', 'Data inicial', ['class' => 'control-label']) }}
+                        {{ Form::date('day', null, ['class' => 'date form-control']) }}
                     </div>
 
                     <div class="form-group col-3">
-                        {{ Form::label('data-fi', 'Data final', ['class' => 'control-label']) }}
-                        {{ Form::date('data-fi', null, ['class' => 'date form-control']) }}
+                        {{ Form::label('day-end', 'Data final', ['class' => 'control-label']) }}
+                        {{ Form::date('day-end', null, ['class' => 'date form-control']) }}
                     </div>
 
                     <div class="form-group col-6">
@@ -128,11 +128,6 @@
 
                 </div>
 
-                <!--
-       <hr>
-       <p class="text-muted">Si s'omplen els següents camps no es tindran en compte les sessions definides per al producte:</p>
-       -->
-
                 <div class="row">
 
                     <div class="form-group col-4">
@@ -141,8 +136,8 @@
                     </div>
 
                     <div class="form-group col-4">
-                        {{ Form::label('entrades', 'Entrades per sessió', ['class' => 'control-label']) }}
-                        {{ Form::text('entrades', null, ['class' => 'form-control']) }}
+                        {{ Form::label('tickets', 'Entrades per sessió', ['class' => 'control-label']) }}
+                        {{ Form::text('tickets', null, ['class' => 'form-control']) }}
                     </div>
 
                     <div class="form-group col-4">
@@ -183,16 +178,16 @@
 
                 {{ Form::close() }}
             @else
-                {{ Form::open(['action' => 'TicketController@store']) }}
+                {{ Form::open(['route' => 'admin.ticket.store']) }}
 
                 <p>Les entrades a la venda es crearan a partir de les localitats definides al plànol de
-                    <strong>{{ $product->espai->name }}</strong></p>
+                    <strong>{{ $product->venue->name }}</strong></p>
 
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            {{ Form::label('data-inici', 'Data', ['class' => 'control-label']) }}
-                            {{ Form::date('data-inici', null, ['class' => 'date form-control']) }}
+                            {{ Form::label('day', 'Dia', ['class' => 'control-label']) }}
+                            {{ Form::date('day', null, ['class' => 'date form-control']) }}
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -209,7 +204,7 @@
                     </div>
                 </div>
 
-                {{ Form::hidden('producte_id', $product->id) }}
+                {{ Form::hidden('product_id', $product->id) }}
 
                 {{ Form::close() }}
             @endif

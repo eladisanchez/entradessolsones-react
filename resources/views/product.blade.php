@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-    <title>{{ $product->title }} - Entrades Solsonès</title>
+    <title>{{ $product->title }} - {{ config('app.name') }}</title>
 @stop
 
 @section('content')

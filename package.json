@@ -7,6 +7,7 @@
         "watch": "vite --watch"
     },
     "devDependencies": {
+        "@storybook/react-vite": "^8.0.5",
         "@vitejs/plugin-react": "^4.2.1",
         "axios": "^1.6.1",
         "laravel-vite-plugin": "^1.0.0",
@@ -14,8 +15,15 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.11",
+        "@fullcalendar/daygrid": "^6.1.11",
+        "@fullcalendar/react": "^6.1.11",
         "@inertiajs/react": "^1.0.14",
         "bootstrap": "^4.6.2",
-        "react-dom": "^18.2.0"
+        "classnames": "^2.5.1",
+        "primereact": "^10.5.1",
+        "react-dom": "^18.2.0",
+        "react-query": "^3.39.3",
+        "react-zoom-pan-pinch": "^3.4.3"
     }
 }

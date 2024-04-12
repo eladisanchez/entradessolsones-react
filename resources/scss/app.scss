@@ -1,21 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Text&display=swap');
+@import 'variables';
+// @import 'bootstrap/scss/bootstrap-grid';
+
 body {
     margin: 0 auto;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
+    background: $light-color;
+    color: $body-color;
+    font-smooth: antialiased;
 }
-.container {
-    max-width: 1047px;
-    margin: 0 auto;
+
+a {
+    color: $primary-color;
 }
-.site-top {
-    background: #132437;
-    color: #FFF;
-    &__lang-nav {
-        a {
-            color: #FFF;
-        }
-    }
+
+p {
+    margin-top: 0;
 }
-header {
-    background: #0048B6;
+button, input {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.fc .fc-view-harness-active > .fc-view {
+    background: #FFF;
 }

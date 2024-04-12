@@ -5,6 +5,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RefundController;
+use App\Http\Controllers\Admin\AdminTicketController;
+use App\Http\Controllers\VenueMapController;
 
 use Auth;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -26,9 +28,13 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 
 	Route::get('/', [ProductController::class, 'home'])->name('home');
 
+	Route::get('/cart/destroy',[CartController::class,'destroy']);
+	Route::post('/cart/add',[CartController::class,'add']);
+	Route::post('/cart/remove',[CartController::class,'removeRow']);
+
 	Route::get('activitat/{name?}/{day?}/{hour?}', [ProductController::class, 'show'])
 		->where('day', '^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')
-		->where('hour', '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$')
+		->where('hour', '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')
 		->name('product');
 
 	// Reserva d'un producte dins un pack
@@ -44,7 +50,7 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::post('cistell/addesdeveniment', [CartController::class, 'addEvent'])->name('cart.add-seats');
 	Route::get('cistell/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
 	Route::get('cistell/remove', [CartController::class, 'removeItem'])->name('cistell.remove')->name('cart.remove-item');
-	Route::get('confirmacio', [CartController::class, 'confirmar'])->name('checkout');
+	Route::get('confirmacio', [CartController::class, 'confirm'])->name('checkout');
 
 	// Login client
 	Route::post('cistell/login',array('uses' => 'UserController@login'));
@@ -94,9 +100,19 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::get('devolucio/{id}','ReservaController@devolucio');
 
 	// Calendari
-	Route::get('calendari','ProducteController@calendar')->name('calendar');
-	Route::get('calendari/ics','ProducteController@ics');
+	Route::get('calendari',[ProductController::class,'calendar'])->name('calendar');
+	Route::get('calendari/ics',[ProductController::class,'ics']);
 
+});
+
+Route::group(['prefix' => 'admin', 'middleware'=>['role:admin']],function(){
+	Route::get('/venues/{id}/edit/map',[VenueMapController::class,'edit'])->name('venue.edit');
+	Route::post('/venues/{id}/edit/map',[VenueMapController::class,'update'])->name('venue.update');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['role:admin|entity']],function(){
+	Route::get('producte/{id}/entrades/{dia}/{hora}/map',[AdminTicketController::class,'map'])
+	->where('dia','^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')->name('ticket.map');
 });
 
 Route::get('pdf/{session}/{id}',[OrderController::class,'pdf'])->name('order.pdf');

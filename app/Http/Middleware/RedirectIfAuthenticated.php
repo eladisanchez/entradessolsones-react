@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                if (Auth::user()->hasRole('entity')) {
+                if (Auth::user()->hasRole('organizer')) {
                     return redirect('admin/tickets');
                 }
                 return redirect(RouteServiceProvider::HOME);
