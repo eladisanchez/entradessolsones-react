@@ -1,5 +1,5 @@
 import { usePage } from "@inertiajs/react";
-import { Header, Footer, Cart } from "@/components";
+import { Header, Footer, SideCart } from "@/components/molecules";
 import { CartProvider } from "@/contexts/CartContext";
 
 export default function Layout({ children }) {
@@ -9,7 +9,7 @@ export default function Layout({ children }) {
     <CartProvider initialCart={cart} csrf={csrf_token}>
       <main>
         <Header url={url}></Header>
-        <Cart />
+        <SideCart />
         <article>{children}</article>
         <Footer />
       </main>

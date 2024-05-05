@@ -29,8 +29,8 @@ class AdminPackController extends BaseController
 			$items = $product->packProducts;
 
 			$select_products = $items->count() ?
-				Product::where('target', $product->target)->where('is_pack', 0)->whereNotIn('id', $items->modelKeys())->pluck('title_ca', 'id') :
-				Product::where('target', $product->target)->where('is_pack', 0)->pluck('title_ca', 'id');
+				Product::where('target', $product->target)->where('is_pack', 0)->whereNotIn('id', $items->modelKeys())->pluck('title', 'id') :
+				Product::where('target', $product->target)->where('is_pack', 0)->pluck('title', 'id');
 
 			return view('admin.product.pack', ['product' => $product, 'select_products' => $select_products]);
 		} else {

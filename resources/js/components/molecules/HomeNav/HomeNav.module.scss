@@ -1,0 +1,55 @@
+@use '@/styles' as *;
+
+.homenav {
+    position: sticky;
+    top: $spacer;
+    margin: 0 auto;
+    padding: $spacer;
+    background: #FFF;
+    display: flex;
+    border-radius: 0.875rem;
+    z-index: 11;
+    gap: $spacer;
+    max-width: 1096px;
+}
+.nav {
+    display: flex;
+    flex: 1 0 0%;
+    border: 1px solid $light-color;
+    border-radius: 10px;
+    overflow: hidden;
+    a {
+        width: 100%;
+        display: block;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        color: $dark-color;
+        font-weight: 500;
+        text-decoration: none;
+    }
+}
+.currentSection {
+    background-color: $light-color;
+}
+.buttons {
+    display: flex;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    width: 80px;
+    border: 1px solid $light-color;
+    overflow: hidden;
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        width: 50%;
+        height: 38px;
+        background-color: transparent;
+        cursor: pointer;
+        text-align: center;
+    }
+}
+.current {
+    background-color: $light-color !important;
+}

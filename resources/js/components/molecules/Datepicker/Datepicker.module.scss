@@ -1,0 +1,52 @@
+@use '@/styles' as *;
+
+.calendar {
+    width: 100%;
+    max-width: 400px;
+    table td > span {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        transition: box-shadow 0.2s;
+        border: 1px solid transparent;
+    }
+    table [class~="p-datepicker-today"] > span {
+        background: #d1d5db;
+        color: #4b5563;
+        border-color: transparent;
+    }
+    table td > [class~="p-highlight"] {
+        color: #0e7490;
+        background: #ecfeff;
+    }
+    table td > [class~="p-disabled"] {
+        color: #afafaf;
+    }
+
+    [class~="p-datepicker-header"] {
+        padding: $spacer/2 $spacer;
+        color: $primary-color;
+        background: #FFF;
+        border-radius: $spacer $spacer 0 0;
+        > button {
+            border: 0;
+            background: transparent;
+            color: $primary-color;
+        }
+    }
+
+    [class~="p-datepicker-month"] {
+        font-weight: bold;
+        margin-right: $spacer/2;
+    }
+
+    [class~="p-datepicker-calendar"] {
+        thead {
+            background: #FFF;
+        }
+    }
+
+    > [class~="p-highlight"] {
+        font-weight: bold;
+    }
+}

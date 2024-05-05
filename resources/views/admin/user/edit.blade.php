@@ -95,7 +95,7 @@
 
                             @foreach ($user->productes as $product)
                                 <li class="list-group-item"><a
-                                        href="{{ route('admin.product.edit', $product->id) }}">{{ $product->title_ca }}</a>
+                                        href="{{ route('admin.product.edit', $product->id) }}">{{ $product->title }}</a>
                                 </li>
                             @endforeach
 

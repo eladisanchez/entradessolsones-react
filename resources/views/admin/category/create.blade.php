@@ -12,8 +12,8 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('title_ca', 'Títol Català') }}
-                {{ Form::text('title_ca', null, ['class' => 'form-control', 'required' => 'required']) }}
+                {{ Form::label('title', 'Títol Català') }}
+                {{ Form::text('title', null, ['class' => 'form-control', 'required' => 'required']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('resum_ca', 'Resum Català') }}

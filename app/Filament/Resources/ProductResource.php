@@ -56,7 +56,7 @@ class ProductResource extends Resource
                         Tabs\Tab::make('Informació')
                             ->icon('heroicon-m-information-circle')
                             ->schema([
-                                TextInput::make('title_ca')
+                                TextInput::make('title')
                                     ->label('Títol')
                                     ->required()
                                     ->live()
@@ -68,16 +68,12 @@ class ProductResource extends Resource
                                     ->columnSpan(6),
                                 Select::make('target')
                                     ->label('Tipus d\'activitat')
-                                    ->options([
-                                        'individual' => 'Activitats turístiques',
-                                        'esdeveniments' => 'Esdeveniments, concerts i espectacles',
-                                        'altres' => 'Altres activitats'
-                                    ])
+                                    ->options(config('tickets.types'))
                                     ->required()
                                     ->columnSpan(3),
                                 Select::make('category_id')
                                     ->label('Categoria')
-                                    ->relationship(name: 'category', titleAttribute: 'title_ca')
+                                    ->relationship(name: 'category', titleAttribute: 'title')
                                     ->searchable()
                                     ->required()
                                     ->columnSpan(3),
@@ -92,7 +88,7 @@ class ProductResource extends Resource
                                 Fieldset::make('Català')
                                     ->columns(2)
                                     ->schema([
-                                        TextInput::make('summary_ca')
+                                        TextInput::make('summary')
                                             ->label('Resum')
                                             ->maxLength(255)
                                             ->required()
@@ -305,11 +301,11 @@ class ProductResource extends Resource
                                     ->label('Preus')
                                     ->relationship()
                                     ->collapsed()
-                                    ->itemLabel(fn(array $state): ?string => $state['rate_id'] ? (Rate::find($state['rate_id'])->title_ca . ' - ' . $state['price'] . ' €' ?? null) : '')
+                                    ->itemLabel(fn(array $state): ?string => $state['rate_id'] ? (Rate::find($state['rate_id'])->title . ' - ' . $state['price'] . ' €' ?? null) : '')
                                     ->schema([
                                         Select::make('rate_id')
                                             ->label('Tarifa')
-                                            ->relationship('rate', 'title_ca')
+                                            ->relationship('rate', 'title')
                                             ->searchable()
                                             ->required()
                                             ->columnSpan(2),
@@ -328,9 +324,9 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title_ca')->label('Títol'),
+                Tables\Columns\TextColumn::make('title')->label('Títol'),
                 Tables\Columns\TextColumn::make('organizer.username')->label('Organitzador'),
-                Tables\Columns\TextColumn::make('category.title_ca')->label('Categoria'),
+                Tables\Columns\TextColumn::make('category.title')->label('Categoria'),
                 Tables\Columns\TextColumn::make('bookings_count')->counts('bookings')->badge()->sortable()
                     ->badge()->label('Entrades venudes')
             ])

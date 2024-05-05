@@ -43,7 +43,8 @@ class CartController extends BaseController
 	public function apiCart()
 	{
 		return response()->json([
-			'cart' => Cart::content()
+			'items' => session('cart') ?? [],
+			'total' => Cart::total()
 		]);
 	}
 
@@ -207,6 +208,7 @@ class CartController extends BaseController
 					$product->title,
 					$qty,
 					$price,
+					0,
 					[
 						'name' => $product->name,
 						'product_id' => $product->id,
@@ -236,8 +238,8 @@ class CartController extends BaseController
 		// ]);
 
 		return response()->json([
-			'items' => Cart::instance('shopping')->content(),
-			'total' => Cart::instance('shopping')->total()
+			'items' => Cart::content(),
+			'total' => Cart::total()
 		]);
 
 	}
@@ -281,6 +283,7 @@ class CartController extends BaseController
 				$product->title,
 				1,
 				$price,
+				0,
 				[
 					'name' => $product->name,
 					'product_id' => $product->id,
@@ -297,8 +300,8 @@ class CartController extends BaseController
 		$this->convertToPack($product);
 
 		return response()->json([
-			'items' => Cart::instance('shopping')->content(),
-			'total' => Cart::instance('shopping')->total()
+			'items' => Cart::content(),
+			'total' => Cart::total()
 		]);
 
 	}
@@ -433,7 +436,7 @@ class CartController extends BaseController
 	 */
 	public function destroy(): JsonResponse
 	{
-		Cart::instance('shopping')->destroy();
+		Cart::destroy();
 		// Session::forget('coupon');
 		//Session::forget('qty');
 		return response()->json([

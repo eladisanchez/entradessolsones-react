@@ -13,8 +13,8 @@
         <div class="row"><div class="col-md-9">
 
         <div class="form-group">
-            {{ Form::label('title_ca','Títol de l\'activitat/espectacle') }}
-            {{ Form::text('title_ca',NULL,array('class'=>"form-control")) }}
+            {{ Form::label('title','Títol de l\'activitat/espectacle') }}
+            {{ Form::text('title',NULL,array('class'=>"form-control")) }}
         </div>
         <div class="form-group">
             {{ Form::label('resum_ca','Resum') }}

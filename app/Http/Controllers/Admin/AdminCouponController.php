@@ -32,14 +32,14 @@ class AdminCouponController extends BaseController
 
 		$products = Product::with([
 			'rates' => function ($query) {
-				$query->select('rate_id', 'title_ca');
+				$query->select('rate_id', 'title');
 			}]
-		)->where('active', 1)->get(array('id', 'title_ca'));
+		)->where('active', 1)->get(array('id', 'title'));
 
 		$productarifes = array();
 		foreach ($products as $product) {
 			foreach ($product->rates as $rate) {
-				$productarifes[$product->id . ':' . $rate->rate_id] = $product->title_ca . ' - ' . $rate->title;
+				$productarifes[$product->id . ':' . $rate->rate_id] = $product->title . ' - ' . $rate->title;
 			}
 		}
 
@@ -79,7 +79,7 @@ class AdminCouponController extends BaseController
 			return redirect()->back();
 		}
 		$codinom = $coupon->codi;
-		$codiprod = $coupon->product ? $coupon->product->title_ca . ' - ' . $coupon->rate->title_ca : null;
+		$codiprod = $coupon->product ? $coupon->product->title . ' - ' . $coupon->rate->title : null;
 		$coupon->delete();
 		return Redirect::back()->with('message', 'Codi <strong>"' . $codinom . '"</strong> eliminat per a <strong>"' . $codiprod . '"</strong>');
 

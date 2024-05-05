@@ -15,7 +15,7 @@
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">{{ $preu->title_ca }}</h4>
+                            <h4 class="card-title">{{ $preu->title }}</h4>
                             <p class="card-subtitle mb-4 text-muted">{{ $preu->preu }}</p>
                             {{ Form::open(['route' => ['admin.price.destroy', $product->id, $preu->id], 'method' => 'delete']) }}
                             <button type="submit" class="btn btn-outline-danger btn-sm">Elimina</button>

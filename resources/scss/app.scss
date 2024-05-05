@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Text&display=swap');
 @import 'variables';
-// @import 'bootstrap/scss/bootstrap-grid';
+
+html {
+    scroll-padding-top: 100px;
+}
 
 body {
     margin: 0 auto;
@@ -8,6 +11,10 @@ body {
     background: $light-color;
     color: $body-color;
     font-smooth: antialiased;
+}
+
+h1,h2,h3,h4 {
+    font-weight: 400;
 }
 
 a {

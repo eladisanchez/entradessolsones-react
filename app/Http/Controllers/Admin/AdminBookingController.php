@@ -24,7 +24,7 @@ class AdminBookingController extends BaseController
 	public function index()
 	{
 
-		$products = array('' => '') + Product::pluck('title_ca', 'id')->toArray();
+		$products = array('' => '') + Product::pluck('title', 'id')->toArray();
 
 		$bookings = Booking::with('product', 'order', 'rate', 'scans')->orderBy('hour');
 

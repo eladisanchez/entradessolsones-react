@@ -1,0 +1,59 @@
+@use "@/styles" as *;
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+.rateSelect {
+    // position: fixed;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    // background: #fff;
+    // padding: $spacer*3;
+    // z-index: 100;
+    // border-radius: $spacer;
+    // width: 100%;
+    // max-width: 400px;
+}
+
+.label {
+    display: block;
+    line-height: 1;
+}
+
+.inputNumber {
+    > [class~="p-inputnumber-input"] {
+        flex: 1 1 auto;
+        order: 2;
+        border-radius: 0;
+        width: 1%;
+        font-family: $text-font;
+        font-size: 1rem;
+        color: $dark-color;
+        background: #ffffff;
+        padding: $spacer/2 $spacer;;
+        border: 1px solid #d1d5db;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+            box-shadow 0.2s;
+        appearance: none;
+        width: 60px;
+    }
+    button {
+        border: 0;
+        background: $primary-color;
+        color: #FFF;
+        width: $spacer*4;
+    }
+    > [class~="p-inputnumber-button-down"] {
+        border-radius: $spacer/2 0 0 $spacer/2;
+    }
+    > [class~="p-inputnumber-button-up"] {
+        border-radius: 0 $spacer/2 $spacer/2 0;
+    }
+}

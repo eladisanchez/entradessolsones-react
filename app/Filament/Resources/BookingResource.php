@@ -30,7 +30,7 @@ class BookingResource extends Resource
             ->schema([
                 Forms\Components\DateTimePicker::make('created_at')->label('Data')->disabled()->columnSpan(2),
                 Forms\Components\TextInput::make('order.email')->label('Client')->disabled()->columnSpan(2),
-                Forms\Components\TextInput::make('product.title_ca')->label('Producte')->disabled()->columnSpan(2),
+                Forms\Components\TextInput::make('product.title')->label('Producte')->disabled()->columnSpan(2),
                 Forms\Components\TextInput::make('tickets')->label('Quantitat')->columnSpan(2),
                 Forms\Components\DatePicker::make('day')->label('Dia')->required()->columnSpan(2),
                 Forms\Components\TimePicker::make('hour')->label('Hora')->required()->columnSpan(2),
@@ -43,8 +43,8 @@ class BookingResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')->label('Data')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('order.email')->label('Client')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('product.title_ca')->label('Producte')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('rate.title_ca')->label('Tarifa')->sortable(),
+                Tables\Columns\TextColumn::make('product.title')->label('Producte')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('rate.title')->label('Tarifa')->sortable(),
                 Tables\Columns\TextColumn::make('tickets')->label('Quantitat')->sortable(),
                 Tables\Columns\TextColumn::make('scans.scan_id')->label('QR')->badge()->color('success'),
             ])

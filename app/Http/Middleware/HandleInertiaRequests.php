@@ -40,8 +40,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'csrf_token' => csrf_token(),
             'cart' => [
-                'items' => Cart::instance('shopping')->content(),
-                'total' => Cart::instance('shopping')->total()
+                'items' => session('cart')['shopping'] ?? [],
+                'total' => Cart::total()
             ]
         ]);
     }

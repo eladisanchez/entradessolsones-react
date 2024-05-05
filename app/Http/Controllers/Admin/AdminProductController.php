@@ -51,7 +51,7 @@ class AdminProductController extends BaseController
 	 */
 	public function create(): View
 	{
-		$cats = Category::pluck('title_ca', 'id');
+		$cats = Category::pluck('title', 'id');
 		$venues = [null => '-'] + Venue::pluck('name', 'id')->toArray();
 		$entities = [null => '-'] + User::withRole('entities')->pluck('username', 'id')->toArray();
 		return view(
@@ -71,7 +71,7 @@ class AdminProductController extends BaseController
 	public function store(): RedirectResponse
 	{
 		$values = request()->all();
-		$values['name'] = \App\Helpers\Common::slugify(redirect()->input('title_ca'));
+		$values['name'] = \App\Helpers\Common::slugify(redirect()->input('title'));
 		$product = Product::create($values);
 		return redirect()->route('admin.product.index')
 			->with('message', 'Producte <strong>' . $product->title . '</strong> creat correctament.');
@@ -84,10 +84,10 @@ class AdminProductController extends BaseController
 	public function edit(string $id): View
 	{
 		$product = Product::findOrFail($id);
-		$cats = Category::pluck('title_ca', 'id');
+		$cats = Category::pluck('title', 'id');
 		$venues = [null => '-'] + Venue::pluck('name', 'id')->toArray();
 		$entities = [null => '-'] + User::withRole('organizer')->pluck('username', 'id')->toArray();
-		$products = Product::where('id', '<>', $product->id)->pluck('title_ca', 'id')->toArray();
+		$products = Product::where('id', '<>', $product->id)->pluck('title', 'id')->toArray();
 		return view('admin.product.edit', [
 			'product' => $product,
 			'categories' => $cats,
@@ -215,7 +215,7 @@ class AdminProductController extends BaseController
 	 */
 	public function request(): View
 	{
-		$cats = Category::pluck('title_ca', 'id');
+		$cats = Category::pluck('title', 'id');
 		$venues = [null => '-'] + Venue::pluck('name', 'id')->toArray();
 		return view('report.nouproducte', [
 			'categories' => $cats,
@@ -230,11 +230,11 @@ class AdminProductController extends BaseController
 	public function storeRequest(): RedirectResponse
 	{
 		request()->validate([
-			'title_ca' => 'required|max:255',
+			'title' => 'required|max:255',
 			'title_es' => 'max:255'
 		]);
 		$info = request()->input('image');
-		$info['name'] = \App\Helpers\Common::slugify(request()->input('title_ca'));
+		$info['name'] = \App\Helpers\Common::slugify(request()->input('title'));
 		$info['active'] = 0;
 		Product::create($info);
 		return redirect()->route('ProductController@request')->with('message', 'S\'ha enviat la sol·licitud');

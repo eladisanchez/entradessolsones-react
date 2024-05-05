@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
 
 class CategoryResource extends Resource
 {
@@ -28,7 +29,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title_ca')
+                TextInput::make('title')
                     ->label('Nom català')
                     ->required(),
                 TextInput::make('title_es')
@@ -37,6 +38,10 @@ class CategoryResource extends Resource
                     ->label('Resum català'),
                 Textarea::make('summary_es')
                     ->label('Resum castellà'),
+                Select::make('target')
+                    ->label('Tipus d\'activitat')
+                    ->options(config('tickets.types'))
+                    ->required()
             ]);
     }
 
@@ -44,7 +49,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title_ca')->label('Títol'),
+                Tables\Columns\TextColumn::make('title')->label('Títol'),
                 Tables\Columns\TextColumn::make('products_count')->counts('products')->badge()->sortable()
                     ->badge()->label('Productes')
             ])

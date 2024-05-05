@@ -39,7 +39,7 @@ class ExtractResource extends Resource
                 Tables\Columns\TextColumn::make('date_start')->dateTime()->label('Data inici')->sortable(),
                 Tables\Columns\TextColumn::make('date_end')->dateTime()->label('Data fi')->sortable(),
                 Tables\Columns\TextColumn::make('user.username')->label('Organitzador')->sortable(),
-                Tables\Columns\TextColumn::make('product.title_ca')->label('Producte')->sortable(),
+                Tables\Columns\TextColumn::make('product.title')->label('Producte')->sortable(),
                 Tables\Columns\TextColumn::make('total_sales')->label('Total'),
             ])
             ->filters([

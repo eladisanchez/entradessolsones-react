@@ -1,16 +1,21 @@
 import React, { Suspense, useRef } from "react";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
-import { Container, Heading, Grid, Card, Button, TicketTable } from "@/components/ui";
+import { Container, Heading, Grid, Card, Button } from "@/components/atoms";
+import { TicketTable } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import styles from "./Product.module.scss";
 import { ymd } from "@/utils/date";
 
 const Datepicker = React.lazy(() =>
-  import("@/components/ui/Datepicker/Datepicker")
+  import("@/components/molecules/Datepicker/Datepicker")
 );
-const VenueMap = React.lazy(() => import("@/components/VenueMap/VenueMap"));
-const RateModal = React.lazy(() => import("@/components/RateModal/RateModal"));
+const VenueMap = React.lazy(() =>
+  import("@/components/molecules/VenueMap/VenueMap")
+);
+const RateSelect = React.lazy(() =>
+  import("@/components/molecules/RateSelect/RateSelect")
+);
 
 export default function Product({
   product,
@@ -84,7 +89,7 @@ export default function Product({
         ></div>
         <Container style={{ position: "relative", zIndex: 1 }}>
           <p className={styles.organizer}>{product.organizer.username}</p>
-          <Heading tag="h1" color="light" spacerTop={0}>
+          <Heading tag="h1" color="light" spacerTop={0} spacerBottom={2}>
             {product.title}
           </Heading>
 
@@ -125,9 +130,8 @@ export default function Product({
             className={styles.tickets}
             ref={ticketSectionRef}
           >
-            <Grid columns={2}>
+            <Grid columns={3}>
               <section>
-                <h3>Calendari</h3>
                 <Suspense fallback={<div>Carregant...</div>}>
                   <Datepicker
                     availableDays={availableDays}
@@ -144,31 +148,26 @@ export default function Product({
                   tickets={ticketsByDay()}
                 ></TicketTable>
               </section>
-              
-              {hour && (
-                <RateModal
-                  rates={rates}
-                  minQty={product.min_tickets}
-                  maxQty={product.max_tickets}
-                  addToCart={handleAddToCart}
-                  close={handleCloseRate}
-                />
-              )}
+
+              <section>
+                {hour && (
+                  <RateSelect
+                    rates={rates}
+                    minQty={product.min_tickets}
+                    maxQty={product.max_tickets}
+                    addToCart={handleAddToCart}
+                    close={handleCloseRate}
+                  />
+                )}
+              </section>
             </Grid>
 
             {!!product.venue_id && hour && (
               <div>
-                {ticketsByDay().map((ticket) => (
-                  <p>
-                    <Link
-                      href={`/activitat/${product.name}/${ticket.day}/${ticket.hour}`}
-                      preserveState
-                      preserveScroll
-                    >
-                      {ticket.day} - {ticket.hour}
-                    </Link>
-                  </p>
-                ))}
+                <TicketTable
+                  productSlug={product.name}
+                  tickets={ticketsByDay()}
+                ></TicketTable>
                 {!!seats && (
                   <Suspense fallback={<div>Carregant...</div>}>
                     <VenueMap

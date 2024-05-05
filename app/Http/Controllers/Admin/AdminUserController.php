@@ -78,8 +78,8 @@ class AdminUserController extends BaseController
 		$products = $user->productes;
 
 		$select_products = $products->count() ?
-			Product::whereNotIn('id', $products->modelKeys())->pluck('title_ca', 'id') :
-			Product::pluck('title_ca', 'id');
+			Product::whereNotIn('id', $products->modelKeys())->pluck('title', 'id') :
+			Product::pluck('title', 'id');
 
 		return view('admin.user.edit', ['user' => $user, 'products' => $select_products]);
 	}

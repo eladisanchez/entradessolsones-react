@@ -15,7 +15,6 @@ class Rate extends Model
     protected $table = 'rates';
     protected $guarded = ['id'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'name', 'ambdescompte'];
-    protected $appends = ['title', 'description'];
 
 
     public function product()
@@ -29,28 +28,6 @@ class Rate extends Model
     {
         return $this->hasMany(ProductRate::class);
     }
-
-    public function getTitleAttribute()
-    {
-        if (LaravelLocalization::setLocale())
-            if ($this->{'title_' . LaravelLocalization::setLocale()}) {
-                return $this->{'title_' . LaravelLocalization::setLocale()};
-            } else {
-                return $this->{'title_ca'};
-            } else
-            return $this->{'title_ca'};
-    }
-
-
-    public function getDescriptionAttribute()
-    {
-        if (LaravelLocalization::setLocale()) {
-            return $this->{'description_' . LaravelLocalization::setLocale()};
-        } else {
-            return $this->description_ca;
-        }
-    }
-
 
     public function getPriceAttribute($value)
     {

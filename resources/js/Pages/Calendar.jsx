@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import { Head } from "@inertiajs/react";
-import { HomeNav } from "@/components";
-import { Container } from "@/components/ui";
+import { HomeNav } from "@/components/molecules";
+import { Container } from "@/components/atoms";
 
-const FullCalendar = React.lazy(() => import("@/components/Calendar/Calendar"));
+const FullCalendar = React.lazy(() => import("@/components/molecules/Calendar"));
 
 export default function Calendar({ events }) {
   return (

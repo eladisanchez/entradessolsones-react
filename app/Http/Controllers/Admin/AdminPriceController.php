@@ -27,8 +27,8 @@ class AdminPriceController extends BaseController
 		$prices = $product->rates;
 
 		$tarifes_disponibles = $prices->count() ?
-			Rate::whereNotIn('id', $prices->modelKeys())->pluck('title_ca', 'id') :
-			Rate::pluck('title_ca', 'id');
+			Rate::whereNotIn('id', $prices->modelKeys())->pluck('title', 'id') :
+			Rate::pluck('title', 'id');
 
 		return view('admin.product.prices', [
 			'product' => $product,

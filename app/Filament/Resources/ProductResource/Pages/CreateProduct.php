@@ -26,7 +26,7 @@ class CreateProduct extends CreateRecord
             Step::make('Informació bàsica')
                 ->icon('heroicon-m-information-circle')
                 ->schema([
-                    TextInput::make('title_ca')
+                    TextInput::make('title')
                         ->label('Títol')
                         ->required()
                         ->live()
@@ -40,16 +40,12 @@ class CreateProduct extends CreateRecord
                     //     ->unique(Product::class, 'name', fn($record) => $record),
                     Select::make('target')
                         ->label('Tipus d\'activitat')
-                        ->options([
-                            'individual' => 'Activitats turístiques',
-                            'esdeveniments' => 'Esdeveniments, concerts i espectacles',
-                            'altres' => 'Altres activitats'
-                        ])
+                        ->options(config('tickets.types'))
                         ->required()
                         ->columnSpan(3),
                     Select::make('category_id')
                         ->label('Categoria')
-                        ->relationship(name: 'category', titleAttribute: 'title_ca')
+                        ->relationship(name: 'category', titleAttribute: 'title')
                         ->searchable()
                         ->required()
                         ->columnSpan(3),
@@ -64,7 +60,7 @@ class CreateProduct extends CreateRecord
                     Fieldset::make('Català')
                         ->columns(2)
                         ->schema([
-                            TextInput::make('summary_ca')
+                            TextInput::make('summary')
                                 ->label('Resum')
                                 ->maxLength(255)
                                 ->columnSpan('full'),

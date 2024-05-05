@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Head } from "@inertiajs/react";
-import { Container, Heading, Button } from "@/components/ui";
+import { Container, Heading, Button } from "@/components/atoms";
 import { useForm } from "@inertiajs/react";
 
 export default function Checkout({ events }) {

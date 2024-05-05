@@ -41,9 +41,9 @@
             <td>{{ $booking->order->newsletter }}</td>
             <td>
                 @if ($booking->is_pack)
-                <strong>{{ $booking->product->title_ca }}</strong>
+                <strong>{{ $booking->product->title }}</strong>
                 @else
-                {{ $booking->product->title_ca }}
+                {{ $booking->product->title }}
                 @endif
             </td>
             <td> 
@@ -61,7 +61,7 @@
                 {{ \App\Helpers\Common::seient($booking->seat) }} 
                 @endif
             </td>
-            <td>{{ $booking->rate->title_ca }}</td>
+            <td>{{ $booking->rate->title }}</td>
             <td>{{ $booking->tickets }}</td>
             <td>{{ round($booking->price,2) }}</td>
             <td>{{ $booking->tickets*round($booking->preu,2) }}</td>

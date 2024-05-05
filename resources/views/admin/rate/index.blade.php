@@ -25,7 +25,7 @@
             @foreach ($rates as $rate)
                 <tr>
                     <td>{{ $rate->order }}</td>
-                    <th class="th">{{ $rate->title_ca }}</th>
+                    <th class="th">{{ $rate->title }}</th>
                     <td class="small">
                         @foreach ($rate->product as $prod)
                             <a href="{{ route('admin.price.index', $prod->id) }}">{{ $prod->title }}:</a>

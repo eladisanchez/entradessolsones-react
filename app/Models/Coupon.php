@@ -13,13 +13,13 @@ class Coupon extends Model {
 
 	public function product()
 	{
-		return $this->belongsTo(\App\Models\Product::class,'product_id')->select(array('id', 'title_ca'));
+		return $this->belongsTo(\App\Models\Product::class,'product_id')->select(array('id', 'title'));
 	}
 
 	public function Rate()
 	{
 
-		return $this->belongsTo(\App\Models\Rate::class,'rate_id')->select(array('id', 'title_ca'));
+		return $this->belongsTo(\App\Models\Rate::class,'rate_id')->select(array('id', 'title'));
 		
 	}
 

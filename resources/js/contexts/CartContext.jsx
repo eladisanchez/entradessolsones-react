@@ -60,7 +60,6 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
   };
 
   const items = Object.entries(cart.items);
-  console.log(cart)
 
   const countTickets = () => {
     return items.reduce((t, item) => t + (item.qty??0), 0);

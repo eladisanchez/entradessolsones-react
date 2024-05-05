@@ -272,7 +272,7 @@
 				<div class="ticket-info">
 					<h1>{{{ $booking->product->title }}}</h1>
 
-					<p class="ticket-Rate"><strong class="Rate Rate-{{$booking->rate->id}}">{{$booking->rate->title_ca}}</strong> @if($booking->seat){{ \App\Helpers\Common::seient($booking->seat) }}@endif</p>
+					<p class="ticket-Rate"><strong class="Rate Rate-{{$booking->rate->id}}">{{$booking->rate->title}}</strong> @if($booking->seat){{ \App\Helpers\Common::seient($booking->seat) }}@endif</p>
 
 					<p>
 						<strong>{{ trans('calendar.'.$booking->day->format('l'))}}

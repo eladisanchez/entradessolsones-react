@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import VenueMapEditor from "@/components/VenueMapEditor/VenueMapEditor";
+import VenueMapEditor from "@/components/molecules/VenueMapEditor";
 
 function VenueMap({ venue }) {
   return (

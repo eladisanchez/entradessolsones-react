@@ -175,8 +175,8 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        {{ Form::label('title_ca', 'Títol') }}
-                        {{ Form::text('title_ca', null, ['class' => 'form-control']) }}
+                        {{ Form::label('title', 'Títol') }}
+                        {{ Form::text('title', null, ['class' => 'form-control']) }}
                     </div>
                     <div class="form-group">
                         {{ Form::label('resum_ca', 'Resum') }}

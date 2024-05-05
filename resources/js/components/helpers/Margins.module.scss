@@ -1,0 +1,10 @@
+@use '@/styles' as *;
+
+@for $i from 0 through 20 {
+    .mt#{$i} {
+        margin-top: $i * $spacer !important;
+    }
+    .mb#{$i} {
+        margin-bottom: $i * $spacer !important;
+    }
+}

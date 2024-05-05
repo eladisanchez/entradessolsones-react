@@ -31,8 +31,8 @@ class CouponResource extends Resource
                 Forms\Components\TextInput::make('code')->label('Codi')->required(),
                 Forms\Components\TextInput::make('discount')->numeric()->label('Descompte')->required()->suffix('%'),
                 Forms\Components\DatePicker::make('validesa')->label('Vàlid fins a')->required(),
-                Forms\Components\Select::make('product_id')->relationship()->label('Producte')->relationship('product', 'title_ca')->required()->searchable('title_ca'),
-                Forms\Components\Select::make('rate_id')->relationship()->label('Tarifa')->relationship('rate', 'title_ca')->required()->searchable('title_ca'),
+                Forms\Components\Select::make('product_id')->relationship()->label('Producte')->relationship('product', 'title')->required()->searchable('title'),
+                Forms\Components\Select::make('rate_id')->relationship()->label('Tarifa')->relationship('rate', 'title')->required()->searchable('title'),
             ]);
     }
 
@@ -43,8 +43,8 @@ class CouponResource extends Resource
                 Tables\Columns\TextColumn::make('code')->label('Codi')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('discount')->label('Descompte')->suffix('%'),
                 Tables\Columns\TextColumn::make('validesa')->date()->label('Vàlid fins a'),
-                Tables\Columns\TextColumn::make('product.title_ca')->label('Producte')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('rate.title_ca')->label('Tarifa'),
+                Tables\Columns\TextColumn::make('product.title')->label('Producte')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('rate.title')->label('Tarifa'),
             ])
             ->filters([
                 //

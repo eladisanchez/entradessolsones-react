@@ -56,7 +56,7 @@ class Extract extends Model
         if ($this->producte_id) {
             $bookings->where('product_id', $this->producte_id);
         }
-        $bookings = $bookings->get()->groupBy(['product.title_ca', 'rate.title_ca'], $preserveKeys = true);
+        $bookings = $bookings->get()->groupBy(['product.title', 'rate.title'], $preserveKeys = true);
         $sales = [];
         foreach ($bookings as $product => $Rate):
             foreach ($Rate as $t => $bookings):

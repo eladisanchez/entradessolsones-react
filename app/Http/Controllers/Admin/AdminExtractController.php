@@ -25,7 +25,7 @@ class AdminExtractController extends BaseController
 
 		$users = User::withRole('organizer')->pluck('username', 'id')->toArray();
 		$users = [null => '-'] + $users;
-		$products = Product::get()->pluck('title_ca', 'id')->toArray();
+		$products = Product::get()->pluck('title', 'id')->toArray();
 		$products = [null => '-'] + $products;
 		$extracts = Extract::with(['product', 'user'])->orderBy('date_end', 'desc')->paginate(20);
 		return view(
@@ -73,9 +73,9 @@ class AdminExtractController extends BaseController
 	public function edit(string $id): View
 	{
 		$product = Product::findOrFail($id);
-		$cats = Category::pluck('title_ca', 'id');
+		$cats = Category::pluck('title', 'id');
 		$venues = [null => '-'] + Venue::pluck('name', 'id')->toArray();
-		$products = Product::where('id', '<>', $product->id)->pluck('title_ca', 'id')->toArray();
+		$products = Product::where('id', '<>', $product->id)->pluck('title', 'id')->toArray();
 		return view('admin.productes.producte', ['product' => $product, 'categories' => $cats, 'products' => $products, 'espais' => $venues]);
 	}
 

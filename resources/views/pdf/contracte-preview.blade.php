@@ -3,7 +3,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>{{config('app.name')}} {{ $product->title_ca }}</title>
+		<title>{{config('app.name')}} {{ $product->title }}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700" rel="stylesheet">
@@ -153,7 +153,7 @@
 				<div class="ticket-info">
 					<h1>{{{ $product->title }}}</h1>
 
-					<p class="ticket-Rate"><strong class="Rate Rate-1">{{$product->rates[0]->title_ca}}</strong> @if($product->espai_id)FILA 3 SEIENT 16 @endif</p>
+					<p class="ticket-Rate"><strong class="Rate Rate-1">{{$product->rates[0]->title}}</strong> @if($product->espai_id)FILA 3 SEIENT 16 @endif</p>
 
 					<p>
 						<strong>{{ trans('calendar.'.date('l'))}}

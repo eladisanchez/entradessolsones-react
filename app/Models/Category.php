@@ -14,9 +14,12 @@ class Category extends Model {
 
 	protected $table = 'categories';
 	protected $guarded = array('id');
-	protected $hidden = array('created_at', 'updated_at');
-    protected $appends = array('title','summary');
-    public $language;
+	// protected $hidden = array('created_at', 'updated_at');
+    // protected $appends = array('title','summary');
+    // protected $attributes = [
+    //     'title' => '',
+    // ];
+    // public $language;
 
 
     protected static function boot() 
@@ -25,21 +28,21 @@ class Category extends Model {
         static::addGlobalScope(new AscorderScope);
     }
 
-    public function __construct()
-    {
-        $this->language = LaravelLocalization::setLocale();
-    }
+    // public function __construct()
+    // {
+    //     $this->language = LaravelLocalization::setLocale();
+    // }
 
 
-	public function getTitleAttribute()
-    {
-        return $this->{'title_'.$this->language} ?? $this->{'title_'.config('app.locale')};
-    }
+	// public function getTitleAttribute()
+    // {
+    //     return $this->{'title_'.$this->language} ?? $this->{'title_'.config('app.locale')};
+    // }
     
-    public function getSummaryAttribute()
-    {
-        return $this->{'summary_'.$this->language} ?? $this->{'summary_'.config('app.locale')};
-    }
+    // public function getSummaryAttribute()
+    // {
+    //     return $this->{'summary_'.$this->language} ?? $this->{'summary_'.config('app.locale')};
+    // }
 
 
     public function products($target=NULL)

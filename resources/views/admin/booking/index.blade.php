@@ -131,7 +131,7 @@
             @if (request()->input('id'))
                 <a href="{{ route('product', [App\Producte::findOrFail(request()->input('id'))->name, request()->input('dia')]) }}"
                     class="btn btn-outline-primary">Reserva entrades de
-                    {{ App\Producte::findOrFail(request()->input('id'))->title_ca }}</a>
+                    {{ App\Producte::findOrFail(request()->input('id'))->title }}</a>
             @endif
             <a href="{{ url('/admin/excel?dia=' . request()->input('dia') . '&producte_id=' . request()->input('id')) }}"
                 class="btn btn-outline-primary" target="_blank">Descarrega Excel</a>

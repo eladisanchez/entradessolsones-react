@@ -40,7 +40,7 @@
 						{{$item->descompte}}%
 					</th>
 					<td>
-						@if(isset($item->product)) <strong>{{$item->product->title_ca}}</strong> / <span class="text-muted">{{$item->rate->title_ca}}</span></small> @endif
+						@if(isset($item->product)) <strong>{{$item->product->title}}</strong> / <span class="text-muted">{{$item->rate->title}}</span></small> @endif
 					</td>
 					<td>
 						{{{ date('d-m-Y', strtotime($item->validesa)) }}}

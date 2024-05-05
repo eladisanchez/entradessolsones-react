@@ -58,7 +58,7 @@ class OrderResource extends Resource
                 Tables\Columns\IconColumn::make('user')->label('')->icon(fn(string $state): string => $state ?
                     'heroicon-o-user' : null)->sortable(),
                 Tables\Columns\TextColumn::make('name')->label('Client')->sortable()->description(fn(Order $record): string => $record->email)->limit(30),
-                Tables\Columns\TextColumn::make('bookings.product.title_ca')->listWithLineBreaks()->label('Productes')->badge(),
+                Tables\Columns\TextColumn::make('bookings.product.title')->listWithLineBreaks()->label('Productes')->badge(),
                 Tables\Columns\TextColumn::make('total')->label('Total')->suffix(' €'),
                 Tables\Columns\IconColumn::make('paid')->label('Pagat')
                     ->icon(fn(string $state): string => match ($state) {

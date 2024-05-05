@@ -29,7 +29,7 @@ class RateResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title_ca')
+                TextInput::make('title')
                     ->label('Nom català')
                     ->required(),
                 TextInput::make('title_es')
@@ -45,7 +45,7 @@ class RateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title_ca')->label('Tarifa')->sortable(),
+                Tables\Columns\TextColumn::make('title')->label('Tarifa')->sortable(),
                 Tables\Columns\TextColumn::make('product_count')->counts('product')->badge()->sortable()
                     ->badge()->label('Productes')
 

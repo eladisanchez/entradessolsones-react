@@ -29,23 +29,27 @@
 }
 
 .productInfo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: $spacer * 6;
+    @include media-query("md") {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: $spacer * 6;
+    }
 }
 .col {
-    position: relative;
-    &:before {
-        content: "";
-        position: absolute;
-        background-color: $light-color;
-        z-index: 1;
-        inline-size: 1px;
-        block-size: 100%;
-        inset-inline-start: $spacer*-3;
+    @include media-query("md") {
+        position: relative;
+        &:before {
+            content: "";
+            position: absolute;
+            background-color: $light-color;
+            z-index: 1;
+            inline-size: 1px;
+            block-size: 100%;
+            inset-inline-start: $spacer * -3;
+        }
     }
 }
 
 .tickets {
-    margin-top: $spacer*6;
+    margin-top: $spacer * 6;
 }

@@ -20,7 +20,7 @@ class Product extends Model
     protected $table = 'products';
     protected $guarded = array('id');
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-    protected $appends = ['title', 'description', 'summary', 'schedule', 'price', 'pricezone'];
+    protected $appends = ['price', 'pricezone'];
     protected $with = ['organizer', 'rates'];
     public $language;
 
@@ -47,24 +47,6 @@ class Product extends Model
     public function scopeOfTarget($query, $target)
     {
         return $query->where('target', $target);
-    }
-
-    public function getTitleAttribute()
-    {
-        return $this->{'title_' . $this->language} ?? $this->{'title_' . config('app.locale')};
-    }
-
-    public function getDescriptionAttribute()
-    {
-        return $this->{'description_' . $this->language} ?? $this->{'description_' . config('app.locale')};
-    }
-    public function getScheduleAttribute()
-    {
-        return $this->{'schedule_' . $this->language} ?? $this->{'schedule_' . config('app.locale')};
-    }
-    public function getSummaryAttribute()
-    {
-        return $this->{'summary_' . $this->language} ?? $this->{'summary_' . config('app.locale')};
     }
 
     public function productRates()

@@ -18,7 +18,7 @@
                         <img class="card-img-top" src="{{ url('img/medium/' . $item->name) }}.jpg">
                     @endif
                     <div class="card-body">
-                        <h4 class="card-title">{{ $item->title_ca }}</h4>
+                        <h4 class="card-title">{{ $item->title }}</h4>
                         {{ Form::open(['action' => ['PackController@destroy', $product->id, $item->id], 'method' => 'delete']) }}
                         <button type="submit" href="{{ action('PackController@destroy', [$product->id, $item->id]) }}"
                             class="btn btn-outline-danger btn-sm">Elimina</button>

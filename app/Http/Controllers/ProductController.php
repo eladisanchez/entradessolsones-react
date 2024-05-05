@@ -7,9 +7,8 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Ticket;
-use Cart;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use View;
-use Input;
 use Session;
 use PDF;
 use Spatie\IcalendarGenerator\Components\Calendar;
@@ -357,24 +356,24 @@ class ProductController extends BaseController
 	}
 
 
-	public function solicitudStore()
-	{
-		request()->validate([
-			'title_ca' => 'required|max:255'
-		]);
-		$info = request()->except('image');
-		$info['name'] = \App\Helpers\Common::slugify(request()->input('title_ca'));
-		$info['actiu'] = 0;
-		Product::create($info);
-		return redirect()->action('ProductController@solicitud')->with('message', 'S\'ha enviat la sol·licitud');
-	}
+	// public function solicitudStore()
+	// {
+	// 	request()->validate([
+	// 		'title' => 'required|max:255'
+	// 	]);
+	// 	$info = request()->except('image');
+	// 	$info['name'] = \App\Helpers\Common::slugify(request()->input('title'));
+	// 	$info['actiu'] = 0;
+	// 	Product::create($info);
+	// 	return redirect()->action('ProductController@solicitud')->with('message', 'S\'ha enviat la sol·licitud');
+	// }
 
 
 	public function calendar()
 	{
 		$today = strtotime("today");
 		$nextMonth = date("Y-m-d", strtotime("+2 month", $today));
-		$tickets = Ticket::with('product:id,title_ca,summary_ca,lloc,name,target')->where('day', '>=', $today)->where('day', '<', $nextMonth)->get();
+		$tickets = Ticket::with('product:id,title,summary,lloc,name,target')->where('day', '>=', $today)->where('day', '<', $nextMonth)->get();
 		$cal = [];
 		foreach ($tickets as $item):
 			if (!$item->product) {
@@ -382,8 +381,8 @@ class ProductController extends BaseController
 			}
 			$cal[] = [
 				'uid' => uniqid(),
-				'title' => $item->product->title_ca,
-				'description' => $item->product->summary_ca,
+				'title' => $item->product->title,
+				'description' => $item->product->summary,
 				'start' => $item->day->format('Y-m-d') . ' ' . $item->hour->format('H:i:s'),
 				'location' => $item->product->lloc,
 				'url' => route('product', ['name' => $item->product->name, $item->day->format('Y-m-d'), $item->hour->format('H:i')]),
@@ -404,7 +403,7 @@ class ProductController extends BaseController
 		$events = [];
 		foreach ($tickets as $item):
 
-			$event = Event::create($item->producte->title_ca)
+			$event = Event::create($item->producte->title)
 				->startsAt(new \DateTime($item->dia->format('Y-m-d') . ' ' . $item->hora->format('H:i:s')))
 				->description($item->producte->resum_ca);
 			$events[] = $event;
