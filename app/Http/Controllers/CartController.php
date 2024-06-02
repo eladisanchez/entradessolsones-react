@@ -216,6 +216,7 @@ class CartController extends BaseController
 						'hour' => $hour,
 						'rate' => $rate->title,
 						'rate_id' => $rate_id,
+						'image' => $product->image,
 					]
 				)->associate('\App\Models\Product');
 

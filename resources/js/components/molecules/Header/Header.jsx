@@ -1,8 +1,9 @@
-import { Link } from "@inertiajs/react";
-import styles from "./Header.module.scss";
-import { Container, Logo, Icon } from "@/components/atoms";
-import classNames from "classnames";
+import { Container, Flex, Icon, Logo } from "@/components/atoms";
+import { SearchForm } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
+import { Link } from "@inertiajs/react";
+import classNames from "classnames";
+import styles from "./Header.module.scss";
 
 const Header = ({ url }) => {
   const { toggleCart, count } = useCart();
@@ -38,7 +39,8 @@ const Header = ({ url }) => {
               </Link>
             </div>
             {!isCheckout && (
-              <div>
+              <Flex alignItems="center" gap={1}>
+                <SearchForm />
                 <button
                   onClick={() => toggleCart()}
                   className={styles.cartButton}
@@ -48,7 +50,7 @@ const Header = ({ url }) => {
                     <span className={styles.cartQty}>{count}</span>
                   )}
                 </button>
-              </div>
+              </Flex>
             )}
           </div>
         </Container>

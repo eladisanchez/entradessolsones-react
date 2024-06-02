@@ -11,6 +11,7 @@ const Heading = ({
   props,
   color = null,
   children,
+  weight = "normal"
 }) => {
   const classes = classNames(
     styles.heading,
@@ -20,6 +21,7 @@ const Heading = ({
       [margins[`mt${spacerTop}`]]: spacerTop,
       [margins[`mb${spacerBottom}`]]: spacerBottom,
       [styles.center]: center,
+      [styles.bold]: weight === "bold",
     }
   );
   const Tag = tag || "h1";

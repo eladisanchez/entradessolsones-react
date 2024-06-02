@@ -1,14 +1,33 @@
-@use '@/styles' as *;
+@use "@/styles" as *;
 
 .input {
+    border: 1px solid $info-color;
+    padding: $spacer;
+    border-radius: $spacer/2;
+    background: #fff;
+    width: 100%;
     label {
         display: block;
         margin-bottom: $spacer/2;
     }
-    input {
-        border: 1px solid $dark-color;
-        padding: $spacer/2 $spacer;
-        border-radius: $spacer/2;
-        background: #FFF;
+    input, textarea {
+        border: 0;
+        padding: 0;
+        &:focus {
+            outline: none;
+        }
+        width: 100%;
+        font-family: $text-font;
+        font-size: 1rem;
+    }
+    &.focused {
+        border-color: $primary-color;
+    }
+    label {
+        font-size: 0.8125rem;
+        color: $faded-color;
+        display: block;
+        letter-spacing: 0.05rem;
+        // padding-bottom: $spacer/2;
     }
 }

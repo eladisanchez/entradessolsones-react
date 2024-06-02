@@ -3,7 +3,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Button, Flex, Heading } from "@/components/atoms";
 import styles from "./RateSelect.module.scss";
 
-const RateSelect = ({ rates, minQty, maxQty, seat, close, addToCart }) => {
+const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart }) => {
   const [selected, setSelected] = useState({});
   const inputId = useId();
 
@@ -46,7 +46,7 @@ const RateSelect = ({ rates, minQty, maxQty, seat, close, addToCart }) => {
       {/* <div className={styles.modalOverlay} onClick={close} /> */}
       <div className={styles.rateSelect}>
         <Heading tag="h3" size={3} spacerBottom={3}>
-          Entrades per al - -{" "}
+          <strong>{step}. </strong>Tria les entrades
         </Heading>
         <div>
           {rates.map((rate) => (

@@ -11,15 +11,17 @@ use App\Scopes\AscorderScope;
 use App\Scopes\TranslatedScope;
 use Auth;
 use App\Models\Booking;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class Product extends Model
+class Product extends Model implements Sitemapable
 {
 
     use SoftDeletes;
 
     protected $table = 'products';
     protected $guarded = array('id');
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+    protected $visible = ['id', 'name', 'title', 'description', 'organizer', 'venue', 'image', 'is_pack', 'summary','schedule'];
     protected $appends = ['price', 'pricezone'];
     protected $with = ['organizer', 'rates'];
     public $language;
@@ -198,6 +200,11 @@ class Product extends Model
         return $this->price;
     }
 
-
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('product', ['name' => $this->name]))
+            ->setLastModificationDate(\Carbon\Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY);
+    }
 
 }

@@ -27,6 +27,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Get;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
@@ -81,6 +82,12 @@ class ProductResource extends Resource
                                     ->label('És un pack')
                                     ->helperText('El producte estarà compost de varis productes')
                                     ->columnSpan(6),
+                                FileUpload::make('image')
+                                    ->image()
+                                    ->label('Imatge')
+                                    ->disk('local')
+                                    ->directory('thumbnails')
+                                    ->columnSpan(3)
                             ])->columns(6),
                         Tabs\Tab::make('Descripció i horaris')
                             ->icon('heroicon-m-clock')
@@ -122,7 +129,7 @@ class ProductResource extends Resource
                                     ->searchable()
                                     ->helperText("Escollint un espai el producte serà un esdeveniment amb entrades numerades.")
                                     ->columnSpan(3),
-                                TextInput::make('lloc')
+                                TextInput::make('place')
                                     ->label("Lloc de l'esdeveniment / punt inicial de la visita")
                                     ->columnSpan(3),
                                 TextInput::make('min_tickets')

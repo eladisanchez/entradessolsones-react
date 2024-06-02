@@ -7,8 +7,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RefundController;
 use App\Http\Controllers\Admin\AdminTicketController;
 use App\Http\Controllers\VenueMapController;
-
-use Auth;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -36,6 +34,10 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 		->where('day', '^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')
 		->where('hour', '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')
 		->name('product');
+	
+	Route::get('image/{path}', [ProductController::class, 'image'])->name('image')->where('path', '.*\.(jpg|jpeg|png|gif|bmp|webp)');
+
+	Route::get('search', [ProductController::class, 'search'])->name('search');
 
 	// Reserva d'un producte dins un pack
 	Route::post('pack/{id}', array('uses' => 'PackController@registraPack'));

@@ -4,7 +4,7 @@ import { Card, Flex, Button, Heading } from "@/components/atoms";
 import { dayFormatted } from "@/utils/date";
 import styles from "./TicketTable.module.scss";
 
-const TicketTable = ({ productSlug, tickets, selectedDay }) => {
+const TicketTable = ({ step = 2, productSlug, tickets, selectedDay }) => {
   const [showMore, setShowMore] = useState(false);
   return (
     <div>
@@ -21,7 +21,7 @@ const TicketTable = ({ productSlug, tickets, selectedDay }) => {
           alignItems="flex-end"
         >
           <Heading tag="h3" size={3}>
-            Sessions per al {dayFormatted(selectedDay)}
+            <strong>{step}.</strong> Tria una sessió
           </Heading>
           <Link href={`/activitat/${productSlug}`} preserveScroll>
             Torna

@@ -3,7 +3,7 @@ import { Calendar as PrimeCalendar } from "primereact/calendar";
 import { Heading, Flex } from "@/components/atoms";
 import styles from "./Datepicker.module.scss";
 
-const Datepicker = ({ availableDays, selectedDay, onSelectDay }) => {
+const Datepicker = ({ step = 1, availableDays, selectedDay, onSelectDay }) => {
   const [viewDate, setViewDate] = useState(new Date());
 
   const enabledDates = availableDays.map((date) => {
@@ -18,7 +18,7 @@ const Datepicker = ({ availableDays, selectedDay, onSelectDay }) => {
     <div className={styles.calendar}>
       <Flex spacerBottom={2}>
         <Heading tag="h3" size={3}>
-          Calendari
+          <span className={styles.step}>{step}.</span> Tria un dia
         </Heading>
       </Flex>
       <PrimeCalendar
@@ -28,7 +28,7 @@ const Datepicker = ({ availableDays, selectedDay, onSelectDay }) => {
         maxDate={enabledDates[enabledDates.length - 1]}
         onChange={onSelectDay}
         showOtherMonths={false}
-        value={selectedDay}
+        value={selectedDay??enabledDates[0]}
         view="date"
         viewDate={viewDate}
         onViewDateChange={(e) => {

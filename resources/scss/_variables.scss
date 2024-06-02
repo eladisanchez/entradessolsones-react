@@ -4,10 +4,11 @@ $colors: (
     success: #28a745,
     danger: #dc3545,
     warning: #ffc107,
-    info: #939b9c,
+    info: #BCCCCF,
     light: #efede9,
     white: #FFFFFF,
     dark: #132437,
+    faded: #698A8F
 );
 
 $primary-color: map-get($colors, primary);
@@ -18,6 +19,7 @@ $warning-color: map-get($colors, warning);
 $info-color: map-get($colors, info);
 $light-color: map-get($colors, light);
 $dark-color: map-get($colors, dark);
+$faded-color: map-get($colors, faded);
 $body-color: $dark-color;
 
 $text-font: "DM Sans", sans-serif;

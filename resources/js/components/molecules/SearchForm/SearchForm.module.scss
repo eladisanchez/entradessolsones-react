@@ -1,0 +1,11 @@
+.search {
+    width: 320px;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    input {
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    }
+}

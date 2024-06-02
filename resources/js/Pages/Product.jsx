@@ -6,6 +6,7 @@ import { TicketTable } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import styles from "./Product.module.scss";
 import { ymd } from "@/utils/date";
+import { Link } from "@inertiajs/react";
 
 const Datepicker = React.lazy(() =>
   import("@/components/molecules/Datepicker/Datepicker")
@@ -76,6 +77,12 @@ export default function Product({
     addToCart(dataToCart);
   };
 
+  const targets = {
+    individual: "Activitats turístiques",
+    esdeveniments: "Teatre, concerts i esdeveniments",
+    altres: "Altres activitats",
+  };
+
   return (
     <>
       <Head title={product.title} />
@@ -83,29 +90,40 @@ export default function Product({
         <div
           className={styles.productHeader}
           style={{
-            backgroundImage:
-              'url("https://source.unsplash.com/random/1000x400")',
+            backgroundImage: "url('/image/" + product.image + "')",
           }}
         ></div>
         <Container style={{ position: "relative", zIndex: 1 }}>
-          <p className={styles.organizer}>{product.organizer.username}</p>
-          <Heading tag="h1" color="light" spacerTop={0} spacerBottom={2}>
+          <p className={styles.organizer}>
+            <Link href={"/#" + product.target}>{targets[product.target]}</Link>{" "}
+            <span>&#x203A;</span> {product.organizer.username}
+          </p>
+          <Heading tag="h1" color="light" spacerTop={0} spacerBottom={4}>
             {product.title}
           </Heading>
 
           <Grid columns={2}>
             <div>
-              <Button
-                size="lg"
-                block={true}
-                onClick={() =>
-                  ticketSectionRef.current?.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }
-              >
-                Compra entrades
-              </Button>
+              <p>
+                <Button
+                  size="lg"
+                  block={true}
+                  onClick={() =>
+                    ticketSectionRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                    })
+                  }
+                >
+                  Compra entrades
+                </Button>
+              </p>
+              <p>
+                <img
+                  src={"/image/" + product.image}
+                  alt={product.title}
+                  className={styles.thumbnail}
+                />
+              </p>
             </div>
 
             <Card>

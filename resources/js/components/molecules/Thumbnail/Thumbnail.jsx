@@ -10,7 +10,7 @@ const Thumbnail = ({ product }) => {
     <div className={classes}>
       <Link href={"/activitat/" + product.name}>
         <img
-          src={"https://source.unsplash.com/random/400x40" + (product.id % 9)}
+          src={'/image/' + product.image}
         />
         <div className={styles.content}>
           <h4>{product.title}</h4>

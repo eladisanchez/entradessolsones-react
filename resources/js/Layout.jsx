@@ -10,7 +10,7 @@ export default function Layout({ children }) {
       <main>
         <Header url={url}></Header>
         <SideCart />
-        <article>{children}</article>
+        <section>{children}</section>
         <Footer />
       </main>
     </CartProvider>

@@ -13,6 +13,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     z-index: -1;
+    background-image: url('/assets/img/home-bg.jpg');
     &:after {
         content: "";
         display: block;
@@ -26,6 +27,13 @@
 .organizer {
     color: #fff;
     margin: 0;
+    a {
+        color: #fff;
+        text-decoration: underline;
+    }
+    span {
+        padding: 0 $spacer;
+    }
 }
 
 .productInfo {
@@ -52,4 +60,10 @@
 
 .tickets {
     margin-top: $spacer * 6;
+}
+
+.thumbnail {
+    border-radius: $spacer;
+    width: 100%;
+    height: auto;
 }

@@ -11,7 +11,8 @@
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.11",
-        "intervention/image": "*",
+        "intervention/image": "^3.5",
+        "intervention/image-laravel": "^1.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
@@ -24,6 +25,7 @@
         "shanmuga/laravel-entrust": "^4.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/icalendar-generator": "^2.6",
+        "spatie/laravel-sitemap": "^7.2",
         "ssheduardo/redsys-laravel": "^1.4"
     },
     "require-dev": {

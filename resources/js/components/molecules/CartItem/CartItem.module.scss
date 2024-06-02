@@ -1,24 +1,8 @@
 @use "@/styles" as *;
 
-$max-width: 400px;
-
-.cart {
-    display: none;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    background: #FFF;
-    padding: $spacer*3;
-    padding-top: calc(85px + 45px + $spacer*3);
-    right: calc(-1 * min($max-width,100vw));
-    width: $max-width;
-    box-sizing: border-box;
-    z-index: 4;
-    max-width: 100%;
-}
-
 .itemImg {
     position: relative;
+    width: 76px !important;
     img {
         border-radius: $spacer;
         width: 76px;
@@ -53,13 +37,4 @@ $max-width: 400px;
     text-align: right;
     font-size: 13px;
     font-weight: bold;
-}
-
-.visible {
-    display: block;
-    animation: slide 0.5s forwards;
-}
-
-@keyframes slide {
-    100% { right: 0; }
 }

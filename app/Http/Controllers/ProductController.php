@@ -14,6 +14,9 @@ use PDF;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ProductController extends BaseController
 {
@@ -235,10 +238,12 @@ class ProductController extends BaseController
 						}
 
 						if (request()->ajax()) {
-							return view('passos.error', array(
-								'product' => $product,
-								'error' => $missatgeError
-							)
+							return view(
+								'passos.error',
+								array(
+									'product' => $product,
+									'error' => $missatgeError
+								)
 							);
 						}
 						return view('product', [
@@ -339,6 +344,26 @@ class ProductController extends BaseController
 
 	}
 
+	public function image($path)
+	{
+		$cacheKey = 'image_' . md5($path);
+		$cachedImage = Cache::remember($cacheKey, 1, function () use ($path) {
+			if (Storage::disk('local')->exists($path)) {
+				$directory = explode('/', $path);
+				$width = $directory[0] == 'thumbnails' ? 600 : 1400;
+				$file = Storage::disk('local')->get($path);
+				$image = Image::read($file);
+				$image->scale($width, null);
+				return $image->encode();
+			}
+			return false;
+		});
+		if (!$cachedImage) {
+			abort(404);
+		}
+		return response()->make($cachedImage, 200, ['Content-Type' => 'image/jpeg']);
+	}
+
 	// Dia triat
 	public function showDay($name, $day)
 	{
@@ -368,12 +393,23 @@ class ProductController extends BaseController
 	// 	return redirect()->action('ProductController@solicitud')->with('message', 'S\'ha enviat la sol·licitud');
 	// }
 
+	public function search()
+	{
+		$keyword = request()->input('s');
+		$products = Product::where('title', 'like', '%' . $keyword . '%')->orWhere('description', 'like', '%' . $keyword . '%')->get();
+		return Inertia::render('Search', [
+			'products' => $products,
+			'keyword' => $keyword
+		]);
+
+	}
+
 
 	public function calendar()
 	{
 		$today = strtotime("today");
 		$nextMonth = date("Y-m-d", strtotime("+2 month", $today));
-		$tickets = Ticket::with('product:id,title,summary,lloc,name,target')->where('day', '>=', $today)->where('day', '<', $nextMonth)->get();
+		$tickets = Ticket::with('product:id,title,summary,place,name,target')->where('day', '>=', $today)->where('day', '<', $nextMonth)->get();
 		$cal = [];
 		foreach ($tickets as $item):
 			if (!$item->product) {
@@ -384,7 +420,7 @@ class ProductController extends BaseController
 				'title' => $item->product->title,
 				'description' => $item->product->summary,
 				'start' => $item->day->format('Y-m-d') . ' ' . $item->hour->format('H:i:s'),
-				'location' => $item->product->lloc,
+				'location' => $item->product->place,
 				'url' => route('product', ['name' => $item->product->name, $item->day->format('Y-m-d'), $item->hour->format('H:i')]),
 				'color' => $item->product->target == 'individual' ? 'blue' : 'red'
 			];
@@ -399,7 +435,7 @@ class ProductController extends BaseController
 	public function ics()
 	{
 
-		$tickets = Ticket::with('producte:id,titol_ca,resum_ca,lloc,nom,target')->where('dia', '>=', date('Y-m-d'))->get();
+		$tickets = Ticket::with('product:id,title,summary,place,name,target')->where('day', '>=', date('Y-m-d'))->get();
 		$events = [];
 		foreach ($tickets as $item):
 
@@ -421,9 +457,11 @@ class ProductController extends BaseController
 	public function previewPdf($id)
 	{
 		$product = Product::find($id);
-		$pdf = PDF::setOptions(['isRemoteEnabled' => true])->loadView('pdf.contracte-preview', array(
-			'product' => $product
-		)
+		$pdf = PDF::setOptions(['isRemoteEnabled' => true])->loadView(
+			'pdf.contracte-preview',
+			array(
+				'product' => $product
+			)
 		);
 		return $pdf->stream('preview-' . $id . '.pdf');
 	}
