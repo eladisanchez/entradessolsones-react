@@ -28,15 +28,15 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tpv_id')->label('ID TPV')->disabled()->columnSpan(2),
+                Forms\Components\TextInput::make('tpv_id')->label('Resposta TPV')->disabled()->columnSpan(2),
                 Forms\Components\DateTimePicker::make('created_at')->label('Data')->disabled()->columnSpan(2),
                 Forms\Components\TextInput::make('total')->label('Total')->disabled()->columnSpan(2),
                 Forms\Components\TextInput::make('name')->label('Client')->columnSpan(2),
                 Forms\Components\TextInput::make('email')->label('Correu electrònic')->columnSpan(2),
                 Forms\Components\TextInput::make('phone')->label('Telèfon')->columnSpan(2),
                 Forms\Components\Select::make('payment')->label('Mètode de pagament')->options([
-                    'targeta' => 'Targeta de crèdit/dèbit',
-                    'credit' => 'Transferència bancària',
+                    'card' => 'Targeta de crèdit',
+                    'credit' => 'Offline (transferència, efectiu...)',
                 ])->required()->columnSpan(2),
                 Forms\Components\Select::make('paid')->label('Pagat')->options([
                     '0' => 'Pendent',
@@ -54,7 +54,7 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('ID')->sortable()->description(fn(Order $record): string => substr($record->tpv_id, -3)),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Data')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->date()->label('Data')->sortable(),
                 Tables\Columns\IconColumn::make('user')->label('')->icon(fn(string $state): string => $state ?
                     'heroicon-o-user' : null)->sortable(),
                 Tables\Columns\TextColumn::make('name')->label('Client')->sortable()->description(fn(Order $record): string => $record->email)->limit(30),
@@ -72,7 +72,7 @@ class OrderResource extends Resource
                         '2' => 'danger',
                     }),
                 Tables\Columns\IconColumn::make('payment')->label('Mètode')->icon(fn(string $state): string => match ($state) {
-                    'targeta' => 'heroicon-o-credit-card',
+                    'card' => 'heroicon-o-credit-card',
                     'credit' => 'heroicon-o-banknotes',
                 }),
 
@@ -82,6 +82,16 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('downloadPdf')
+                    ->label('PDF')
+                    ->icon('heroicon-o-document')
+                    ->url(function ($record) {
+                        return route('order.pdf', [
+                            'id' => $record->id,
+                            'session' => $record->session
+                        ]);
+                    })
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -94,7 +104,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            'bookings' => RelationManagers\BookingsRelationManager::class,
         ];
     }
 

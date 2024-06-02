@@ -4,26 +4,25 @@
     display: grid;
     gap: $grid-gutter-width;
     grid-template-columns: 1fr;
-    column-gap: 0;
+    column-gap: $grid-gutter-width;
 }
 .thumbs {
     @include media-query("sm") {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        column-gap: $grid-gutter-width;
-        // display: flex;
-        // flex-wrap: wrap;
-        // justify-content: center;
     }
 }
 .two {
     @include media-query("sm") {
         grid-template-columns: 3fr 9fr;
-        column-gap: $grid-gutter-width;
     }
 }
 .three {
     @include media-query("sm") {
         grid-template-columns: 3fr 4.5fr 4.5fr;
-        column-gap: $grid-gutter-width;
+    }
+}
+.checkout {
+    @include media-query("sm") {
+        grid-template-columns: 8fr 4fr;
     }
 }

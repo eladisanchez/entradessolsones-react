@@ -7,10 +7,10 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/scss/app.scss',
-                'resources/scss/admin/app.scss',
                 'resources/scss/ensolsonat/app.scss',
                 'resources/js/app.jsx',
-                'resources/js/admin/app.js'
+                //'resources/scss/admin/app.scss',
+                //'resources/js/admin/app.js'
             ],
             refresh: true,
         }),

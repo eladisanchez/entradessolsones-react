@@ -17,4 +17,11 @@ class EditVenue extends EditRecord
             Actions\DeleteAction::make()
         ];
     }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            VenueResource\Widgets\LocationMap::make(),
+        ];
+    }
 }

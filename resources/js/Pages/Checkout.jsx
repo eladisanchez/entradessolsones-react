@@ -47,7 +47,7 @@ export default function Checkout({ events }) {
         }}
       >
         <Container>
-          <Grid>
+          <Grid columns="checkout">
             <form onSubmit={handleSubmit}>
               <Flex
                 spacerBottom={1}
@@ -153,6 +153,7 @@ export default function Checkout({ events }) {
         <Modal
           isOpen={isLogin}
           onClose={() => {
+            console.log("close");
             setIsLogin(false);
           }}
         >
@@ -160,7 +161,7 @@ export default function Checkout({ events }) {
             Inicia sessió
           </Heading>
           <form onSubmit={handleLogin}>
-            <Flex gap={1} spacerBottom={2}>
+            <Flex gap={1} spacerBottom={2} flexDirection="column">
               <Input
                 type="email"
                 value={data.email}
@@ -174,9 +175,11 @@ export default function Checkout({ events }) {
                 label="Contrasenya"
               />
             </Flex>
-            <Flex flexDirection="column" spacerBottom={2}>
+            <Flex flexDirection="column" spacerBottom={2} gap={2}>
               <Button block>Inicia sessió</Button>
-              <a href="">He oblidat la contrasenya</a>
+              <TextFormat textAlign="center">
+                <a href="">He oblidat la contrasenya</a>
+              </TextFormat>
             </Flex>
           </form>
         </Modal>

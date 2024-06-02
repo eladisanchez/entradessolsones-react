@@ -34,7 +34,7 @@ class CartController extends BaseController
 		return view(
 			'cistell',
 			array(
-				'cistell' => Cart::content()
+				'cistell' => Cart::instance('shopping')->content()
 			)
 		);
 
@@ -44,7 +44,7 @@ class CartController extends BaseController
 	{
 		return response()->json([
 			'items' => session('cart') ?? [],
-			'total' => Cart::total()
+			'total' => Cart::instance('shopping')->total()
 		]);
 	}
 
@@ -67,7 +67,7 @@ class CartController extends BaseController
 			foreach ($rates as $rate) {
 
 				$preu = $rate->pivot->preu;
-				$rows = Cart::search(function ($k, $v) use ($rate) {
+				$rows = Cart::instance('shopping')->search(function ($k, $v) use ($rate) {
 					return $k->options->id_Rate == $rate->id;
 				});
 
@@ -101,7 +101,7 @@ class CartController extends BaseController
 
 						$min_entrades = min($prods['qty']);
 
-						Cart::add(
+						Cart::instance('shopping')->add(
 							$pack->id,
 							$pack->title,
 							$min_entrades,
@@ -119,9 +119,9 @@ class CartController extends BaseController
 						for ($i = 0; $i < count($prods['row']); $i++) {
 							$qty = $prods['qty'][$i] - $min_entrades;
 							if ($qty > 0) {
-								Cart::update($prods['row'][$i], $qty);
+								Cart::instance('shopping')->update($prods['row'][$i], $qty);
 							} else {
-								Cart::remove($prods['row'][$i]);
+								Cart::instance('shopping')->remove($prods['row'][$i]);
 							}
 
 						}
@@ -239,8 +239,8 @@ class CartController extends BaseController
 		// ]);
 
 		return response()->json([
-			'items' => Cart::content(),
-			'total' => Cart::total()
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total()
 		]);
 
 	}
@@ -279,7 +279,7 @@ class CartController extends BaseController
 				$price *= 1 - Session::get('coupon.discount') / 100;
 			}
 
-			Cart::add(
+			Cart::instance('shopping')->add(
 				$product->id,
 				$product->title,
 				1,
@@ -301,8 +301,8 @@ class CartController extends BaseController
 		$this->convertToPack($product);
 
 		return response()->json([
-			'items' => Cart::content(),
-			'total' => Cart::total()
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total()
 		]);
 
 	}
@@ -437,12 +437,12 @@ class CartController extends BaseController
 	 */
 	public function destroy(): JsonResponse
 	{
-		Cart::destroy();
+		Cart::instance('shopping')->destroy();
 		// Session::forget('coupon');
 		//Session::forget('qty');
 		return response()->json([
-			'items' => Cart::content(),
-			'total' => Cart::total(),
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total(),
 			'message' => 'Cistell buidat'
 		]);
 

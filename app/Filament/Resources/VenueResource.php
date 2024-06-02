@@ -38,14 +38,6 @@ class VenueResource extends Resource
                 TextInput::make('address')
                     ->label('Adreça')
                     ->columnSpan('full'),
-                Actions::make([
-                    Action::make('Edita el plànol')
-                        ->icon('heroicon-m-map')
-                        ->color('info')
-                        ->size(ActionSize::Large)
-                        ->url(fn ($record): string => url('/admin/venues/'.$record->id.'/edit/map/')),
-                ]),
-                
             ]);
     }
 
@@ -54,8 +46,14 @@ class VenueResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Espai'),
-                Tables\Columns\TextColumn::make('products_count')->counts('products')->badge()->sortable()
-                    ->badge()->label('Productes')
+                Tables\Columns\TextColumn::make('seats')->label('Seients')
+                ->getStateUsing(function ($record) {
+                    return is_array($record->seats) ? count($record->seats) : 0;
+                }),
+                Tables\Columns\TextColumn::make('products_count')
+                    ->counts('products')
+                    ->sortable()
+                    ->label('Productes')
             ])
             ->filters([
                 //
@@ -83,6 +81,13 @@ class VenueResource extends Resource
             'index' => Pages\ListVenues::route('/'),
             'create' => Pages\CreateVenue::route('/create'),
             'edit' => Pages\EditVenue::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            VenueResource\Widgets\LocationMap::class,
         ];
     }
 }

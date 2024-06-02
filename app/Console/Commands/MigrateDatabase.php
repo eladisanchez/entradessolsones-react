@@ -61,6 +61,7 @@ class MigrateDatabase extends Command
                 'reserves' => 'bookings',
                 'tarifes' => 'rates',
                 'productes_espais' => 'venues',
+                'productespais' => 'venues'
             ];
 
             foreach ($tables as $oldTableName => $newTableName) {
@@ -68,7 +69,7 @@ class MigrateDatabase extends Command
                     $this->warn("Table $oldTableName does not exist");
                     continue;
                 }
-                Schema::rename($newPrefix . '_' . $oldTableName, $newPrefix . '_' . $newTableName);
+                Schema::rename($newPrefix . $oldTableName, $newPrefix . $newTableName);
                 $this->info("Renamed $oldTableName to $newTableName");
             }
 
