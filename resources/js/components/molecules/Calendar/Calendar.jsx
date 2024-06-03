@@ -1,6 +1,6 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { Card } from "@/components/atoms";
+import { Card } from "@/components/molecules";
 
 const Calendar = ({ events }) => {
   const start = new Date();

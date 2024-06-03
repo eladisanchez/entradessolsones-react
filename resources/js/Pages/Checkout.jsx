@@ -11,11 +11,12 @@ import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import { Head, useForm } from "@inertiajs/react";
 import React, { useState } from "react";
+import styles from "./Checkout.module.scss";
 
-export default function Checkout({ events }) {
+export default function Checkout({ lastOrder }) {
   const { data, setData, post, processing, errors } = useForm({
-    email: "",
-    name: "",
+    email: lastOrder.email || "",
+    name: lastOrder.name || "",
     tel: "",
     cp: "",
     observations: "",
@@ -40,21 +41,16 @@ export default function Checkout({ events }) {
   return (
     <>
       <Head title="Finalitzar comanda" />
-      <div
-        style={{
-          background: "#FFF",
-          paddingTop: "140px",
-        }}
-      >
+      <div className={styles.checkout}>
         <Container>
           <Grid columns="checkout">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={styles.form}>
               <Flex
                 spacerBottom={1}
                 justifyContent="space-between"
                 alignItems="flex-end"
               >
-                <Heading tag="h3" size={3} weight="bold">
+                <Heading tag="h3" size={3}>
                   Correu electrònic
                 </Heading>
                 <TextFormat color="faded">
@@ -86,7 +82,6 @@ export default function Checkout({ events }) {
               <Heading
                 tag="h3"
                 size={3}
-                weight="bold"
                 spacerTop={6}
                 spacerBottom={1}
               >
@@ -121,7 +116,7 @@ export default function Checkout({ events }) {
                   {errors.cp && <div>{errors.cp}</div>}
                 </div>
               </Flex>
-              <Heading tag="h3" size={3} weight="bold" spacerBottom={1}>
+              <Heading tag="h3" size={3} spacerBottom={1}>
                 Observacions
               </Heading>
               <Input
@@ -142,7 +137,7 @@ export default function Checkout({ events }) {
                 Finalitza la compra
               </Button>
             </form>
-            <div>
+            <div className={styles.cart}>
               {items &&
                 items.map(([id, item]) => (
                   <CartItem item={item} key={id} onRemove={removeFromCart} />

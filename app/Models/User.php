@@ -51,4 +51,9 @@ class User extends Authenticatable implements HasName
         return $this->username;
     }
 
+    public function isSuperadmin(): bool
+    {
+        return $this->id === 1;
+    }
+
 }

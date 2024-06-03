@@ -1,7 +1,8 @@
 @use "../styles" as *;
 
 .productContainer {
-    padding-top: 120px;
+    padding-top: $spacer * 15;
+    padding-bottom: $spacer * 6;
 }
 
 .productHeader {

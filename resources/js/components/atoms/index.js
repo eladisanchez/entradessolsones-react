@@ -1,5 +1,4 @@
 import Button from "./Button/Button";
-import Card from "./Card/Card";
 import Container from "./Container/Container";
 import Flex from "./Flex/Flex";
 import Grid from "./Grid/Grid";
@@ -8,10 +7,10 @@ import Icon from "./Icon/Icon";
 import Input from "./Input/Input";
 import Logo from "./Logo/Logo";
 import TextFormat from "./TextFormat/TextFormat";
+import Spacer from "./Spacer/Spacer";
 
 export {
   Button,
-  Card,
   Container,
   Flex,
   Grid,
@@ -20,4 +19,5 @@ export {
   Input,
   Logo,
   TextFormat,
+  Spacer,
 };

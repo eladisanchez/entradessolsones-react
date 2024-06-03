@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Head } from "@inertiajs/react";
-import { HomeNav } from "@/components/molecules";
-import { Heading, Container, Grid } from "@/components/atoms";
+import { HomeNav } from "@/components/organisms";
+import { Heading, Container, Grid, Spacer } from "@/components/atoms";
 import { Thumbnail } from "@/components/molecules";
-import { Waypoint } from 'react-waypoint';
+import { Waypoint } from "react-waypoint";
 
 const Home = ({ products }) => {
   const [activeSection, setActiveSection] = useState("");
@@ -49,6 +49,7 @@ const Home = ({ products }) => {
           </div>
         ))}
       </Container>
+      <Spacer size={8} />
     </>
   );
 };

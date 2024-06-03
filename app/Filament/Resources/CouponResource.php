@@ -41,10 +41,16 @@ class CouponResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')->label('Codi')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('discount')->label('Descompte')->suffix('%'),
-                Tables\Columns\TextColumn::make('validesa')->date()->label('Vàlid fins a'),
+                Tables\Columns\TextColumn::make('discount')
+                    ->label('Descompte')
+                    ->suffix('%')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('validity')
+                    ->date('d/m/Y')
+                    ->label('Vàlid fins a')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('product.title')->label('Producte')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('rate.title')->label('Tarifa'),
+                Tables\Columns\TextColumn::make('rate.title')->label('Tarifa')->sortable(),
             ])
             ->filters([
                 //
@@ -70,8 +76,8 @@ class CouponResource extends Resource
     {
         return [
             'index' => Pages\ListCoupons::route('/'),
-            'create' => Pages\CreateCoupon::route('/create'),
-            'edit' => Pages\EditCoupon::route('/{record}/edit'),
+            //'create' => Pages\CreateCoupon::route('/create'),
+            //'edit' => Pages\EditCoupon::route('/{record}/edit'),
         ];
     }
 }

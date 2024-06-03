@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@inertiajs/react";
-import { Card, Flex, Button, Heading } from "@/components/atoms";
+import { Flex, Button, Heading } from "@/components/atoms";
+import { Card } from "@/components/molecules";
 import { dayFormatted } from "@/utils/date";
 import styles from "./TicketTable.module.scss";
 

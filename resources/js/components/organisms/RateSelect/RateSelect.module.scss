@@ -38,7 +38,10 @@
         color: $dark-color;
         background: #ffffff;
         padding: $spacer/2 $spacer;;
-        border: 1px solid #d1d5db;
+        border-top: 1px solid #d1d5db;
+        border-bottom: 1px solid #d1d5db;
+        border-left: 0;
+        border-right: 0;
         transition: background-color 0.2s, color 0.2s, border-color 0.2s,
             box-shadow 0.2s;
         appearance: none;

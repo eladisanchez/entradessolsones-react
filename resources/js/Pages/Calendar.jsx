@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Head } from "@inertiajs/react";
-import { HomeNav } from "@/components/molecules";
+import { HomeNav } from "@/components/organisms";
 import { Container } from "@/components/atoms";
 
 const FullCalendar = React.lazy(() => import("@/components/molecules/Calendar"));

@@ -61,18 +61,18 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::post('codi-promocional', array('as'=>'codi','uses'=>'CodiController@aplica'));
 
 	// Pagament
-	Route::post('checkout',array('uses'=>'ComandaController@store'));
+	Route::post('checkout',[OrderController::class,'store'])->name('checkout');
 	Route::get('checkout/card/order/{id}', array(
 		'as' => 'checkout-tpv',
-		'uses' => 'ComandaController@checkoutTPV'));
+		'uses' => 'OrderController@checkoutTPV'));
 
 	// Pagament
 	Route::get('checkout/card/{sessio}/{id}', array(
 		'as' => 'checkout-tpv-ok',
-		'uses' => 'ComandaController@tpvOK'));
+		'uses' => 'OrderController@tpvOK'));
 	Route::get('checkout/card-error', array(
 		'as' => 'checkout-tpv-ko',
-		'uses' => 'ComandaController@tpvKO'));
+		'uses' => 'OrderController@tpvKO'));
 
 	// Devolucions
 	Route::get('devolucio/{hash}',array(
@@ -90,7 +90,7 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	// Petició
 	Route::post('peticio', array(
 		'as' => 'peticio',
-		'uses' => 'ComandaController@peticio'));
+		'uses' => 'OrderController@peticio'));
 	
 	// Clients
 	Route::get('perfil', 
@@ -112,7 +112,7 @@ Route::group(['prefix' => 'admin', 'middleware'=>['role:admin']],function(){
 	Route::post('/venues/{id}/edit/map',[VenueMapController::class,'update'])->name('venue.update');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['role:admin|entity']],function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['role:admin|organizer']],function(){
 	Route::get('producte/{id}/entrades/{dia}/{hora}/map',[AdminTicketController::class,'map'])
 	->where('dia','^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')->name('ticket.map');
 });

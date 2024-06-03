@@ -1,6 +1,8 @@
 import { Link } from "@inertiajs/react";
 import styles from "./Thumbnail.module.scss";
 import classNames from "classnames";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Thumbnail = ({ product }) => {
   const classes = classNames(styles.thumbnail, {
@@ -9,8 +11,11 @@ const Thumbnail = ({ product }) => {
   return (
     <div className={classes}>
       <Link href={"/activitat/" + product.name}>
-        <img
+        <LazyLoadImage
           src={'/image/' + product.image}
+          width="100%"
+          height="100%"
+          effect="blur"
         />
         <div className={styles.content}>
           <h4>{product.title}</h4>

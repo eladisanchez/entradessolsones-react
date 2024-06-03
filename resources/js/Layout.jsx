@@ -1,5 +1,5 @@
 import { usePage } from "@inertiajs/react";
-import { Header, Footer, SideCart } from "@/components/molecules";
+import { Header, Footer, SideCart } from "@/components/organisms";
 import { CartProvider } from "@/contexts/CartContext";
 
 export default function Layout({ children }) {

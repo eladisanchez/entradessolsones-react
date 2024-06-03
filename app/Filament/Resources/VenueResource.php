@@ -10,10 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Support\Enums\ActionSize;
-use Filament\Forms\Components\Iframe;
 
 class VenueResource extends Resource
 {
@@ -49,11 +45,12 @@ class VenueResource extends Resource
                 Tables\Columns\TextColumn::make('seats')->label('Seients')
                 ->getStateUsing(function ($record) {
                     return is_array($record->seats) ? count($record->seats) : 0;
-                }),
+                })->badge(),
                 Tables\Columns\TextColumn::make('products_count')
                     ->counts('products')
                     ->sortable()
                     ->label('Productes')
+                    ->badge()
             ])
             ->filters([
                 //

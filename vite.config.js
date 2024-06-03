@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/scss/app.scss',
                 'resources/scss/ensolsonat/app.scss',
                 'resources/js/app.jsx',
+                'resources/scss/admin.scss'
                 //'resources/scss/admin/app.scss',
                 //'resources/js/admin/app.js'
             ],

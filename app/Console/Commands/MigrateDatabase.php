@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use App\Models\Order;
 
 class MigrateDatabase extends Command
 {
@@ -74,9 +75,11 @@ class MigrateDatabase extends Command
             }
 
             $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
-            DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-
+            if ($databaseName) {
+                DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            }
+            
             $newColumns = [
                 'categories' => [
                     'ordre' => 'order',
@@ -169,6 +172,9 @@ class MigrateDatabase extends Command
                     'preu' => 'price',
                     'espack' => 'is_pack',
                     'devolucio' => 'refund'
+                ],
+                'scans' => [
+                    'reserva_id' => 'booking_id'
                 ]
             ];
 
@@ -198,26 +204,49 @@ class MigrateDatabase extends Command
                     $table->string('token');
                     $table->timestamp('created_at')->nullable();
                 });
+                $this->info("Added password reset tokens table");
             }
+            
 
             Schema::table('products_tickets', function ($table) {
                 if (!Schema::hasColumn('products_tickets', 'id')) {
                     Schema::disableForeignKeyConstraints();
                     DB::statement('ALTER TABLE products_tickets DROP PRIMARY KEY');
                     $table->id();
+                    $this->info("Fixed products_tickets table primary key");
                 }
             });
             Schema::table('users', function ($table) {
                 if (!Schema::hasColumn('users', 'email_verified_at')) {
                     $table->timestamp('email_verified_at')->nullable();
+                    $this->info("Added email_verified_at column to users table");
                 }
             });
             Schema::table('products', function ($table) {
                 if (!Schema::hasColumn('products', 'image')) {
                     $table->string('image')->nullable();
                     $table->string('image_header')->nullable();
+                    $this->info("Added image and image_header columns to products table");
                 }
             });
+            Schema::table('options', function($table) {
+                if (!Schema::hasColumn('options', 'name')) {
+                    $table->string('name')->nullable();
+                    $table->string('description')->nullable();
+                    $this->info("Added name and description columns to options table");
+                }
+            });
+
+            DB::table('orders')->where('payment', 'targeta')->update(['payment' => 'card']);
+            $this->info("Updated payment method in orders table");
+
+            DB::table('roles')->where('name','entitat')->update([
+                'name' => 'organizer',
+                'display_name' => 'Organitzador'
+            ]);
+            $this->info("Updated role name in roles table");
+
+            DB::commit();
 
         } catch (\PDOException $e) {
             $this->error($e->getMessage());

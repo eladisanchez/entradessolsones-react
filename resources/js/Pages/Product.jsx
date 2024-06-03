@@ -1,8 +1,9 @@
 import React, { Suspense, useRef } from "react";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
-import { Container, Heading, Grid, Card, Button } from "@/components/atoms";
-import { TicketTable } from "@/components/molecules";
+import { Container, Heading, Grid, Button } from "@/components/atoms";
+import { Card } from "@/components/molecules";
+import { TicketTable } from "@/components/organisms";
 import { useCart } from "@/contexts/CartContext";
 import styles from "./Product.module.scss";
 import { ymd } from "@/utils/date";
@@ -12,10 +13,10 @@ const Datepicker = React.lazy(() =>
   import("@/components/molecules/Datepicker/Datepicker")
 );
 const VenueMap = React.lazy(() =>
-  import("@/components/molecules/VenueMap/VenueMap")
+  import("@/components/organisms/VenueMap/VenueMap")
 );
 const RateSelect = React.lazy(() =>
-  import("@/components/molecules/RateSelect/RateSelect")
+  import("@/components/organisms/RateSelect/RateSelect")
 );
 
 export default function Product({

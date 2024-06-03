@@ -1,6 +1,7 @@
 import { useState, useId } from "react";
 import { InputNumber } from "primereact/inputnumber";
 import { Button, Flex, Heading } from "@/components/atoms";
+import { Card } from "@/components/molecules";
 import styles from "./RateSelect.module.scss";
 
 const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart }) => {
@@ -44,11 +45,10 @@ const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart })
   return (
     <>
       {/* <div className={styles.modalOverlay} onClick={close} /> */}
-      <div className={styles.rateSelect}>
-        <Heading tag="h3" size={3} spacerBottom={3}>
+        <Heading tag="h3" size={3} spacerBottom={2}>
           <strong>{step}. </strong>Tria les entrades
         </Heading>
-        <div>
+        <Card>
           {rates.map((rate) => (
             <Flex spacerBottom={1} gap={2} alignItems="center">
               <div>
@@ -82,25 +82,25 @@ const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart })
             optionLabel="title"
             placeholder="Selecciona una tarifa"
           /> */}
-        </div>
-        <Flex
-          spacerTop={3}
-          gap={3}
-          alignItems="flex-end"
-          justifyContent="space-between"
-        >
-          <div>
-            {countTickets} {countTickets == 1 ? "Entrada" : "Entrades"}
-            <br />
-            {!!price() && <span>{price()} €</span>}
-          </div>
-          <div>
-            <Button block={true} onClick={handleAddToCart}>
-              Afegeix al cistell
-            </Button>
-          </div>
-        </Flex>
-      </div>
+
+          <Flex
+            spacerTop={3}
+            gap={3}
+            alignItems="flex-end"
+            justifyContent="space-between"
+          >
+            <div>
+              {countTickets} {countTickets == 1 ? "Entrada" : "Entrades"}
+              <br />
+              {!!price() && <span>{price()} €</span>}
+            </div>
+            <div>
+              <Button block={true} onClick={handleAddToCart}>
+                Afegeix al cistell
+              </Button>
+            </div>
+          </Flex>
+      </Card>
     </>
   );
 };

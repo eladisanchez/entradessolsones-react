@@ -13,7 +13,7 @@ use Session;
 use URL;
 use Redirect;
 use Auth;
-use Entrust;
+use Shanmuga\LaravelEntrust\Facades\LaravelEntrustFacade as Entrust;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -382,11 +382,12 @@ class CartController extends BaseController
 
 		$order = Order::where('session', Session::getId())->where('paid', 0)->where('payment', 'targeta')->orderBy('created_at', 'desc')->first();
 		if ($order) {
+			return abort(404);
 			return redirect()->route('checkout-tpv-ko', ['id' => $order->id]);
 		}
 		$lastOrder = false;
-		if (Auth::check()) {
-			if (!(Entrust::hasRole(['admin', 'organizer']))) {
+		if (auth()->check()) {
+			if (!(Entrust::hasRole('admin') || Entrust::hasRole('organizer'))) {
 				$lastOrder = Auth::user()->comandes->last();
 			} else {
 				$lastOrder = (object) [

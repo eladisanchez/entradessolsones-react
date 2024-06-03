@@ -30,8 +30,22 @@ class OptionResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('key')
+                    ->label('Opció')
+                    ->required()
+                    ->visible(auth()->user()->isSuperadmin()),
+                Forms\Components\TextInput::make('name')
+                    ->label('Nom')
+                    ->required()
+                    ->visible(auth()->user()->isSuperadmin()),
+                Forms\Components\TextInput::make('description')
+                    ->label('Descripció')
+                    ->visible(auth()->user()->isSuperadmin())
+                    ->columnSpan('full'),
                 RichEditor::make('value')
-                    ->label(fn(Get $get) => $get('name'))->columnSpan('full'),
+                    ->label(fn(Get $get) => $get('name'))
+                    ->helperText(fn(Get $get) => $get('description'))
+                    ->columnSpan('full'),
             ]);
     }
 

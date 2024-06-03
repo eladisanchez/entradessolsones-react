@@ -10,7 +10,7 @@ class Order extends Model {
     use SoftDeletes;
 
 	protected $table = 'orders';
-	protected $guarded = ['id','product_id'];
+	protected $guarded = ['id'];
 	protected $hidden = ['updated_at'];
     protected $append = ['number'];
 

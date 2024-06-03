@@ -5,6 +5,9 @@
     max-width: 400px;
     span[class~="p-calendar"] {
         width: 100%;
+        background: #FFF;
+        padding: $spacer;
+        border-radius: $spacer;
     }
     table td > span {
         width: 2.5rem;
@@ -38,15 +41,13 @@
         }
     }
 
+    table th {
+        padding: $spacer 0;
+    }
+
     [class~="p-datepicker-month"] {
         font-weight: bold;
         margin-right: $spacer/2;
-    }
-
-    [class~="p-datepicker-calendar"] {
-        thead {
-            background: #FFF;
-        }
     }
 
     > [class~="p-highlight"] {

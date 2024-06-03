@@ -1,5 +1,5 @@
 .search {
-    width: 320px;
+    width: 320px !important;
     background: transparent;
     color: #fff;
     border: 1px solid #fff;
@@ -7,5 +7,8 @@
         &::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
+    }
+    &.focused {
+        border: 1px solid rgba(#FFF,.5);
     }
 }
