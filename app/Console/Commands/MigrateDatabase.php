@@ -80,6 +80,25 @@ class MigrateDatabase extends Command
                 DB::statement("ALTER TABLE products MODIFY COLUMN nom VARCHAR(191);");
                 DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                DB::statement("ALTER TABLE `products_packs` DROP FOREIGN KEY `productes_packs_pack_id_foreign`;
+                ALTER TABLE `products_packs` DROP FOREIGN KEY `productes_packs_producte_id_foreign`;
+                ALTER TABLE `product_rate` DROP FOREIGN KEY `producte_tarifa_producte_id_foreign`;
+                ALTER TABLE `product_rate` DROP FOREIGN KEY `producte_tarifa_tarifa_id_foreign`;
+                ALTER TABLE `bookings` DROP FOREIGN KEY `reserves_comanda_id_foreign`;
+                ALTER TABLE `bookings` DROP FOREIGN KEY `reserves_producte_id_foreign`;
+                ALTER TABLE `bookings` DROP FOREIGN KEY `reserves_tarifa_id_foreign`;
+                ALTER TABLE `productes_sessions` DROP FOREIGN KEY `productes_sessions_producte_id_foreign`;
+                ALTER TABLE `scans` DROP FOREIGN KEY `reserva`;
+                ALTER TABLE `products_tickets` DROP FOREIGN KEY `productes_entrades_producte_id_foreign`;
+                ALTER TABLE `products` DROP FOREIGN KEY `productes_categoria_id_foreign`;
+                ALTER TABLE `products` DROP FOREIGN KEY `productes_parent_id_foreign`;
+                ALTER TABLE `role_user` DROP FOREIGN KEY `role_user_role_id_foreign`;
+                ALTER TABLE `role_user` DROP FOREIGN KEY `role_user_user_id_foreign2`;
+                ALTER TABLE `products_users` DROP FOREIGN KEY `cvo_productes_usuaris_ibfk_1`;
+                ALTER TABLE `products_users` DROP FOREIGN KEY `cvo_productes_usuaris_ibfk_2`;
+                ALTER TABLE `extracts` DROP FOREIGN KEY `usuaris`;
+                ALTER TABLE `permission_role` DROP FOREIGN KEY `permission_role_permission_id_foreign`;
+                ALTER TABLE `permission_role` DROP FOREIGN KEY `permission_role_role_id_foreign`;");
             }
             
             $newColumns = [
