@@ -57,7 +57,6 @@ class MigrateDatabase extends Command
                 'productes_categories' => 'categories',
                 'productes_entrades' => 'products_tickets',
                 'productes_packs' => 'products_packs',
-                'productes_sessions' => 'product_prices',
                 'productes_usuaris' => 'products_users',
                 'reserves' => 'bookings',
                 'tarifes' => 'rates',
