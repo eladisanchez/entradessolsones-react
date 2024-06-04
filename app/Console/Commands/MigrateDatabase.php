@@ -61,7 +61,6 @@ class MigrateDatabase extends Command
                 'reserves' => 'bookings',
                 'tarifes' => 'rates',
                 'productes_espais' => 'venues',
-                'productespais' => 'venues'
             ];
 
             foreach ($tables as $oldTableName => $newTableName) {
