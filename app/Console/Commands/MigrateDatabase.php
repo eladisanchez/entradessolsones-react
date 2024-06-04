@@ -74,11 +74,11 @@ class MigrateDatabase extends Command
                 $this->info("Renamed $oldTableName to $newTableName");
             }
 
-            $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
-            if ($databaseName) {
-                DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            }
+            // $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
+            // if ($databaseName) {
+            //     DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            //     DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            // }
             
             $newColumns = [
                 'categories' => [
