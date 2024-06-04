@@ -31,15 +31,16 @@ class MigrateImages extends Command
         foreach ($products as $product) {
             $img = 'https://entradessolsones.com/images/' . $product->name . '.jpg';
             $path = "thumbnails/{$product->name}.jpg";
-            // $response = Http::get($img);
-            // if ($response->successful()) {
-            //     Storage::put($path, $response->body());
-            //     $this->info("Image uploaded successfully.");
-            // } else {
-            //     $this->error("Error uploading image.");
-            // }
+            $response = Http::get($img);
+            if ($response->successful()) {
+                Storage::put($path, $response->body());
+                $this->info("Image uploaded successfully.");
+            } else {
+                $this->error("Error uploading image.");
+            }
             $product->image = $path;
             $product->save();
+            $this->info($img);
         }
     }
 }
