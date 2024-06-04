@@ -76,6 +76,7 @@ class MigrateDatabase extends Command
 
             $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
             if ($databaseName) {
+                DB::statement("SET foreign_key_checks = 0;");
                 DB::statement("ALTER TABLE products MODIFY COLUMN name VARCHAR(191);");
                 DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
@@ -246,6 +247,8 @@ class MigrateDatabase extends Command
                 'display_name' => 'Organitzador'
             ]);
             $this->info("Updated role name in roles table");
+
+            DB::statement("SET foreign_key_checks = 1;");
 
             DB::commit();
 
