@@ -2,8 +2,6 @@
 
 @section('content')
 
-    @include('parts.header')
-
 	<div class="container">
 
         <h1>En manteniment</h1>

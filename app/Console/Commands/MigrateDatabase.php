@@ -34,7 +34,7 @@ class MigrateDatabase extends Command
 
             DB::beginTransaction();
 
-            $oldPrefix = 'es_';
+            $oldPrefix = 'cvo_';
             $newPrefix = '';
 
             $tables = DB::select("SHOW TABLES LIKE '{$oldPrefix}%'");
