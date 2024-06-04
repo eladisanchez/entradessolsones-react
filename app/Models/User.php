@@ -10,10 +10,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Shanmuga\LaravelEntrust\Traits\LaravelEntrustUserTrait;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 
-class User extends Authenticatable implements HasName
+class User extends Authenticatable implements HasName, FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, LaravelEntrustUserTrait;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('admin') || $this->hasRole('organizer');
+    }
 
     /**
      * The attributes that are mass assignable.
