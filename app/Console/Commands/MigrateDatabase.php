@@ -78,7 +78,7 @@ class MigrateDatabase extends Command
                 // DB::statement("SET foreign_key_checks = 0;");
                 DB::statement("ALTER TABLE products MODIFY COLUMN nom VARCHAR(191);");
                 DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                // DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 // DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_pack_id_foreign");
                 // DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_producte_id_foreign;");
                 // DB::statement("ALTER TABLE product_rate DROP FOREIGN KEY producte_tarifa_producte_id_foreign;");
