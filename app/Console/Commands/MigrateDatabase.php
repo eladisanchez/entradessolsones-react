@@ -75,6 +75,7 @@ class MigrateDatabase extends Command
 
             $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
             if ($databaseName) {
+                DB::statement("DROP TABLE IF EXISTS `productes_sessions`;");
                 DB::statement("SET foreign_key_checks = 0;");
                 DB::statement("ALTER TABLE products MODIFY COLUMN nom VARCHAR(191);");
                 DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
@@ -86,7 +87,6 @@ class MigrateDatabase extends Command
                 DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_comanda_id_foreign;");
                 DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_producte_id_foreign;");
                 DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_tarifa_id_foreign;");
-                DB::statement("ALTER TABLE productes_sessions DROP FOREIGN KEY productes_sessions_producte_id_foreign;");
                 DB::statement("ALTER TABLE scans DROP FOREIGN KEY reserva;");
                 DB::statement("ALTER TABLE products_tickets DROP FOREIGN KEY productes_entrades_producte_id_foreign;");
                 DB::statement("ALTER TABLE products DROP FOREIGN KEY productes_categoria_id_foreign;");
