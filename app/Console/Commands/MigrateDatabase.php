@@ -76,29 +76,31 @@ class MigrateDatabase extends Command
             $databaseName = config('database.connections.' . env('DB_CONNECTION') . '.database');
             if ($databaseName) {
                 DB::statement("DROP TABLE IF EXISTS `productes_sessions`;");
-                DB::statement("SET foreign_key_checks = 0;");
+                // DB::statement("SET foreign_key_checks = 0;");
                 DB::statement("ALTER TABLE products MODIFY COLUMN nom VARCHAR(191);");
                 DB::statement("ALTER DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_pack_id_foreign");
-                DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_producte_id_foreign;");
-                DB::statement("ALTER TABLE product_rate DROP FOREIGN KEY producte_tarifa_producte_id_foreign;");
-                DB::statement("ALTER TABLE product_rate DROP FOREIGN KEY producte_tarifa_tarifa_id_foreign;");
-                DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_comanda_id_foreign;");
-                DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_producte_id_foreign;");
-                DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_tarifa_id_foreign;");
-                DB::statement("ALTER TABLE scans DROP FOREIGN KEY reserva;");
-                DB::statement("ALTER TABLE products_tickets DROP FOREIGN KEY productes_entrades_producte_id_foreign;");
-                DB::statement("ALTER TABLE products DROP FOREIGN KEY productes_categoria_id_foreign;");
-                DB::statement("ALTER TABLE products DROP FOREIGN KEY productes_parent_id_foreign;");
-                DB::statement("ALTER TABLE role_user DROP FOREIGN KEY role_user_role_id_foreign;");
-                DB::statement("ALTER TABLE role_user DROP FOREIGN KEY role_user_user_id_foreign2;");
-                DB::statement("ALTER TABLE products_users DROP FOREIGN KEY cvo_productes_usuaris_ibfk_1;");
-                DB::statement("ALTER TABLE products_users DROP FOREIGN KEY cvo_productes_usuaris_ibfk_2;");
-                DB::statement("ALTER TABLE extracts DROP FOREIGN KEY usuaris;");
-                DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_permission_id_foreign;");
-                DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_role_id_foreign;");
+                // DB::statement("ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                // DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_pack_id_foreign");
+                // DB::statement("ALTER TABLE products_packs DROP FOREIGN KEY productes_packs_producte_id_foreign;");
+                // DB::statement("ALTER TABLE product_rate DROP FOREIGN KEY producte_tarifa_producte_id_foreign;");
+                // DB::statement("ALTER TABLE product_rate DROP FOREIGN KEY producte_tarifa_tarifa_id_foreign;");
+                // DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_comanda_id_foreign;");
+                // DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_producte_id_foreign;");
+                // DB::statement("ALTER TABLE bookings DROP FOREIGN KEY reserves_tarifa_id_foreign;");
+                // DB::statement("ALTER TABLE scans DROP FOREIGN KEY reserva;");
+                // DB::statement("ALTER TABLE products_tickets DROP FOREIGN KEY productes_entrades_producte_id_foreign;");
+                // DB::statement("ALTER TABLE products DROP FOREIGN KEY productes_categoria_id_foreign;");
+                // DB::statement("ALTER TABLE products DROP FOREIGN KEY productes_parent_id_foreign;");
+                // DB::statement("ALTER TABLE role_user DROP FOREIGN KEY role_user_role_id_foreign;");
+                // DB::statement("ALTER TABLE role_user DROP FOREIGN KEY role_user_user_id_foreign2;");
+                // DB::statement("ALTER TABLE products_users DROP FOREIGN KEY cvo_productes_usuaris_ibfk_1;");
+                // DB::statement("ALTER TABLE products_users DROP FOREIGN KEY cvo_productes_usuaris_ibfk_2;");
+                // DB::statement("ALTER TABLE extracts DROP FOREIGN KEY usuaris;");
+                // DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_permission_id_foreign;");
+                // DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_role_id_foreign;");
             }
+
+            
             
             $newColumns = [
                 'categories' => [
@@ -198,6 +200,9 @@ class MigrateDatabase extends Command
                 ]
             ];
 
+            // Disable foreign key constraints
+            Schema::disableForeignKeyConstraints();
+
             foreach ($newColumns as $tableName => $columns) {
                 foreach ($columns as $oldColumnName => $newColumnName) {
                     if (!Schema::hasColumn($tableName, $oldColumnName)) {
@@ -217,6 +222,49 @@ class MigrateDatabase extends Command
                     $this->info("Renamed $oldColumnName to $newColumnName in $tableName table");
                 }
             }
+
+            // Update foreign keys
+            $foreignKeys = [
+                'products' => [
+                    'categoria_id' => 'category_id',
+                    'espai_id' => 'venue_id'
+                ],
+                'product_rate' => [
+                    'producte_id' => 'product_id',
+                    'tarifa_id' => 'rate_id'
+                ],
+                'products_tickets' => [
+                    'producte_id' => 'product_id'
+                ],
+                'products_packs' => [
+                    'producte_id' => 'product_id'
+                ],
+                'products_users' => [
+                    'producte_id' => 'product_id',
+                    'usuari_id' => 'user_id'
+                ],
+                'bookings' => [
+                    'producte_id' => 'product_id',
+                    'tarifa_id' => 'rate_id',
+                    'comanda_id' => 'order_id'
+                ],
+                'scans' => [
+                    'reserva_id' => 'booking_id'
+                ]
+            ];
+
+            foreach ($foreignKeys as $tableName => $keys) {
+                foreach ($keys as $oldColumnName => $newColumnName) {
+                    if (Schema::hasColumn($tableName, $oldColumnName)) {
+                        DB::statement("ALTER TABLE $tableName DROP FOREIGN KEY {$tableName}_{$oldColumnName}_foreign");
+                        DB::statement("ALTER TABLE $tableName ADD CONSTRAINT {$tableName}_{$newColumnName}_foreign FOREIGN KEY ($newColumnName) REFERENCES $tableName(id)");
+                        $this->info("Updated foreign key for $newColumnName in $tableName table");
+                    }
+                }
+            }
+
+            // Enable foreign key constraints
+            Schema::enableForeignKeyConstraints();
 
             if (!Schema::hasTable('password_reset_tokens')) {
                 Schema::create('password_reset_tokens', function ($table) {
