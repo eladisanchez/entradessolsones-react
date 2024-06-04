@@ -98,7 +98,7 @@ class MigrateDatabase extends Command
                 DB::statement("ALTER TABLE products_users DROP FOREIGN KEY cvo_productes_usuaris_ibfk_2;");
                 DB::statement("ALTER TABLE extracts DROP FOREIGN KEY usuaris;");
                 DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_permission_id_foreign;");
-                DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_role_id_foreign;");");
+                DB::statement("ALTER TABLE permission_role DROP FOREIGN KEY permission_role_role_id_foreign;");
             }
             
             $newColumns = [
