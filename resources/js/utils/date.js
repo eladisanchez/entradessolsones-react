@@ -9,10 +9,10 @@ const dayFormatted = (date) => {
     day = new Date(date);
   }
   return Intl.DateTimeFormat("ca-es", {
-    weekday: "short",
+    weekday: "long",
     month: "short",
     day: "numeric",
-    year: "numeric",
+    //year: "numeric",
   }).format(day);
 };
 

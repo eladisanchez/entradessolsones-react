@@ -11,6 +11,8 @@
         object-position: center;
     }
 }
+.itemContent {
+}
 .itemQty {
     position: absolute;
     top: -$spacer;
@@ -33,7 +35,7 @@
     font-size: 11px;
 }
 .itemSubtotal {
-    width: 75px;
+    width: 75px !important;
     text-align: right;
     font-size: 13px;
     font-weight: bold;

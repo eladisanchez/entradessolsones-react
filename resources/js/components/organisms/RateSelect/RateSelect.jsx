@@ -1,10 +1,18 @@
 import { useState, useId } from "react";
 import { InputNumber } from "primereact/inputnumber";
-import { Button, Flex, Heading } from "@/components/atoms";
+import { Button, Flex, Heading, TextFormat } from "@/components/atoms";
 import { Card } from "@/components/molecules";
 import styles from "./RateSelect.module.scss";
 
-const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart }) => {
+const RateSelect = ({
+  step = 3,
+  rates,
+  minQty,
+  maxQty,
+  seat,
+  close,
+  addToCart,
+}) => {
   const [selected, setSelected] = useState({});
   const inputId = useId();
 
@@ -45,13 +53,17 @@ const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart })
   return (
     <>
       {/* <div className={styles.modalOverlay} onClick={close} /> */}
-        <Heading tag="h3" size={3} spacerBottom={2}>
-          <strong>{step}. </strong>Tria les entrades
-        </Heading>
-        <Card>
-          {rates.map((rate) => (
+      <Heading tag="h3" size={3} spacerBottom={2}>
+        <TextFormat fontWeight="bold" color="primary">
+          {step}.{" "}
+        </TextFormat>
+        Tria les entrades
+      </Heading>
+      <Card>
+        {rates.map((rate) => (
+          <>
             <Flex spacerBottom={1} gap={2} alignItems="center">
-              <div>
+              <div className={styles.quantityCol}>
                 <InputNumber
                   className={styles.inputNumber}
                   value={selected[rate.id] ?? 0}
@@ -66,16 +78,20 @@ const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart })
                   inputId={inputId + "-" + rate.id}
                 />
               </div>
-              <div>
+              <div className={styles.labelCol}>
                 <label htmlFor={inputId + "-" + rate.id} class={styles.label}>
-                  <strong>{rate.title}</strong>
+                  {rate.title}
                   <br />
-                  {rate.pivot.price} € / entrada
+                  <TextFormat color="faded" fontSize="sm">
+                    {rate.pivot.price} € / entrada
+                  </TextFormat>
                 </label>
               </div>
             </Flex>
-          ))}
-          {/* <Dropdown
+            <hr />
+          </>
+        ))}
+        {/* <Dropdown
             value={selectedRate}
             onChange={(e) => setSelectedRate(e.value.id)}
             options={rates}
@@ -83,23 +99,25 @@ const RateSelect = ({ step = 3, rates, minQty, maxQty, seat, close, addToCart })
             placeholder="Selecciona una tarifa"
           /> */}
 
-          <Flex
-            spacerTop={3}
-            gap={3}
-            alignItems="flex-end"
-            justifyContent="space-between"
-          >
-            <div>
+        <Flex
+          spacerTop={3}
+          gap={3}
+          alignItems="flex-end"
+          justifyContent="space-between"
+        >
+          <div>
+            <TextFormat color="faded">
               {countTickets} {countTickets == 1 ? "Entrada" : "Entrades"}
               <br />
               {!!price() && <span>{price()} €</span>}
-            </div>
-            <div>
-              <Button block={true} onClick={handleAddToCart}>
-                Afegeix al cistell
-              </Button>
-            </div>
-          </Flex>
+            </TextFormat>
+          </div>
+          <div>
+            <Button block={true} onClick={handleAddToCart}>
+              Afegeix al cistell
+            </Button>
+          </div>
+        </Flex>
       </Card>
     </>
   );

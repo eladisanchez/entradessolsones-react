@@ -13,10 +13,7 @@ const Modal = ({ children, isOpen, onClose, width = 500 }) => {
       </div>
       <div
         className={styles.overlay}
-        onClick={() => {
-          onClose();
-          console.log("casdc");
-        }}
+        onClick={onClose}
       ></div>
     </div>
   );

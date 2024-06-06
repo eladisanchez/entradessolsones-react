@@ -86,7 +86,10 @@ export default function Product({
 
   return (
     <>
-      <Head title={product.title} />
+      <Head>
+        <title>{`${product.title}  -  Entrades Solsonès`}</title>
+        <meta name="description" content={product.summary} />
+      </Head>
       <div className={styles.productContainer}>
         <div
           className={styles.productHeader}
@@ -105,26 +108,22 @@ export default function Product({
 
           <Grid columns={2}>
             <div>
-              <p>
-                <Button
-                  size="lg"
-                  block={true}
-                  onClick={() =>
-                    ticketSectionRef.current?.scrollIntoView({
-                      behavior: "smooth",
-                    })
-                  }
-                >
-                  Compra entrades
-                </Button>
-              </p>
-              <p>
-                <img
-                  src={"/image/" + product.image}
-                  alt={product.title}
-                  className={styles.thumbnail}
-                />
-              </p>
+              <Button
+                size="lg"
+                block={true}
+                onClick={() =>
+                  ticketSectionRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+              >
+                Compra entrades
+              </Button>
+              <img
+                src={"/image/" + product.image}
+                alt={product.title}
+                className={styles.thumbnail}
+              />
             </div>
 
             <Card>
@@ -163,6 +162,7 @@ export default function Product({
               <section>
                 <TicketTable
                   selectedDay={selectedDay}
+                  selectedHour={hour}
                   productSlug={product.name}
                   tickets={ticketsByDay()}
                 ></TicketTable>

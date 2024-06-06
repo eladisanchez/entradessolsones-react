@@ -11,13 +11,17 @@ const HomeNav = ({ view = "list", activeSection }) => {
           href="#activitats"
           className={activeSection == "activities" ? styles.currentSection : ""}
         >
-          Activitats turístiques
+          <span className={styles.titleDesktop}>Activitats turístiques</span>
+          <span className={styles.titleMobile}>Turisme</span>
         </a>
         <a
           href="#esdeveniments"
           className={activeSection == "events" ? styles.currentSection : ""}
         >
-          Teatre, concerts i esdeveniments
+          <span className={styles.titleDesktop}>
+            Teatre, concerts i esdeveniments
+          </span>
+          <span className={styles.titleMobile}>Esdeveniments</span>
         </a>
       </div>
       <div className={styles.buttons}>

@@ -9,7 +9,7 @@ const CartItem = ({ item, onRemove, ...props }) => {
         <img src={"/image/" + item.options.image} alt={item.name} />
         <span className={styles.itemQty}>{item.qty}</span>
       </div>
-      <div>
+      <div className={styles.itemContent}>
         <h4 className={styles.itemName}>
           <strong>{item.name}</strong> {item.options.rate}
         </h4>

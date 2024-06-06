@@ -2,6 +2,7 @@
 
 html {
     scroll-padding-top: 100px;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -34,4 +35,10 @@ button, input {
 
 .fc .fc-view-harness-active > .fc-view {
     background: #FFF;
+}
+
+hr {
+    border-top: 1px solid $light-color;
+    height: 0;
+    border-bottom: 0;
 }

@@ -3,18 +3,19 @@ import { Head } from "@inertiajs/react";
 import { HomeNav } from "@/components/organisms";
 import { Container } from "@/components/atoms";
 
-const FullCalendar = React.lazy(() => import("@/components/molecules/Calendar"));
+const FullCalendar = React.lazy(() =>
+  import("@/components/molecules/Calendar")
+);
 
 export default function Calendar({ events }) {
   return (
     <>
       <Head title="Calendari" />
-      <HomeNav view="calendar" />
+
       <Container>
+        <HomeNav view="calendar" />
         <Suspense fallback={<div>Carregant...</div>}>
-          <FullCalendar
-            events={events}
-          />
+          <FullCalendar events={events} />
         </Suspense>
       </Container>
     </>

@@ -8,11 +8,12 @@ import styles from "./Header.module.scss";
 const Header = ({ url }) => {
   const { toggleCart, count } = useCart();
   const isHome =
-    url === "/" || url.startsWith("/#") || url.startsWith("/calendari");
+    url === "/" || url.includes("#") || url.startsWith("/calendari");
   const isCheckout = url.startsWith("/confirmacio");
   const classes = classNames(styles.header, {
     [styles.homeheader]: isHome,
   });
+  console.log('is home?', isHome, url);
   return (
     <>
       {!isCheckout && (

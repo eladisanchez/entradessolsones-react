@@ -2,7 +2,7 @@ import { useCart } from "@/contexts/CartContext";
 import { router } from "@inertiajs/react";
 import styles from "./SideCart.module.scss";
 import classNames from "classnames";
-import { Button, Flex } from "@/components/atoms";
+import { Button, Flex, TextFormat } from "@/components/atoms";
 import { CartItem } from "@/components/molecules";
 
 const SideCart = () => {
@@ -46,7 +46,7 @@ const SideCart = () => {
         </>
       ) : (
         <>
-          <p className="text-center">El cistell és buit</p>
+          <TextFormat color="faded" textAlign="center">El cistell és buit</TextFormat>
           <Button onClick={() => setShowCart(false)} block={true} link={true}>
             Continua comprant
           </Button>

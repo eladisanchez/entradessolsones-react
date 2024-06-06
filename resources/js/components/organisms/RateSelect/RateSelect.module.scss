@@ -25,6 +25,7 @@
 .label {
     display: block;
     line-height: 1;
+    min-height: 30px;
 }
 
 .inputNumber {
@@ -45,7 +46,8 @@
         transition: background-color 0.2s, color 0.2s, border-color 0.2s,
             box-shadow 0.2s;
         appearance: none;
-        width: 60px;
+        width: 2.5rem;
+        text-align: center;
     }
     button {
         border: 0;
@@ -59,4 +61,9 @@
     > [class~="p-inputnumber-button-up"] {
         border-radius: 0 $spacer/2 $spacer/2 0;
     }
+}
+
+.quantityCol {
+    text-align: right;
+    width: 104px !important;
 }

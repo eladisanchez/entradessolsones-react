@@ -6,6 +6,7 @@ import {
   Heading,
   Input,
   TextFormat,
+  Spacer,
 } from "@/components/atoms";
 import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
@@ -72,19 +73,19 @@ export default function Checkout({ lastOrder }) {
                 onChange={(e) => setData("email", e.target.value)}
               />
               {errors.email && <div>{errors.email}</div>}
-              <input
-                type="checkbox"
-                checked={data.newsletter}
-                onChange={(e) => setData("newsletter", e.target.checked)}
-              />{" "}
-              Vull rebre informació relacionada amb activitats i esdeveniments
-              al Solsonès
-              <Heading
-                tag="h3"
-                size={3}
-                spacerTop={6}
-                spacerBottom={1}
-              >
+              <Spacer size={2} />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={data.newsletter}
+                  onChange={(e) => setData("newsletter", e.target.checked)}
+                />{" "}
+                <TextFormat color="faded">
+                  Vull rebre informació relacionada amb activitats i
+                  esdeveniments al Solsonès
+                </TextFormat>
+              </label>
+              <Heading tag="h3" size={3} spacerTop={6} spacerBottom={1}>
                 Dades personals
               </Heading>
               <Flex spacerBottom={1} flexDirection="column">
@@ -125,14 +126,16 @@ export default function Checkout({ lastOrder }) {
                 onChange={(e) => setData("observations", e.target.value)}
                 rows={3}
               />
-              <p>
-                Al confirmar la comanda seràs redirigit a la passarel·la de
+              <Spacer size={4} />
+              <TextFormat color="faded" block={true}>
+                Al confirmar la comanda sereu redirigits a la passarel·la de
                 pagament.{" "}
                 <strong>
-                  Segueix les instruccions d'autenticació de la teva entitat
+                  Seguiu les instruccions d'autenticació de la vostra entitat
                   bancària.
                 </strong>
-              </p>
+              </TextFormat>
+              <Spacer size={4} />
               <Button disabled={processing} size="lg" block={true}>
                 Finalitza la compra
               </Button>

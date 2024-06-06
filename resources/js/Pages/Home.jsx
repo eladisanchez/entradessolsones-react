@@ -18,7 +18,13 @@ const Home = ({ products }) => {
   };
   return (
     <>
-      <Head title="Entrades Solsonès" />
+      <Head>
+        <title>Entrades Solsonès</title>
+        <meta
+          name="description"
+          content="Portal de venda d'entrades de Turisme Solsonès. Visites guiades, teatre, esdeveniments i experiències singulars a la comarca del Solsonès. "
+        />
+      </Head>
       <Container>
         <HomeNav activeSection={activeSection} />
         {Object.keys(types).map((type) => (
