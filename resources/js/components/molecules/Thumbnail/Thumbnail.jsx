@@ -16,9 +16,10 @@ const Thumbnail = ({ product }) => {
           width="100%"
           height="100%"
           effect="blur"
+          alt={product.title}
         />
         <div className={styles.content}>
-          <h4>{product.title}</h4>
+          <h3>{product.title}</h3>
           {product.summary && <p>{product.summary}</p>}
         </div>
       </Link>

@@ -15,9 +15,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
         </a>
         <a
           href="#esdeveniments"
-          className={
-            activeSection == "events" ? styles.currentSection : ""
-          }
+          className={activeSection == "events" ? styles.currentSection : ""}
         >
           Teatre, concerts i esdeveniments
         </a>
@@ -28,6 +26,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
           className={classNames(styles.button_list, {
             [styles.current]: view == "list",
           })}
+          ariaLabel="Llista de productes"
         >
           <Icon icon="list" />
         </Link>
@@ -36,6 +35,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
           className={classNames(styles.button_calendar, {
             [styles.current]: view == "calendar",
           })}
+          ariaLabel="Calendari"
         >
           <Icon icon="calendar" />
         </Link>

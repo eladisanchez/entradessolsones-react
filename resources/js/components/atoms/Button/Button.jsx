@@ -40,6 +40,7 @@ const Button = ({
       {...props}
       onClick={onClick}
       disabled={disabled}
+      ariaLabel={children}
     >
       {children}
     </button>

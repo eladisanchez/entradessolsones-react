@@ -34,7 +34,7 @@ const Header = ({ url }) => {
         <Container>
           <div className={styles.headerContent}>
             <div className={styles.logo}>
-              <Link href="/">
+              <Link href="/" ariaLabel="Entrades Solsonès">
                 <Logo />
               </Link>
             </div>
