@@ -1,4 +1,5 @@
 import { usePage } from "@inertiajs/react";
+import { BackToTop } from "@/components/molecules";
 import { Header, Footer, SideCart } from "@/components/organisms";
 import { CartProvider } from "@/contexts/CartContext";
 
@@ -11,6 +12,7 @@ export default function Layout({ children }) {
         <Header url={url}></Header>
         <SideCart />
         <section>{children}</section>
+        <BackToTop />
         <Footer />
       </main>
     </CartProvider>
