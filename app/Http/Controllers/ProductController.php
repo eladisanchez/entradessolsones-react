@@ -17,6 +17,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class ProductController extends BaseController
 {
@@ -354,14 +355,14 @@ class ProductController extends BaseController
 				$file = Storage::disk('local')->get($path);
 				$image = Image::read($file);
 				$image->scale($width, null);
-				return $image->encode();
+				return $image->encode(new WebpEncoder(quality: 80));
 			}
 			return false;
 		});
 		if (!$cachedImage) {
 			abort(404);
 		}
-		return response()->make($cachedImage, 200, ['Content-Type' => 'image/jpeg']);
+		return response()->make($cachedImage, 200, ['Content-Type' => 'image/webp']);
 	}
 
 	// Dia triat
