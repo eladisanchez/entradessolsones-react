@@ -6,7 +6,7 @@ const Search = ({ products, keyword }) => {
   return (
     <>
       <Head title={`${keyword} - Entrades Solsonès`} />
-      <Spacer size={12} />
+      <Spacer top={12} />
       <Container>
         <Heading tag="h2" size={2} center={true} spacerTop={6} spacerBottom={6}>
           Resultats de la cerca "{keyword}"
@@ -16,7 +16,7 @@ const Search = ({ products, keyword }) => {
             <Thumbnail key={product.id} product={product} />
           ))}
         </Grid>
-        <Spacer size={12} />
+        <Spacer top={12} />
       </Container>
     </>
   );

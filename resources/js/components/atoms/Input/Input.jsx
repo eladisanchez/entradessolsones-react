@@ -3,7 +3,7 @@ import styles from "./Input.module.scss";
 import classNames from "classnames";
 import { useState } from "react";
 
-const Input = ({ label, name, value, ...props }) => {
+const Input = ({ label, name, value, className, ...props }) => {
   const id = useId();
   const [focused, setFocused] = useState(false);
   const handleFocus = (e) => {
@@ -11,7 +11,7 @@ const Input = ({ label, name, value, ...props }) => {
   };
   return (
     <div
-      className={classNames(styles.input, props.className, {
+      className={classNames(styles.input, className, {
         [styles.focused]: focused,
       })}
     >

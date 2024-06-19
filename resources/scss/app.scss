@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'fonts';
 
 html {
     scroll-padding-top: 100px;
@@ -7,18 +8,21 @@ html {
 
 body {
     margin: 0 auto;
-    font-family: "DM Sans", sans-serif;
-    background: $light-color;
+    font-family: "Figtree", sans-serif;
+    background: #FFF;
     color: $body-color;
     font-smooth: antialiased;
 }
 
-h1,h2,h3,h4 {
-    font-weight: 400;
-}
+// h1,h2,h3,h4 {
+//     font-weight: 400;
+// }
 
 a {
-    color: $primary-color;
+    color: $secondary-color;
+    &:hover {
+        color: $primary-color;
+    }
 }
 
 p {
@@ -41,4 +45,8 @@ hr {
     border-top: 1px solid $light-color;
     height: 0;
     border-bottom: 0;
+}
+
+.site-main {
+   background-color: $light-color;
 }

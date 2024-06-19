@@ -1,7 +1,15 @@
 import React, { Suspense, useRef } from "react";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
-import { Container, Heading, Grid, Button } from "@/components/atoms";
+import {
+  Container,
+  Heading,
+  Grid,
+  Button,
+  Spacer,
+  Flex,
+  TextFormat,
+} from "@/components/atoms";
 import { Card } from "@/components/molecules";
 import { TicketTable } from "@/components/organisms";
 import { useCart } from "@/contexts/CartContext";
@@ -10,7 +18,7 @@ import { ymd } from "@/utils/date";
 import { Link } from "@inertiajs/react";
 
 const Datepicker = React.lazy(() =>
-  import("@/components/molecules/Datepicker/Datepicker")
+  import("@/components/organisms/Datepicker/Datepicker")
 );
 const VenueMap = React.lazy(() =>
   import("@/components/organisms/VenueMap/VenueMap")
@@ -32,11 +40,13 @@ export default function Product({
   const { addToCart } = useCart();
   const ticketSectionRef = useRef(null);
 
-  const ticketsByDay = () => {
-    if (selectedDay) {
-      const day = ymd(selectedDay);
+  const ticketsByDay = (day) => {
+    const queryDay = day ?? selectedDay;
+    if (queryDay) {
+      console.log(queryDay);
+      const formattedDay = ymd(selectedDay);
       return tickets.filter((ticket) => {
-        return ticket.day == day;
+        return ticket.day == formattedDay;
       });
     }
     return tickets;
@@ -50,13 +60,28 @@ export default function Product({
   const seats = currentTicket && JSON.parse(currentTicket.seats);
 
   const handleSelectDay = (e) => {
-    setSelectedDay(e.value);
-    router.visit(`/activitat/${product.name}/${ymd(e.value)}`, {
+    const visitOptions = {
       method: "get",
       replace: false,
       preserveState: true,
       preserveScroll: true,
-    });
+      only: ['day', 'hour']
+    };
+    if (!e) {
+      setSelectedDay(null);
+      router.visit(`/activitat/${product.name}`, visitOptions);
+      return;
+    }
+    setSelectedDay(e.value);
+    console.log(ticketsByDay(e.value).length);
+    if (ticketsByDay(e.value).length == 1) {
+      router.visit(
+        `/activitat/${product.name}/${ymd(e.value)}/${ticketsByDay()[0].hour}`,
+        visitOptions
+      );
+      return;
+    }
+    router.visit(`/activitat/${product.name}/${ymd(e.value)}`, visitOptions);
   };
 
   const handleCloseRate = (e) => {
@@ -65,6 +90,7 @@ export default function Product({
       replace: false,
       preserveState: true,
       preserveScroll: true,
+      only: ['day', 'hour']
     });
   };
 
@@ -90,44 +116,37 @@ export default function Product({
         <title>{`${product.title}  -  Entrades Solsonès`}</title>
         <meta name="description" content={product.summary} />
       </Head>
-      <div className={styles.productContainer}>
+
+      <div className={styles.productContent}>
         <div
           className={styles.productHeader}
           style={{
             backgroundImage: "url('/image/" + product.image + "')",
           }}
         ></div>
-        <Container style={{ position: "relative", zIndex: 1 }}>
-          <p className={styles.organizer}>
-            <Link href={"/#" + product.target}>{targets[product.target]}</Link>{" "}
-            <span>&#x203A;</span> {product.organizer.username}
-          </p>
-          <Heading tag="h1" color="light" spacerTop={0} spacerBottom={4}>
-            {product.title}
-          </Heading>
-
+        <Container className={styles.productContainer}>
           <Grid columns={2}>
-            <div>
-              <Button
-                size="lg"
-                block={true}
-                onClick={() =>
-                  ticketSectionRef.current?.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }
-              >
-                Compra entrades
-              </Button>
-              <img
-                src={"/image/" + product.image}
-                alt={product.title}
-                className={styles.thumbnail}
-              />
-            </div>
-
-            <Card>
-              <div className={styles.productInfo}>
+            <section>
+              <Spacer className={styles.organizer}>
+                <Link href={"/#" + product.target}>
+                  {targets[product.target]}
+                </Link>{" "}
+                <span>&#x203A;</span> {product.organizer.username}
+              </Spacer>
+              <Heading tag="h1" color="light" spacerTop={0} spacerBottom={6}>
+                {product.title}
+              </Heading>
+              {/* <Spacer bottom={3}>
+                <Flex gap={2}>
+                  <Button block={true} color="white" outline={true}>
+                    Descripció
+                  </Button>
+                  <Button block={true} color="white" outline={true}>
+                    Detalls
+                  </Button>
+                </Flex>
+              </Spacer> */}
+              <Card>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: product.description,
@@ -139,11 +158,74 @@ export default function Product({
                     __html: product.schedule,
                   }}
                 ></div>
-              </div>
-            </Card>
+              </Card>
+            </section>
+            <aside>
+              <Spacer bottom={3}>
+                <Button
+                  block={true}
+                  size="lg"
+                  onClick={() =>
+                    ticketSectionRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                    })
+                  }
+                >
+                  Compra entrades
+                </Button>
+              </Spacer>
+              <Spacer bottom={3}>
+                <img
+                  src={"/image/" + product.image}
+                  alt={product.title}
+                  className={styles.thumbnail}
+                />
+              </Spacer>
+              <Spacer bottom={3}>
+                {availableDays.length > 0 ? (
+                  <Suspense fallback={<div>Carregant...</div>}>
+                    <Datepicker
+                      availableDays={availableDays}
+                      onSelectDay={handleSelectDay}
+                      selectedDay={selectedDay}
+                    />
+                  </Suspense>
+                ) : (
+                  <Card>
+                    <TextFormat color="faded" textAlign="center">
+                      Actualment no hi ha dates disponibles per aquesta
+                      activitat.
+                    </TextFormat>
+                  </Card>
+                )}
+              </Spacer>
+              {availableDays.length > 0 && (
+                <Spacer bottom={3}>
+                  <TicketTable
+                    selectedDay={selectedDay}
+                    selectedHour={hour}
+                    productSlug={product.name}
+                    tickets={ticketsByDay()}
+                  ></TicketTable>
+                </Spacer>
+              )}
+              {hour && (
+                <Spacer bottom={3}>
+                  <Suspense fallback={<div>Carregant...</div>}>
+                    <RateSelect
+                      rates={rates}
+                      minQty={product.min_tickets}
+                      maxQty={product.max_tickets}
+                      addToCart={handleAddToCart}
+                      close={handleCloseRate}
+                    />
+                  </Suspense>
+                </Spacer>
+              )}
+            </aside>
           </Grid>
 
-          <section
+          {/* <section
             id="tickets"
             className={styles.tickets}
             ref={ticketSectionRef}
@@ -158,7 +240,6 @@ export default function Product({
                   />
                 </Suspense>
               </section>
-
               <section>
                 <TicketTable
                   selectedDay={selectedDay}
@@ -210,7 +291,7 @@ export default function Product({
                 )}
               </div>
             )}
-          </section>
+          </section> */}
         </Container>
       </div>
     </>

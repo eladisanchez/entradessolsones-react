@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Head } from "@inertiajs/react";
-import { HomeNav } from "@/components/organisms";
 import { Heading, Container, Grid, Spacer } from "@/components/atoms";
 import { Thumbnail } from "@/components/molecules";
 import { Waypoint } from "react-waypoint";
+import { HomeNav } from "@/components/organisms";
 
 const Home = ({ products }) => {
   const [activeSection, setActiveSection] = useState("");
@@ -34,7 +34,7 @@ const Home = ({ products }) => {
             style={{ scrollPaddingTop: "100px" }}
           >
             <Waypoint onEnter={() => handleWaypointEnter(type)} />
-            {products[type].map((category) => (
+            {products && products[type].map((category) => (
               <section className="category">
                 <Heading
                   tag="h2"
@@ -55,7 +55,7 @@ const Home = ({ products }) => {
           </div>
         ))}
       </Container>
-      <Spacer size={8} />
+      <Spacer top={8} />
     </>
   );
 };

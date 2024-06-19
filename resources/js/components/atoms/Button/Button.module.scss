@@ -5,12 +5,36 @@
     padding: $spacer $spacer*2;
     background: $primary-color;
     color: #FFF;
-    border: 0;
+    border: 1px solid $primary-color;
     border-radius: $spacer;
     font-family: $text-font;
     font-size: 1rem;
     text-decoration: none;
     cursor: pointer;
+    box-sizing: border-box;
+    transition: all .3s;
+}
+.color-primary {
+    background: $primary-color;
+    &:hover {
+        border: 1px solid darken($primary-color, 10%);
+        background: darken($primary-color, 10%);
+    }
+    &.outline:hover {
+        color: #FFF;
+    }
+}
+.color-white {
+    background: #FFF;
+    border: 1px solid #FFF;
+    color: $primary-color;
+    &.outline {
+        border: 1px solid #FFF;
+        color: #FFF;
+    }
+    &:hover {
+        background: rgba(#FFF,0);
+    }
 }
 .block {
     display: block;
@@ -18,7 +42,8 @@
     width: 100%;
 }
 .lg {
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1.25rem;
     padding: $spacer*1.5 $spacer*3;
 }
 .outline {
@@ -32,5 +57,10 @@
 }
 .link {
     background: none;
+    border: 1px solid transparent;
     color: $primary-color;
+    &:hover{
+        background: rgba($primary-color, .1);
+        border: 1px transparent solid;
+    }
 }

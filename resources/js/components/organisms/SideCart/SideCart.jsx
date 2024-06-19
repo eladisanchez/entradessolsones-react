@@ -2,7 +2,7 @@ import { useCart } from "@/contexts/CartContext";
 import { router } from "@inertiajs/react";
 import styles from "./SideCart.module.scss";
 import classNames from "classnames";
-import { Button, Flex, TextFormat } from "@/components/atoms";
+import { Button, Flex, TextFormat, Spacer } from "@/components/atoms";
 import { CartItem } from "@/components/molecules";
 
 const SideCart = () => {
@@ -17,8 +17,6 @@ const SideCart = () => {
     router.get("/confirmacio");
   };
 
-  console.log(items);
-
   return (
     <div className={classes}>
       {items &&
@@ -27,7 +25,9 @@ const SideCart = () => {
         ))}
       {items.length ? (
         <>
-          <p>Total: {total} €</p>
+          <Spacer bottom={3}>
+            <TextFormat textAlign="right">Total: {total} €</TextFormat>
+          </Spacer>
           <Flex gap={1} flexDirection="column">
             <Button onClick={emptyCart} block={true} outline={true}>
               Buida el cistell
@@ -46,7 +46,11 @@ const SideCart = () => {
         </>
       ) : (
         <>
-          <TextFormat color="faded" textAlign="center">El cistell és buit</TextFormat>
+          <Spacer bottom={3}>
+            <TextFormat color="faded" textAlign="center">
+              El cistell és buit
+            </TextFormat>
+          </Spacer>
           <Button onClick={() => setShowCart(false)} block={true} link={true}>
             Continua comprant
           </Button>

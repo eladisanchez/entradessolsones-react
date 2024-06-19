@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('filament')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Hex('#007fb6'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -50,6 +50,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->font('DM Sans');
+            ->font('Figtree');
     }
 }

@@ -51,9 +51,9 @@ const VenueMap = ({ seats, bookedSeats, cartSeats, addToCart }) => {
       {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
         <>
           <div className={styles.tools}>
-            <button onClick={() => zoomIn()}>+</button>
-            <button onClick={() => zoomOut()}>-</button>
-            <button onClick={() => resetTransform()}>x</button>
+            <button onClick={() => zoomIn()} aria-label="Amplia">+</button>
+            <button onClick={() => zoomOut()} aria-label="Redueix">-</button>
+            <button onClick={() => resetTransform()} aria-label="Torna a la mida original">x</button>
           </div>
           <TransformComponent>
             <div

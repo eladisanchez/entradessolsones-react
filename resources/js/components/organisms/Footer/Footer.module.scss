@@ -3,6 +3,13 @@
 .footer {
     // margin-top: $spacer*6;
     padding: $spacer*4;
-    background: $dark-color;
-    color: $light-color;
+    // background: $dark-color;
+    // color: $light-color;
+    background: #FFF;
+    color: $dark-color;
+    font-size: 0.875rem;
+}
+.logo {
+    width: 150px;
+    height: auto;
 }

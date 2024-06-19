@@ -8,13 +8,18 @@ const Button = ({
   size = "md",
   outline = false,
   block = false,
+  color = "primary",
   onClick,
   disabled,
   link,
-  href,
+  href, 
+  preserveScroll,
+  preserveState,
+  only
 }) => {
   const classes = classNames(styles.button, {
     [styles.outline]: outline,
+    [styles['color-'+color]]: color,
     [styles.lg]: size == "lg",
     [styles.block]: block,
     [styles.disabled]: disabled,
@@ -24,8 +29,9 @@ const Button = ({
     return (
       <Link
         href={href}
-        preserveState
-        preserveScroll
+        preserveState={preserveState}
+        preserveScroll={preserveScroll}
+        only={only}
         className={classes}
         {...props}
         disabled={disabled}
@@ -40,7 +46,7 @@ const Button = ({
       {...props}
       onClick={onClick}
       disabled={disabled}
-      ariaLabel={children}
+      aria-label={children}
     >
       {children}
     </button>

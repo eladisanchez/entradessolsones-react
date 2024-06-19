@@ -1,8 +1,10 @@
 import styles from "./Container.module.scss";
+import classNames from "classnames";
 
-const Container = ({ children, props }) => {
+const Container = ({ children, className, props }) => {
+  const classes = classNames(styles.container, className);
   return (
-    <div className={styles.container} {...props}>
+    <div className={classes} {...props}>
       {children}
     </div>
   );

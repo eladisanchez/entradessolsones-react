@@ -1,7 +1,10 @@
 @use '@/styles' as *;
 
 @for $i from 0 through 20 {
-    .spacer-#{$i} {
+    .spacer-top-#{$i} {
         padding-top: $i * $spacer !important;
+    }
+    .spacer-bottom-#{$i} {
+        padding-bottom: $i * $spacer !important;
     }
 }

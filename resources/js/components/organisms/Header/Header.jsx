@@ -1,5 +1,5 @@
 import { Container, Flex, Icon, Logo } from "@/components/atoms";
-import { SearchForm } from "@/components/molecules";
+import { SearchForm, Featured } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
@@ -12,8 +12,8 @@ const Header = ({ url }) => {
   const isCheckout = url.startsWith("/confirmacio");
   const classes = classNames(styles.header, {
     [styles.homeheader]: isHome,
+    [styles.solid]: isCheckout
   });
-  console.log('is home?', isHome, url);
   return (
     <>
       {!isCheckout && (
@@ -24,7 +24,7 @@ const Header = ({ url }) => {
               <Link href="/es/">ES</Link>
             </div>
             <div className={styles.topnav}>
-              <Link href="/ca/">Calendari</Link>
+              <Link href="/calendari">Calendari</Link>
               <Link href="/ca/">Com puc vendre entrades?</Link>
               <Link href="/ca/">Turisme Solsonès</Link>
             </div>
@@ -35,7 +35,7 @@ const Header = ({ url }) => {
         <Container>
           <div className={styles.headerContent}>
             <div className={styles.logo}>
-              <Link href="/" ariaLabel="Entrades Solsonès">
+              <Link href="/" aria-label="Entrades Solsonès" title="Entrades Solsonès">
                 <Logo />
               </Link>
             </div>
@@ -43,6 +43,7 @@ const Header = ({ url }) => {
               <Flex alignItems="center" gap={1}>
                 <SearchForm />
                 <button
+                  aria-label="Cistell de la compra"
                   onClick={() => toggleCart()}
                   className={styles.cartButton}
                 >
@@ -55,6 +56,7 @@ const Header = ({ url }) => {
             )}
           </div>
         </Container>
+        { isHome && <Featured /> }
       </header>
     </>
   );

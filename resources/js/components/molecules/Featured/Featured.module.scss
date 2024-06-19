@@ -1,0 +1,12 @@
+@use '@/styles' as *;
+
+.featured {
+    background: rgba($dark-color,.2);
+    backdrop-filter: blur(12px);
+    //padding: $spacer*4 0;
+    height: 150px;
+    position: relative;
+    z-index: 10;
+    margin-top: 200px;
+    text-align: center;
+}

@@ -30,7 +30,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
           className={classNames(styles.button_list, {
             [styles.current]: view == "list",
           })}
-          ariaLabel="Llista de productes"
+          aria-label="Llista de productes"
         >
           <Icon icon="list" />
         </Link>
@@ -39,7 +39,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
           className={classNames(styles.button_calendar, {
             [styles.current]: view == "calendar",
           })}
-          ariaLabel="Calendari"
+          aria-label="Calendari"
         >
           <Icon icon="calendar" />
         </Link>

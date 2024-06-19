@@ -12,11 +12,11 @@ const TicketTable = ({
   selectedHour,
 }) => {
   const [showMore, setShowMore] = useState(false);
-  console.log("selectedDay", selectedDay);
-  console.log("selectedHour", selectedHour);
+
   return (
-    <div>
-      {!selectedDay ? (
+    <>
+      {/* <Card> */}
+      {/* {!selectedDay ? (
         <Flex spacerBottom={2}>
           <Heading tag="h3" size={3}>
             Properes sessions ({tickets.length})
@@ -32,39 +32,50 @@ const TicketTable = ({
             <strong>{step}.</strong> Tria una sessió
           </Heading>
         </Flex>
-      )}
-      <Card spacerBottom={2}>
-        <Flex gap={1} flexDirection="column">
-          {tickets.map(
-            (ticket, i) =>
-              (showMore || i < 5) && (
-                <Button
-                  href={`/activitat/${productSlug}/${ticket.day}/${ticket.hour}`}
-                  outline={
-                    !(
-                      ymd(selectedDay) == ticket.day &&
-                      selectedHour == ticket.hour
-                    )
-                  }
-                  block="true"
-                >
-                  <strong>{dayFormatted(ticket.day)}</strong> {ticket.hour}
-                </Button>
-              )
-          )}
-        </Flex>
-      </Card>
+      )} */}
+
+      <Flex gap={1} flexDirection="column">
+        {tickets.map(
+          (ticket, i) =>
+            (showMore || i < 5) && (
+              <Button
+                href={`/activitat/${productSlug}/${ticket.day}/${ticket.hour}`}
+                // outline={
+                //   !(
+                //     ymd(selectedDay) == ticket.day &&
+                //     selectedHour == ticket.hour
+                //   )
+                // }
+                preserveScroll
+                only={['day', 'hour']}
+                color={
+                  !(
+                    ymd(selectedDay) == ticket.day &&
+                    selectedHour == ticket.hour
+                  )
+                    ? "white"
+                    : "primary"
+                }
+                block="true"
+              >
+                <strong>{dayFormatted(ticket.day)}</strong> {ticket.hour}
+              </Button>
+            )
+        )}
+      </Flex>
       {!showMore && tickets.length > 5 && (
-        <Button link onClick={() => setShowMore(true)}>
+        <Button link block onClick={() => setShowMore(true)}>
           Mostra totes les dates
         </Button>
       )}
-      {selectedDay && (
-        <Link href={`/activitat/${productSlug}`} preserveScroll>
+      {/* {selectedDay && (
+        <Button link block href={`/activitat/${productSlug}`} preserveScroll>
           Mostra les properes sessions
-        </Link>
-      )}
-    </div>
+        </Button>
+      )} */}
+
+      {/* </Card> */}
+    </>
   );
 };
 

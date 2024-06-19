@@ -5,5 +5,15 @@ import RateSelect from "./RateSelect/RateSelect";
 import SideCart from "./SideCart/SideCart";
 import TicketTable from "./TicketTable/TicketTable";
 import VenueMap from "./VenueMap/VenueMap";
+import Datepicker from "./Datepicker/Datepicker";
 
-export { Footer, Header, HomeNav, RateSelect, SideCart, TicketTable, VenueMap };
+export {
+  Footer,
+  Header,
+  HomeNav,
+  RateSelect,
+  SideCart,
+  TicketTable,
+  VenueMap,
+  Datepicker,
+};

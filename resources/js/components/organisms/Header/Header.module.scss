@@ -63,19 +63,19 @@
     justify-content: space-between;
     align-items: center;
     gap: $spacer*2;
-    flex-direction: column;
-    @include media-query('sm') {
-        flex-direction: row;
-    }
+    // flex-direction: column;
+    // @include media-query('sm') {
+    //     flex-direction: row;
+    // }
 }
 
 .homeheader {
     position: relative;
     background-image: url("/assets/img/home-bg.webp");
-    background-position: center bottom;
+    background-position: center 80%;
     background-size: cover;
-    height: 304px;
-    margin-bottom: -28px;
+    min-height: 304px;
+    // margin-bottom: -28px;
     &:before {
         content: "";
         display: block;
@@ -92,6 +92,9 @@
             rgba($primary-color, 0) 80.36%
         );
     }
+}
+.solid {
+    background-color: $primary-color;
 }
 
 .cartButton {

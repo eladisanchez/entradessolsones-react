@@ -1,8 +1,13 @@
 @use "../styles" as *;
 
+.productContent {
+    padding-top: $spacer * 16;
+    padding-bottom: $spacer * 12;
+}
+
 .productContainer {
-    padding-top: $spacer * 15;
-    padding-bottom: $spacer * 6;
+    position: relative;
+    z-index: 2;
 }
 
 .productHeader {
@@ -13,7 +18,7 @@
     height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 1;
     background-image: url('/assets/img/home-bg.webp');
     &:after {
         content: "";
@@ -37,26 +42,24 @@
     }
 }
 
-.productInfo {
-    @include media-query("md") {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: $spacer * 6;
-    }
-}
+// .col {
+//     @include media-query("md") {
+//         position: relative;
+//         &:before {
+//             content: "";
+//             position: absolute;
+//             background-color: $light-color;
+//             z-index: 1;
+//             inline-size: 1px;
+//             block-size: 100%;
+//             inset-inline-start: $spacer * -3;
+//         }
+//     }
+// }
 .col {
-    @include media-query("md") {
-        position: relative;
-        &:before {
-            content: "";
-            position: absolute;
-            background-color: $light-color;
-            z-index: 1;
-            inline-size: 1px;
-            block-size: 100%;
-            inset-inline-start: $spacer * -3;
-        }
-    }
+    margin-top: $spacer * 3;
+    padding-top: $spacer * 3;
+    border-top: 1px solid $light-color;
 }
 
 .tickets {
@@ -64,10 +67,11 @@
 }
 
 .thumbnail {
-    margin-top: $spacer * 2;
     border-radius: $spacer;
     width: 100%;
     height: auto;
+    aspect-ratio: 4/3;
+    object-fit: cover;
     display: none;
     @include media-query("lg") {
         display: block;

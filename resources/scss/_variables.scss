@@ -1,14 +1,16 @@
 $colors: (
     primary: #007fb6,
-    secondary: #21cbb7,
+    secondary: #004c7e,
     success: #28a745,
     danger: #dc3545,
     warning: #ffc107,
-    info: #BCCCCF,
+    //info: #BCCCCF,
+    info: #bbbab9,
     light: #efede9,
     white: #FFFFFF,
     dark: #132437,
-    faded: #698A8F
+    //faded: #698A8F
+    faded: #817f7c
 );
 
 $primary-color: map-get($colors, primary);
@@ -22,8 +24,8 @@ $dark-color: map-get($colors, dark);
 $faded-color: map-get($colors, faded);
 $body-color: $dark-color;
 
-$text-font: "DM Sans", sans-serif;
-$heading-font: "DM Sans", serif;
+$text-font: "Figtree", sans-serif;
+$heading-font: "Figtree", serif;
 
 $spacer: 0.5rem;
 $grid-gutter-width: $spacer*3;

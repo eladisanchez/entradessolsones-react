@@ -25,7 +25,9 @@ const CartItem = ({ item, onRemove, ...props }) => {
               {item.options.hour}
             </span>
           )}
-          <button onClick={() => onRemove(id)}>Elimina</button>
+          <button onClick={() => onRemove(item.id)} className={styles.delete} aria-label="Elimina">
+            Elimina
+          </button>
         </div>
       </div>
       <div className={styles.itemSubtotal}>{item.subtotal} €</div>

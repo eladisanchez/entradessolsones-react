@@ -24,6 +24,8 @@ export default function Checkout({ lastOrder }) {
     legal: false,
   });
 
+  const [code, setCode] = useState("");
+
   const [isLogin, setIsLogin] = useState(false);
 
   const handleSubmit = (e) => {
@@ -35,6 +37,11 @@ export default function Checkout({ lastOrder }) {
     e.preventDefault();
     post("/login");
   };
+
+  const handleApplyCode = (e) => {
+    e.preventDefault();
+    post("/apply-code");
+  }
 
   const { items, total, showCart, removeFromCart, emptyCart, setShowCart } =
     useCart();
@@ -73,7 +80,7 @@ export default function Checkout({ lastOrder }) {
                 onChange={(e) => setData("email", e.target.value)}
               />
               {errors.email && <div>{errors.email}</div>}
-              <Spacer size={2} />
+              <Spacer top={2} />
               <label>
                 <input
                   type="checkbox"
@@ -126,16 +133,13 @@ export default function Checkout({ lastOrder }) {
                 onChange={(e) => setData("observations", e.target.value)}
                 rows={3}
               />
-              <Spacer size={4} />
+              <Spacer top={4} />
               <TextFormat color="faded" block={true}>
                 Al confirmar la comanda sereu redirigits a la passarel·la de
-                pagament.{" "}
-                <strong>
-                  Seguiu les instruccions d'autenticació de la vostra entitat
+                pagament. Seguiu les instruccions d'autorització de la vostra entitat
                   bancària.
-                </strong>
               </TextFormat>
-              <Spacer size={4} />
+              <Spacer top={4} />
               <Button disabled={processing} size="lg" block={true}>
                 Finalitza la compra
               </Button>
@@ -145,13 +149,23 @@ export default function Checkout({ lastOrder }) {
                 items.map(([id, item]) => (
                   <CartItem item={item} key={id} onRemove={removeFromCart} />
                 ))}
+              <form onSubmit={handleApplyCode}>
+                <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
+                <Input
+                  type="text"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder="Tens un codi de descompte?"
+                />
+                <Button block>Aplica</Button>
+                </Flex>
+              </form>
             </div>
           </Grid>
         </Container>
         <Modal
           isOpen={isLogin}
           onClose={() => {
-            console.log("close");
             setIsLogin(false);
           }}
         >

@@ -1,14 +1,27 @@
+@use '@/styles' as *;
+
 .search {
-    width: 320px !important;
     background: transparent;
     color: #fff;
     border: 1px solid #fff;
+    display: none;
     input {
         &::placeholder {
             color: rgba(255, 255, 255, 0.7);
+            text-overflow: ellipsis;
         }
+        color: #FFF;
     }
     &.focused {
         border: 1px solid rgba(#FFF,.5);
+    }
+    @include media-query("md") {
+        width: 320px !important;
+    }
+    @include media-query("sm") {
+        display: block;
+    }
+    [placeholder]{
+        text-overflow: ellipsis;
     }
 }

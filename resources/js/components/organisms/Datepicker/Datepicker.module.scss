@@ -1,13 +1,8 @@
 @use '@/styles' as *;
 
 .calendar {
-    width: 100%;
-    max-width: 400px;
     span[class~="p-calendar"] {
         width: 100%;
-        background: #FFF;
-        padding: $spacer;
-        border-radius: $spacer;
     }
     table td > span {
         width: 2.5rem;
@@ -15,6 +10,10 @@
         border-radius: 50%;
         transition: box-shadow 0.2s;
         border: 1px solid transparent;
+        font-weight: bold;
+    }
+    table [class~="p-datepicker"] {
+        width: 100% !important;
     }
     table [class~="p-datepicker-today"] > span {
         background: #d1d5db;
@@ -27,13 +26,14 @@
     }
     table td > [class~="p-disabled"] {
         color: #afafaf;
+        font-weight: normal;
     }
 
     [class~="p-datepicker-header"] {
-        padding: $spacer/2 $spacer;
+        //padding: $spacer/2 $spacer;
+        padding-bottom: $spacer*2;
         color: $primary-color;
         background: #FFF;
-        border-radius: $spacer $spacer 0 0;
         > button {
             border: 0;
             background: transparent;
@@ -48,6 +48,7 @@
     [class~="p-datepicker-month"] {
         font-weight: bold;
         margin-right: $spacer/2;
+        text-transform: capitalize;
     }
 
     > [class~="p-highlight"] {

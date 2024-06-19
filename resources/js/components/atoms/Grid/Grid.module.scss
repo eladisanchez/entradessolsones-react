@@ -19,7 +19,7 @@
 }
 .two {
     @include media-query("lg") {
-        grid-template-columns: 3fr 9fr;
+        grid-template-columns: 8fr 4fr;
         column-gap: $grid-gutter-width;
     }
 }
@@ -32,6 +32,6 @@
 .checkout {
     @include media-query("sm") {
         grid-template-columns: 8fr 4fr;
-        column-gap: $grid-gutter-width;
+        column-gap: 0;
     }
 }

@@ -10,7 +10,7 @@ const calendar = {
         "dissabte",
     ],
     dayNamesShort: ["dg", "dl", "dm", "dc", "dj", "dv", "ds"],
-    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+    dayNamesMin: ["Dg", "Dl", "Dm", "Dc", "Dj", "Dv", "Ds"],
     monthNames: [
         "gener",
         "febrer",

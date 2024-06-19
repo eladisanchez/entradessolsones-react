@@ -2,8 +2,8 @@ import styles from "./Card.module.scss";
 import classNames from "classnames";
 import { margins } from "@/components/helpers";
 
-const Card = ({ children, spacerTop, spacerBottom }) => {
-  const classes = classNames(styles.card, {
+const Card = ({ children, spacerTop, spacerBottom, className }) => {
+  const classes = classNames(styles.card, className, {
     [margins[`mt${spacerTop}`]]: spacerTop,
     [margins[`mb${spacerBottom}`]]: spacerBottom,
   });

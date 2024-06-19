@@ -11,7 +11,7 @@ export default function Layout({ children }) {
       <main>
         <Header url={url}></Header>
         <SideCart />
-        <section>{children}</section>
+        <div className="site-main">{children}</div>
         <BackToTop />
         <Footer />
       </main>

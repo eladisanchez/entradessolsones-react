@@ -48,7 +48,7 @@ class ProductController extends BaseController
 		);
 
 		return Inertia::render('Home', [
-			'products' => $products,
+			'products' => fn() => $products,
 		]);
 
 	}
@@ -79,10 +79,10 @@ class ProductController extends BaseController
 		return Inertia::render('Product', [
 			'product' => $product,
 			'availableDays' => $product->availableDays(),
-			'tickets' => $product->tickets,
-			'rates' => $product->rates,
-			'day' => $day,
-			'hour' => $hour
+			'tickets' => fn() => $product->tickets,
+			'rates' => fn() => $product->rates,
+			'day' => fn() => $day,
+			'hour' => fn() => $hour
 		]);
 
 		// Is a pack

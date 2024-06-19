@@ -2,16 +2,17 @@
 
 .input {
     border: 1px solid $info-color;
-    padding: $spacer;
-    border-radius: $spacer/2;
+    padding: $spacer $spacer * 2;
+    border-radius: $spacer;
     background: #fff;
     width: 100%;
-    transition: .5s ease all;
+    transition: 0.5s ease all;
     label {
         display: block;
         margin-bottom: $spacer/2;
     }
-    input, textarea {
+    input,
+    textarea {
         border: 0;
         padding: 0;
         &:focus {
@@ -20,9 +21,13 @@
         width: 100%;
         font-family: $text-font;
         font-size: 1rem;
+        background: transparent;
     }
     &.focused {
         border-color: $primary-color;
+        label {
+            color: $primary-color;
+        }
     }
     label {
         font-size: 0.8125rem;
