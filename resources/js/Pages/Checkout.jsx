@@ -92,7 +92,7 @@ export default function Checkout({ lastOrder }) {
                   esdeveniments al Solsonès
                 </TextFormat>
               </label>
-              <Heading tag="h3" size={3} spacerTop={6} spacerBottom={1}>
+              <Heading tag="h3" size={3} spacerTop={4} spacerBottom={1}>
                 Dades personals
               </Heading>
               <Flex spacerBottom={1} flexDirection="column">
@@ -104,7 +104,7 @@ export default function Checkout({ lastOrder }) {
                 />
               </Flex>
               {errors.name && <div>{errors.name}</div>}
-              <Flex spacerBottom={6} gap={1}>
+              <Flex spacerBottom={4} gap={1}>
                 <div>
                   <Input
                     type="tel"

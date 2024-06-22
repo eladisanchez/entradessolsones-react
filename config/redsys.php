@@ -8,7 +8,7 @@ return [
     'url_ko'                => config('app.url').'/checkout/card-error',
 
     'merchantCode'          => env('REDSYS_MERCHANT_CODE'),
-    'tradeName'             => 'Solsonès Entrades',
+    'tradeName'             => config('app.name'),
     'terminal'              => '1'
 
 ];

@@ -2,7 +2,7 @@ import { useCart } from "@/contexts/CartContext";
 import { router } from "@inertiajs/react";
 import styles from "./SideCart.module.scss";
 import classNames from "classnames";
-import { Button, Flex, TextFormat, Spacer } from "@/components/atoms";
+import { Button, Flex, TextFormat, Spacer, Icon } from "@/components/atoms";
 import { CartItem } from "@/components/molecules";
 
 const SideCart = () => {
@@ -19,6 +19,11 @@ const SideCart = () => {
 
   return (
     <div className={classes}>
+      <Icon
+        icon="close"
+        className={styles.close}
+        onClick={()=>setShowCart(false)}
+      />
       {items &&
         items.map(([id, item]) => (
           <CartItem item={item} key={id} onRemove={removeFromCart} />

@@ -49,6 +49,7 @@ class ProductController extends BaseController
 
 		return Inertia::render('Home', [
 			'products' => fn() => $products,
+			'featured' => fn() => Product::select(['title','name','summary','image'])->whereIn('id',[565,561])->get()
 		]);
 
 	}

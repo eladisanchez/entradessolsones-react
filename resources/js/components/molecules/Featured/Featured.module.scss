@@ -1,12 +1,46 @@
-@use '@/styles' as *;
+@use "@/styles" as *;
 
 .featured {
-    background: rgba($dark-color,.2);
-    backdrop-filter: blur(12px);
-    //padding: $spacer*4 0;
-    height: 150px;
     position: relative;
     z-index: 10;
-    margin-top: 200px;
+    margin: 3rem 0;
     text-align: center;
+}
+
+.item {
+    max-width: 300px;
+    border-radius: $spacer;
+    background: #FFF;
+    text-align: left;
+    backdrop-filter: blur(5px);
+    transition: .3s ease all;
+    a {
+        display: block;
+        color: $dark-color;
+        text-decoration: none;
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+.thumbnail {
+    width: 97px;
+    height: 97px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: $spacer;
+}
+
+.overlay {
+    align-items: center;
+    padding-right: $spacer*2;
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+    }
+    p {
+        margin-top: $spacer/2;
+        margin-bottom: 0;
+    }
 }

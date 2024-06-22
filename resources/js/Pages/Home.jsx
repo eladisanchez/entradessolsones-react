@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Head } from "@inertiajs/react";
 import { Heading, Container, Grid, Spacer } from "@/components/atoms";
-import { Thumbnail } from "@/components/molecules";
+import { Thumbnail, Featured } from "@/components/molecules";
 import { Waypoint } from "react-waypoint";
 import { HomeNav } from "@/components/organisms";
 
@@ -27,6 +27,7 @@ const Home = ({ products }) => {
       </Head>
       <Container>
         <HomeNav activeSection={activeSection} />
+        <Featured />
         {Object.keys(types).map((type) => (
           <div
             id={types[type]}

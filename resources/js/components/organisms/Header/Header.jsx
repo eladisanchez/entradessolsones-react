@@ -1,5 +1,5 @@
 import { Container, Flex, Icon, Logo } from "@/components/atoms";
-import { SearchForm, Featured } from "@/components/molecules";
+import { SearchForm } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
@@ -56,7 +56,6 @@ const Header = ({ url }) => {
             )}
           </div>
         </Container>
-        { isHome && <Featured /> }
       </header>
     </>
   );
