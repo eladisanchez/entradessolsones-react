@@ -5,10 +5,11 @@ import {
   Container,
   Heading,
   Grid,
-  Button,
   Spacer,
   Flex,
   TextFormat,
+  Tab,
+  Icon,
 } from "@/components/atoms";
 import { Card } from "@/components/molecules";
 import { TicketTable } from "@/components/organisms";
@@ -36,6 +37,12 @@ export default function Product({
   hour,
 }) {
   const [selectedDay, setSelectedDay] = useState(day ? new Date(day) : null);
+
+  const [selectedRate, setSelectedRate] = useState(false);
+
+  const [ticketView, setTicketView] = useState(
+    availableDays.length == 1 ? "list" : "calendar"
+  );
 
   const { addToCart } = useCart();
   const ticketSectionRef = useRef(null);
@@ -65,7 +72,7 @@ export default function Product({
       replace: false,
       preserveState: true,
       preserveScroll: true,
-      only: ['day', 'hour']
+      only: ["day", "hour"],
     };
     if (!e) {
       setSelectedDay(null);
@@ -73,7 +80,6 @@ export default function Product({
       return;
     }
     setSelectedDay(e.value);
-    console.log(ticketsByDay(e.value).length);
     if (ticketsByDay(e.value).length == 1) {
       router.visit(
         `/activitat/${product.name}/${ymd(e.value)}/${ticketsByDay()[0].hour}`,
@@ -90,8 +96,16 @@ export default function Product({
       replace: false,
       preserveState: true,
       preserveScroll: true,
-      only: ['day', 'hour']
+      only: ["day", "hour"],
     });
+  };
+
+  const handleSelectRate = async (data) => {
+    if (!!product.venue_id) {
+      setSelectedRate(data);
+    } else {
+      handleAddToCart(data);
+    }
   };
 
   const handleAddToCart = async (data) => {
@@ -125,17 +139,15 @@ export default function Product({
           }}
         ></div>
         <Container className={styles.productContainer}>
+          <Spacer className={styles.organizer}>
+            <Link href={"/#" + product.target}>{targets[product.target]}</Link>{" "}
+            <span>&#x203A;</span> {product.organizer.username}
+          </Spacer>
+          <Heading tag="h1" color="light" spacerTop={0} spacerBottom={6}>
+            {product.title}
+          </Heading>
           <Grid columns={2}>
             <section>
-              <Spacer className={styles.organizer}>
-                <Link href={"/#" + product.target}>
-                  {targets[product.target]}
-                </Link>{" "}
-                <span>&#x203A;</span> {product.organizer.username}
-              </Spacer>
-              <Heading tag="h1" color="light" spacerTop={0} spacerBottom={6}>
-                {product.title}
-              </Heading>
               {/* <Spacer bottom={3}>
                 <Flex gap={2}>
                   <Button block={true} color="white" outline={true}>
@@ -161,7 +173,7 @@ export default function Product({
               </Card>
             </section>
             <aside>
-              <Spacer bottom={3}>
+              {/* <Spacer bottom={3}>
                 <Button
                   block={true}
                   size="lg"
@@ -173,7 +185,7 @@ export default function Product({
                 >
                   Compra entrades
                 </Button>
-              </Spacer>
+              </Spacer> */}
               <Spacer bottom={3}>
                 <img
                   src={"/image/" + product.image}
@@ -184,11 +196,43 @@ export default function Product({
               <Spacer bottom={3}>
                 {availableDays.length > 0 ? (
                   <Suspense fallback={<div>Carregant...</div>}>
-                    <Datepicker
-                      availableDays={availableDays}
-                      onSelectDay={handleSelectDay}
-                      selectedDay={selectedDay}
-                    />
+                    <Flex>
+                      <Tab
+                        selected={ticketView == "calendar"}
+                        onClick={() => setTicketView("calendar")}
+                      >
+                        <Flex gap="1">
+                          <Icon icon="calendar" />
+                          <span>Calendari</span>
+                        </Flex>
+                      </Tab>
+                      <Tab
+                        selected={ticketView == "list"}
+                        onClick={() => setTicketView("list")}
+                      >
+                        <Flex gap="1">
+                          <Icon icon="list" />
+                          <span>Properes sessions</span>
+                        </Flex>
+                      </Tab>
+                    </Flex>
+                    <Card hasTabs={true}>
+                      {ticketView == "calendar" && (
+                        <Datepicker
+                          availableDays={availableDays}
+                          onSelectDay={handleSelectDay}
+                          selectedDay={selectedDay}
+                        />
+                      )}
+                      {ticketView == "list" && (
+                        <TicketTable
+                          selectedDay={selectedDay}
+                          selectedHour={hour}
+                          productSlug={product.name}
+                          tickets={ticketsByDay()}
+                        ></TicketTable>
+                      )}
+                    </Card>
                   </Suspense>
                 ) : (
                   <Card>
@@ -216,11 +260,32 @@ export default function Product({
                       rates={rates}
                       minQty={product.min_tickets}
                       maxQty={product.max_tickets}
-                      addToCart={handleAddToCart}
+                      selectRate={handleSelectRate}
                       close={handleCloseRate}
                     />
                   </Suspense>
                 </Spacer>
+              )}
+              {selectedRate && (
+                <Suspense fallback={<div>Carregant...</div>}>
+                  <VenueMap
+                    seats={seats}
+                    bookedSeats={[]}
+                    addToCart={(seat) =>
+                      handleAddToCart({
+                        qty: [1],
+                        seats: [
+                          {
+                            s: seat.s,
+                            f: seat.f,
+                            z: seat.z,
+                            r: selectedRate.id,
+                          },
+                        ],
+                      })
+                    }
+                  />
+                </Suspense>
               )}
             </aside>
           </Grid>

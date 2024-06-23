@@ -49,7 +49,7 @@ class ProductController extends BaseController
 
 		return Inertia::render('Home', [
 			'products' => fn() => $products,
-			'featured' => fn() => Product::select(['title','name','summary','image'])->whereIn('id',[565,561])->get()
+			'featured' => fn() => Product::select(['title', 'name', 'summary', 'image'])->whereIn('id', [560, 561])->get()
 		]);
 
 	}
@@ -67,19 +67,29 @@ class ProductController extends BaseController
 				abort(404);
 		}
 
+		$availableDays = $product->availableDays();
+
 		if ($product->is_pack) {
 			return Inertia::render('Pack', [
 				'product' => $product,
-				'availableDays' => $product->availableDays(),
+				'availableDays' => $availableDays,
 				'tickets' => $product->tickets,
 				'day' => $day,
 				'hour' => $hour
 			]);
 		}
 
+		if (!$day && !$hour && $availableDays->count() == 1) {
+			return redirect()->route('product', [
+				'name' => $product->name,
+				'day' => $availableDays[0]->format('Y-m-d'),
+				'hour' => null,
+			]);
+		}
+
 		return Inertia::render('Product', [
 			'product' => $product,
-			'availableDays' => $product->availableDays(),
+			'availableDays' => $availableDays,
 			'tickets' => fn() => $product->tickets,
 			'rates' => fn() => $product->rates,
 			'day' => fn() => $day,
@@ -112,19 +122,6 @@ class ProductController extends BaseController
 				return $key->id == $product->id;
 			});
 
-
-			// NO HI HA ENTRADES
-			$entrades = $product->tickets;
-			if (!$entrades->count()) {
-				return view(
-					'product',
-					array(
-						'product' => $product,
-						'subcistell' => $subcistell,
-						'pack' => $pack
-					)
-				)->with('message', 'No.');
-			}
 
 			// Redirigir a única funció disponible
 			if (!$day && !$hour && $entrades->count() == 1) {

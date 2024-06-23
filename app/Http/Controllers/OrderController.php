@@ -52,8 +52,8 @@ class OrderController extends BaseController
 
 		$this->cleanNonProcessed();
 
-		if (!Cart::count()) {
-			return redirect()->route('inici');
+		if (!Cart::instance('shoipping')->count()) {
+			return redirect()->route('home');
 		}
 
 		// Delete order with same session id when user goes back

@@ -25,7 +25,7 @@ const CartItem = ({ item, onRemove, ...props }) => {
               {item.options.hour}
             </span>
           )}
-          <button onClick={() => onRemove(item.id)} className={styles.delete} aria-label="Elimina">
+          <button onClick={() => onRemove(item.rowId)} className={styles.delete} aria-label="Elimina">
             Elimina
           </button>
         </div>

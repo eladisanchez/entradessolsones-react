@@ -41,7 +41,7 @@ export default function Checkout({ lastOrder }) {
   const handleApplyCode = (e) => {
     e.preventDefault();
     post("/apply-code");
-  }
+  };
 
   const { items, total, showCart, removeFromCart, emptyCart, setShowCart } =
     useCart();
@@ -52,6 +52,26 @@ export default function Checkout({ lastOrder }) {
       <div className={styles.checkout}>
         <Container>
           <Grid columns="checkout">
+            <div className={styles.cart}>
+              {items &&
+                items.map(([id, item]) => (
+                  <CartItem item={item} key={id} onRemove={removeFromCart} />
+                ))}
+              <Spacer bottom={3}>
+                <TextFormat textAlign="right">Total: {total} €</TextFormat>
+              </Spacer>
+              <form onSubmit={handleApplyCode}>
+                <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
+                  <Input
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="Tens un codi de descompte?"
+                  />
+                  <Button>Aplica</Button>
+                </Flex>
+              </form>
+            </div>
             <form onSubmit={handleSubmit} className={styles.form}>
               <Flex
                 spacerBottom={1}
@@ -136,31 +156,14 @@ export default function Checkout({ lastOrder }) {
               <Spacer top={4} />
               <TextFormat color="faded" block={true}>
                 Al confirmar la comanda sereu redirigits a la passarel·la de
-                pagament. Seguiu les instruccions d'autorització de la vostra entitat
-                  bancària.
+                pagament. Seguiu les instruccions d'autorització de la vostra
+                entitat bancària.
               </TextFormat>
               <Spacer top={4} />
               <Button disabled={processing} size="lg" block={true}>
                 Finalitza la compra
               </Button>
             </form>
-            <div className={styles.cart}>
-              {items &&
-                items.map(([id, item]) => (
-                  <CartItem item={item} key={id} onRemove={removeFromCart} />
-                ))}
-              <form onSubmit={handleApplyCode}>
-                <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
-                <Input
-                  type="text"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder="Tens un codi de descompte?"
-                />
-                <Button block>Aplica</Button>
-                </Flex>
-              </form>
-            </div>
           </Grid>
         </Container>
         <Modal

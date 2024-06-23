@@ -22,7 +22,7 @@ const SideCart = () => {
       <Icon
         icon="close"
         className={styles.close}
-        onClick={()=>setShowCart(false)}
+        onClick={() => setShowCart(false)}
       />
       {items &&
         items.map(([id, item]) => (
@@ -44,23 +44,20 @@ const SideCart = () => {
             >
               Finalitza la comanda
             </Button>
-            <Button onClick={() => setShowCart(false)} block={true} link={true}>
-              Continua comprant
-            </Button>
           </Flex>
         </>
       ) : (
-        <>
-          <Spacer bottom={3}>
-            <TextFormat color="faded" textAlign="center">
-              El cistell és buit
-            </TextFormat>
-          </Spacer>
-          <Button onClick={() => setShowCart(false)} block={true} link={true}>
-            Continua comprant
-          </Button>
-        </>
+        <Spacer bottom={3}>
+          <TextFormat color="faded" textAlign="center">
+            El cistell és buit
+          </TextFormat>
+        </Spacer>
       )}
+      <Spacer top={2}>
+        <Button onClick={() => setShowCart(false)} block={true} link={true}>
+          Continua comprant
+        </Button>
+      </Spacer>
     </div>
   );
 };

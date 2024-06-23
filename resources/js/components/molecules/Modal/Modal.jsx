@@ -8,7 +8,7 @@ const Modal = ({ children, isOpen, onClose, width = 500 }) => {
 
   return (
     <div className={classes}>
-      <div className={styles.content} style={{ width: width + "px" }}>
+      <div className={styles.content} style={{ maxWidth: width + "px" }}>
         {children}
       </div>
       <div

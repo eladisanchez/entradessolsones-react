@@ -383,7 +383,9 @@ class CartController extends BaseController
 		$order = Order::where('session', Session::getId())->where('paid', 0)->where('payment', 'targeta')->orderBy('created_at', 'desc')->first();
 		if ($order) {
 			return abort(404);
-			return redirect()->route('checkout-tpv-ko', ['id' => $order->id]);
+		}
+		if (!Cart::instance('shopping')->count()) {
+			return redirect()->route('home');
 		}
 		$lastOrder = false;
 		if (auth()->check()) {

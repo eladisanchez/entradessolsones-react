@@ -1,0 +1,19 @@
+@use '@/styles' as *;
+
+.tab {
+    display: inline-block;
+    padding: $spacer $spacer*2;
+    background: transparent;
+    color: $dark-color;
+    border-radius: $spacer $spacer 0 0;
+    border: 0;
+    font-family: $text-font;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all .3s;
+}
+.selected {
+    background: #FFF;
+}

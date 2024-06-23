@@ -8,6 +8,7 @@ import Input from "./Input/Input";
 import Logo from "./Logo/Logo";
 import TextFormat from "./TextFormat/TextFormat";
 import Spacer from "./Spacer/Spacer";
+import Tab from "./Tab/Tab";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Logo,
   TextFormat,
   Spacer,
+  Tab
 };

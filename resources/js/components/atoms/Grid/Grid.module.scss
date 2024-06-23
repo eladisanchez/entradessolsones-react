@@ -30,7 +30,12 @@
     }
 }
 .checkout {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
     @include media-query("sm") {
+        display: grid;
+        grid-template-areas: "checkout cart";
         grid-template-columns: 8fr 4fr;
         column-gap: 0;
     }

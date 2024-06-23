@@ -6,13 +6,13 @@ import styles from "./RateSelect.module.scss";
 import { useCart } from "@/contexts/CartContext";
 
 const RateSelect = ({
-  step = 3,
   rates,
   minQty,
   maxQty,
   seat,
   close,
-  addToCart,
+  selectRate,
+  venue
 }) => {
   const [selected, setSelected] = useState({});
   const { toggleCart } = useCart();
@@ -46,7 +46,7 @@ const RateSelect = ({
 
   const handleAddToCart = () => {
     close();
-    addToCart({
+    selectRate({
       qty: selectedQtys,
       rates: selectedRates,
     });
