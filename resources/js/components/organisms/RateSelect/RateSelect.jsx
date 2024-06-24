@@ -12,7 +12,7 @@ const RateSelect = ({
   seat,
   close,
   selectRate,
-  venue
+  venue,
 }) => {
   const [selected, setSelected] = useState({});
   const { toggleCart } = useCart();
@@ -55,73 +55,69 @@ const RateSelect = ({
 
   return (
     <>
-      {/* <div className={styles.modalOverlay} onClick={close} /> */}
-      {/* <Heading tag="h3" size={3} spacerBottom={2}>
-        <TextFormat fontWeight="bold" color="primary">
-          {step}.{" "}
-        </TextFormat>
-        Tria les entrades
-      </Heading> */}
-      <Card>
-        {rates.map((rate, i) => (
-          <>
-            {i > 0 && <hr />}
-            <Flex spacerBottom={1} gap={2} alignItems="center">
-              <div className={styles.labelCol}>
-                <label htmlFor={inputId + "-" + rate.id} class={styles.label}>
-                  {rate.title}
-                  <br />
-                  <TextFormat color="faded" fontSize="sm">
-                    {rate.pivot.price} € / entrada
-                  </TextFormat>
-                </label>
-              </div>
-              <div className={styles.quantityCol}>
-                <InputNumber
-                  className={styles.inputNumber}
-                  value={selected[rate.id] ?? 0}
-                  onValueChange={(e) => handleAddTicket(rate.id, e.value)}
-                  mode="decimal"
-                  showButtons
-                  buttonLayout="horizontal"
-                  incrementButtonIcon={<span>+</span>}
-                  decrementButtonIcon={<span>-</span>}
-                  min={0}
-                  max={maxQty}
-                  inputId={inputId + "-" + rate.id}
-                />
-              </div>
-
-              <div className={styles.totalCol}>
-                <TextFormat>
-                  {rate.pivot.price * (selected[rate.id] ?? 0)} €
+      {rates.map((rate, i) => (
+        <>
+          {i > 0 && <hr />}
+          <Flex spacerBottom={1} gap={2} alignItems="center">
+            <div className={styles.labelCol}>
+              <label htmlFor={inputId + "-" + rate.id} class={styles.label}>
+                {rate.title}
+                <br />
+                <TextFormat color="faded" fontSize="sm">
+                  {rate.pivot.price} € / entrada
                 </TextFormat>
-              </div>
-            </Flex>
-          </>
-        ))}
-        <Flex
-          spacerTop={3}
-          spacerBottom={3}
-          gap={3}
-          alignItems="flex-end"
-          justifyContent="space-between"
-        >
-          <TextFormat color="faded">
-            {countTickets}{" "}
-            {countTickets == 1
-              ? "Entrada seleccionada"
-              : "Entrades seleccionades"}
-          </TextFormat>
-          <div className={styles.totalCol}>
-            <TextFormat fontWeight="bold">{price()} €</TextFormat>
-          </div>
-        </Flex>
+              </label>
+            </div>
+            <div className={styles.quantityCol}>
+              <InputNumber
+                className={styles.inputNumber}
+                value={selected[rate.id] ?? 0}
+                onValueChange={(e) => handleAddTicket(rate.id, e.value)}
+                mode="decimal"
+                showButtons
+                buttonLayout="horizontal"
+                incrementButtonIcon={<span>+</span>}
+                decrementButtonIcon={<span>-</span>}
+                min={0}
+                max={maxQty}
+                inputId={inputId + "-" + rate.id}
+              />
+            </div>
 
-        <Button block={true} onClick={handleAddToCart} size="lg" disabled={!countTickets}>
-          Afegeix al cistell
-        </Button>
-      </Card>
+            <div className={styles.totalCol}>
+              <TextFormat>
+                {rate.pivot.price * (selected[rate.id] ?? 0)} €
+              </TextFormat>
+            </div>
+          </Flex>
+        </>
+      ))}
+      <Flex
+        spacerTop={3}
+        spacerBottom={3}
+        gap={3}
+        alignItems="flex-end"
+        justifyContent="space-between"
+      >
+        <TextFormat color="faded">
+          {countTickets}{" "}
+          {countTickets == 1
+            ? "Entrada seleccionada"
+            : "Entrades seleccionades"}
+        </TextFormat>
+        <div className={styles.totalCol}>
+          <TextFormat fontWeight="bold">{price()} €</TextFormat>
+        </div>
+      </Flex>
+
+      <Button
+        block={true}
+        onClick={handleAddToCart}
+        size="lg"
+        disabled={!countTickets}
+      >
+        Afegeix al cistell
+      </Button>
     </>
   );
 };

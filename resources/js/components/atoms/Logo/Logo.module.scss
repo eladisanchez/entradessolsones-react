@@ -1,0 +1,9 @@
+@use '@/styles' as *;
+
+.logo {
+    width: 200px;
+    height: auto;
+    @include media-query('sm') {
+        width: 255px;
+    }
+}

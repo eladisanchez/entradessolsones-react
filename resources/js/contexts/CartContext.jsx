@@ -59,9 +59,27 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
     }
   };
 
-  const items = Object.entries(cart.items);
+  const applyCoupon = async (code) => {
+    const response = await fetch("/cart/code", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code, _token: csrf }),
+    });
+    const cart = await response.json();
+    if (cart.error) {
+      alert(cart.error);
+    } else {
+      setCart(cart);
+    }
+  }
+
+  const items = cart ? Object.entries(cart.items) : [];
 
   const countTickets = () => {
+    if (!items) return 0;
     return items.reduce((t, item) => t + (item.qty??0), 0);
   }
 
@@ -69,7 +87,7 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
     <CartContext.Provider
       value={{
         items,
-        total: cart.total,
+        total: cart?.total ?? 0,
         count: countTickets(),
         showCart,
         setShowCart,
@@ -78,6 +96,7 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
         addToCart,
         removeFromCart,
         emptyCart,
+        applyCoupon
       }}
     >
       {children}

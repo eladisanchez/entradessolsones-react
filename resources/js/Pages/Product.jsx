@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef, useEffect } from "react";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import {
@@ -12,10 +12,10 @@ import {
   Icon,
 } from "@/components/atoms";
 import { Card } from "@/components/molecules";
-import { TicketTable } from "@/components/organisms";
+import { TicketTable, TicketList } from "@/components/organisms";
 import { useCart } from "@/contexts/CartContext";
 import styles from "./Product.module.scss";
-import { ymd } from "@/utils/date";
+import { ymd, dayFormatted } from "@/utils/date";
 import { Link } from "@inertiajs/react";
 
 const Datepicker = React.lazy(() =>
@@ -45,13 +45,13 @@ export default function Product({
   );
 
   const { addToCart } = useCart();
+  const daySectionRef = useRef(null);
   const ticketSectionRef = useRef(null);
 
   const ticketsByDay = (day) => {
     const queryDay = day ?? selectedDay;
     if (queryDay) {
-      console.log(queryDay);
-      const formattedDay = ymd(selectedDay);
+      const formattedDay = ymd(queryDay);
       return tickets.filter((ticket) => {
         return ticket.day == formattedDay;
       });
@@ -80,7 +80,8 @@ export default function Product({
       return;
     }
     setSelectedDay(e.value);
-    if (ticketsByDay(e.value).length == 1) {
+    const tickets = ticketsByDay(e.value);
+    if (tickets.length == 1) {
       router.visit(
         `/activitat/${product.name}/${ymd(e.value)}/${ticketsByDay()[0].hour}`,
         visitOptions
@@ -123,6 +124,20 @@ export default function Product({
     esdeveniments: "Teatre, concerts i esdeveniments",
     altres: "Altres activitats",
   };
+
+  useEffect(() => {
+    if (day) {
+      if (hour) {
+        if (ticketSectionRef.current) {
+          ticketSectionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        if (daySectionRef.current) {
+          daySectionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  }, [ticketSectionRef.current, day, hour, daySectionRef.current]);
 
   return (
     <>
@@ -193,78 +208,93 @@ export default function Product({
                   className={styles.thumbnail}
                 />
               </Spacer>
-              <Spacer bottom={3}>
-                {availableDays.length > 0 ? (
-                  <Suspense fallback={<div>Carregant...</div>}>
-                    <Flex>
-                      <Tab
-                        selected={ticketView == "calendar"}
-                        onClick={() => setTicketView("calendar")}
-                      >
-                        <Flex gap="1">
-                          <Icon icon="calendar" />
-                          <span>Calendari</span>
-                        </Flex>
-                      </Tab>
-                      <Tab
-                        selected={ticketView == "list"}
-                        onClick={() => setTicketView("list")}
-                      >
-                        <Flex gap="1">
-                          <Icon icon="list" />
-                          <span>Properes sessions</span>
-                        </Flex>
-                      </Tab>
-                    </Flex>
-                    <Card hasTabs={true}>
-                      {ticketView == "calendar" && (
-                        <Datepicker
-                          availableDays={availableDays}
-                          onSelectDay={handleSelectDay}
-                          selectedDay={selectedDay}
-                        />
-                      )}
-                      {ticketView == "list" && (
-                        <TicketTable
-                          selectedDay={selectedDay}
-                          selectedHour={hour}
-                          productSlug={product.name}
-                          tickets={ticketsByDay()}
-                        ></TicketTable>
-                      )}
+              <div ref={daySectionRef}>
+                <Spacer bottom={3}>
+                  {availableDays.length > 0 ? (
+                    <Suspense fallback={<div>Carregant...</div>}>
+                      <Flex>
+                        <Tab
+                          selected={ticketView == "calendar"}
+                          onClick={() => setTicketView("calendar")}
+                        >
+                          <Flex gap="1" alignItems="center">
+                            <Icon icon="calendar" />
+                            <span>Calendari</span>
+                          </Flex>
+                        </Tab>
+                        <Tab
+                          selected={ticketView == "list"}
+                          onClick={() => setTicketView("list")}
+                        >
+                          <Flex gap="1" alignItems="center">
+                            <Icon icon="list" />
+                            <span>Properes sessions</span>
+                          </Flex>
+                        </Tab>
+                      </Flex>
+                      <Card hasTabs={true}>
+                        {ticketView == "calendar" && (
+                          <>
+                            <Datepicker
+                              availableDays={availableDays}
+                              onSelectDay={handleSelectDay}
+                              selectedDay={selectedDay}
+                            />
+                            {selectedDay && ticketsByDay().length > 1 && (
+                              <Spacer top={1}>
+                                <hr />
+                                <Spacer top={1}>
+                                  <TicketList
+                                    selectedDay={selectedDay}
+                                    selectedHour={hour}
+                                    productSlug={product.name}
+                                    tickets={ticketsByDay()}
+                                  />
+                                </Spacer>
+                              </Spacer>
+                            )}
+                          </>
+                        )}
+                        {ticketView == "list" && (
+                          <TicketTable
+                            selectedDay={selectedDay}
+                            selectedHour={hour}
+                            productSlug={product.name}
+                            tickets={tickets}
+                          ></TicketTable>
+                        )}
+                      </Card>
+                    </Suspense>
+                  ) : (
+                    <Card>
+                      <TextFormat color="faded" textAlign="center">
+                        Actualment no hi ha dates disponibles per aquesta
+                        activitat.
+                      </TextFormat>
                     </Card>
-                  </Suspense>
-                ) : (
-                  <Card>
-                    <TextFormat color="faded" textAlign="center">
-                      Actualment no hi ha dates disponibles per aquesta
-                      activitat.
-                    </TextFormat>
-                  </Card>
-                )}
-              </Spacer>
-              {availableDays.length > 0 && (
-                <Spacer bottom={3}>
-                  <TicketTable
-                    selectedDay={selectedDay}
-                    selectedHour={hour}
-                    productSlug={product.name}
-                    tickets={ticketsByDay()}
-                  ></TicketTable>
+                  )}
                 </Spacer>
-              )}
+              </div>
               {hour && (
-                <Spacer bottom={3}>
-                  <Suspense fallback={<div>Carregant...</div>}>
-                    <RateSelect
-                      rates={rates}
-                      minQty={product.min_tickets}
-                      maxQty={product.max_tickets}
-                      selectRate={handleSelectRate}
-                      close={handleCloseRate}
-                    />
-                  </Suspense>
-                </Spacer>
+                <div ref={ticketSectionRef}>
+                  <Spacer bottom={3}>
+                    <Suspense fallback={<div>Carregant...</div>}>
+                      <Card>
+                        <Heading tag="h3" size={4} spacerBottom={3}>
+                          Entrades per al {dayFormatted(selectedDay)} a les{" "}
+                          {hour} h
+                        </Heading>
+                        <RateSelect
+                          rates={rates}
+                          minQty={product.min_tickets}
+                          maxQty={product.max_tickets}
+                          selectRate={handleSelectRate}
+                          close={handleCloseRate}
+                        />
+                      </Card>
+                    </Suspense>
+                  </Spacer>
+                </div>
               )}
               {selectedRate && (
                 <Suspense fallback={<div>Carregant...</div>}>

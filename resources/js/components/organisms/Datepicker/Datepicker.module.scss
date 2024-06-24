@@ -21,8 +21,8 @@
         border-color: transparent;
     }
     table td > [class~="p-highlight"] {
-        color: #0e7490;
-        background: #ecfeff;
+        color: #FFF;
+        background: $primary-color;
     }
     table td > [class~="p-disabled"] {
         color: #afafaf;

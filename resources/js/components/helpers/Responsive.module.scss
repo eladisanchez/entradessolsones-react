@@ -1,0 +1,14 @@
+@use '@/styles' as *;
+
+@each $breakpoint in $breakpoints {
+  .hide-#{$breakpoint} {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+        display: none;
+    }
+  }
+  .show-#{$breakpoint} {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+        display: none;
+    }
+  }
+}

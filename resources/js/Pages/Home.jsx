@@ -27,7 +27,7 @@ const Home = ({ products }) => {
       </Head>
       <Container>
         <HomeNav activeSection={activeSection} />
-        <Featured />
+        {/* <Featured /> */}
         {Object.keys(types).map((type) => (
           <div
             id={types[type]}

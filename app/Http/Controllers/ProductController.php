@@ -79,13 +79,13 @@ class ProductController extends BaseController
 			]);
 		}
 
-		if (!$day && !$hour && $availableDays->count() == 1) {
-			return redirect()->route('product', [
-				'name' => $product->name,
-				'day' => $availableDays[0]->format('Y-m-d'),
-				'hour' => null,
-			]);
-		}
+		// if (!$day && !$hour && $availableDays->count() == 1) {
+		// 	return redirect()->route('product', [
+		// 		'name' => $product->name,
+		// 		'day' => $availableDays[0]->format('Y-m-d'),
+		// 		'hour' => null,
+		// 	]);
+		// }
 
 		return Inertia::render('Product', [
 			'product' => $product,

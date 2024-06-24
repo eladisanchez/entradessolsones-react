@@ -1,5 +1,5 @@
 import styles from "./Footer.module.scss";
-import { Container, Grid, TextFormat } from "@/components/atoms";
+import { Container, Grid, Flex } from "@/components/atoms";
 import { Link } from "@inertiajs/react";
 
 const Footer = () => {
@@ -19,24 +19,22 @@ const Footer = () => {
             </div>
             <div>
               <p>
-                  <strong>Oficina de Turisme del Solsonès</strong>
-                  <br />
-                  Ctra. de Bassella, 1<br />
-                  25280 Solsona
-                  <br />
-                  Tel. 973 48 23 10
+                <strong>Oficina de Turisme del Solsonès</strong>
+                <br />
+                Ctra. de Bassella, 1<br />
+                25280 Solsona
+                <br />
+                Tel. 973 48 23 10
               </p>
             </div>
             <div>
-              <Link href="">Com puc vendre entrades?</Link>
-              <br />
-              <Link href="">Condicions d'ús</Link>
-              <br />
-              <Link href="">Protecció de dades</Link>
-              <br />
-              <Link href="">Avís legal</Link>
-              <br />
-              <Link href="">Contacte</Link>
+              <Flex gap={1} flexDirection="column">
+                <Link href="">Com puc vendre entrades?</Link>
+                <Link href="">Condicions d'ús</Link>
+                <Link href="">Protecció de dades</Link>
+                <Link href="">Avís legal</Link>
+                <Link href="">Contacte</Link>
+              </Flex>
             </div>
           </Grid>
         </Container>

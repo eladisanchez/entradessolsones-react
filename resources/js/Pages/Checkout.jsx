@@ -24,6 +24,9 @@ export default function Checkout({ lastOrder }) {
     legal: false,
   });
 
+  const { items, total, removeFromCart, applyCoupon } =
+    useCart();
+
   const [code, setCode] = useState("");
 
   const [isLogin, setIsLogin] = useState(false);
@@ -38,13 +41,12 @@ export default function Checkout({ lastOrder }) {
     post("/login");
   };
 
-  const handleApplyCode = (e) => {
+  const handleApplyCoupon = (e) => {
     e.preventDefault();
-    post("/apply-code");
+    applyCoupon()
   };
 
-  const { items, total, showCart, removeFromCart, emptyCart, setShowCart } =
-    useCart();
+  
 
   return (
     <>
@@ -60,7 +62,7 @@ export default function Checkout({ lastOrder }) {
               <Spacer bottom={3}>
                 <TextFormat textAlign="right">Total: {total} €</TextFormat>
               </Spacer>
-              <form onSubmit={handleApplyCode}>
+              <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
                   <Input
                     type="text"

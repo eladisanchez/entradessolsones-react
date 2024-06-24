@@ -29,6 +29,7 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::get('/cart/destroy',[CartController::class,'destroy']);
 	Route::post('/cart/add',[CartController::class,'add']);
 	Route::post('/cart/remove',[CartController::class,'removeRow']);
+	Route::post('/cart/coupon',[CartController::class,'applyCoupon']);
 
 	Route::get('activitat/{name?}/{day?}/{hour?}', [ProductController::class, 'show'])
 		->where('day', '^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')

@@ -1,12 +1,12 @@
 @use "../styles" as *;
 
 .checkout {
+    background: #fff;
     @include media-query("sm") {
         background: linear-gradient(90deg, #fff 50%, $light-color 50%);
     }
 }
 .form {
-    
     padding-bottom: 100px;
     grid-area: checkout;
     @include media-query("sm") {
@@ -17,9 +17,10 @@
 }
 .cart {
     padding-top: 140px;
-    background: $light-color;
+    background: #fff;
     grid-area: cart;
     @include media-query("sm") {
+        background: $light-color;
         padding-left: $spacer * 6;
     }
 }

@@ -1,69 +1,37 @@
-import React from 'react';
+import React from "react";
+import styles from "./Icon.module.scss";
+import classNames from "classnames";
 
 const icons = {
   calendar: (
     <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
     >
       <path
-        d="M1 4C1 2.9 1.9 2 3 2H17C17.5304 2 18.0391 2.21071 18.4142 2.58579C18.7893 2.96086 19 3.46957 19 4V18C19 18.5304 18.7893 19.0391 18.4142 19.4142C18.0391 19.7893 17.5304 20 17 20H3C2.46957 20 1.96086 19.7893 1.58579 19.4142C1.21071 19.0391 1 18.5304 1 18V4ZM3 6V18H17V6H3ZM5 0H7V2H5V0ZM13 0H15V2H13V0ZM5 9H7V11H5V9ZM5 13H7V15H5V13ZM9 9H11V11H9V9ZM9 13H11V15H9V13ZM13 9H15V11H13V9ZM13 13H15V15H13V13Z"
-        fill="#132437"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
       />
     </svg>
   ),
   list: (
     <svg
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
     >
       <path
-        d="M7.33337 5.5H19.25"
-        stroke="#132437"
-        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-      />
-      <path
-        d="M7.33337 11H19.25"
-        stroke="#132437"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M7.33337 16.5H19.25"
-        stroke="#132437"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M2.75 5.5H2.75875"
-        stroke="#132437"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M2.75 11H2.75875"
-        stroke="#132437"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M2.75 16.5H2.75875"
-        stroke="#132437"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
       />
     </svg>
   ),
@@ -114,12 +82,45 @@ const icons = {
       />
     </svg>
   ),
+  hour: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+      />
+    </svg>
+  ),
+  menu: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+      />
+    </svg>
+  ),
 };
 
-const Icon = ({ icon, ...props }) => {
+const Icon = ({ icon, className, ...props }) => {
   const iconElement = icons[icon];
   if (!iconElement) return null;
-  return React.cloneElement(iconElement, { ...props });
+  const classes = classNames(styles.icon, className);
+  return React.cloneElement(iconElement, { ...props, className: classes });
 };
 
 export default Icon;

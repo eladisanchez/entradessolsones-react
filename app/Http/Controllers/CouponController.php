@@ -15,49 +15,48 @@ class CouponController extends BaseController
 	public function apply(): RedirectResponse
 	{
 
-		$coupons = Coupon::where('coupon', request()->input('coupon'))
+		if (Session::has('coupon')) {
+			return response()->json([
+				'items' => Cart::instance('shopping')->content(),
+				'total' => Cart::instance('shopping')->total(),
+				'message' => 'Ja has aplicat un descompte'
+			]);
+		}
+
+		$coupons = Coupon::where('coupon', request()->input('code'))
 			->where('validity', '>', date('Y-m-d'))
 			->get();
 
-		if (count($coupons) > 0) {
+		if (!count($coupons)) {
+			return response()->json([
+				'items' => Cart::instance('shopping')->content(),
+				'total' => Cart::instance('shopping')->total(),
+				'message' => 'El codi promocional no és vàlid.'
+			]);
+		}
 
-			if (!Session::has('codi')) {
-
-				foreach ($coupons as $codi) {
-
-					if (!Session::has('codi.p' . $codi->producte_id . '_t' . $codi->tarifa_id)) {
-
-						Session::put('codi.p' . $codi->producte_id . '_t' . $codi->tarifa_id, true);
-
-						$productsCistell = Cart::search(function ($q, $v) use ($codi) {
-							return $q->options->id_producte == $codi->producte_id && $q->options->id_tarifa == $codi->tarifa_id;
-						});
-
-						if ($productsCistell) {
-							foreach ($productsCistell as $prod) {
-								$noupreu = $prod->price * (1 - $codi->descompte / 100);
-								Cart::update($prod->rowId, array('price' => $noupreu));
-							}
-						}
-
+		foreach ($coupons as $coupon) {
+			if (!Session::has('coupon.p' . $coupon->product_id . '_t' . $coupon->rate_id)) {
+				Session::put('coupon.p' . $coupon->product_id . '_t' . $coupon->rate_id, true);
+				$cartProducts = Cart::instance('shopping')->search(function ($q, $v) use ($coupon) {
+					return $q->options->product_id == $coupon->product_id && $q->options->rate_id == $coupon->rate_id;
+				});
+				if ($cartProducts) {
+					foreach ($cartProducts as $product) {
+						$newPrice = $product->price * (1 - $coupon->discount / 100);
+						Cart::update($product->rowId, array('price' => $newPrice));
 					}
-
 				}
-
-				Session::put('codi.nom', request()->input('codi'));
-				Session::put('codi.descompte', $codi->descompte);
-				return redirect()->route('cart')->with('message', 'Codi promocional correcte!');
-
 			}
-
-			return redirect()->route('cart')->with('message', 'Ja has aplicat un descompte');
-
 		}
+		Session::put('coupon.name', request()->input('code'));
+		Session::put('coupon.discount', $coupon->discount);
 
-		// Codi incorrecte
-		else {
-			return redirect()->route('cart')->with('message', 'El codi promocional no és vàlid.');
-		}
+		return response()->json([
+			'items' => Cart::instance('shopping')->content(),
+			'total' => Cart::instance('shopping')->total(),
+			'message' => 'Codi aplicat correctament'
+		]);
 
 	}
 
