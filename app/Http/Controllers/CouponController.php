@@ -6,24 +6,25 @@ use Illuminate\Routing\Controller as BaseController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\Coupon;
 use Session;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 
 class CouponController extends BaseController
 {
 
 
-	public function apply(): RedirectResponse
+	public function apply(): JsonResponse
 	{
 
 		if (Session::has('coupon')) {
 			return response()->json([
 				'items' => Cart::instance('shopping')->content(),
 				'total' => Cart::instance('shopping')->total(),
+				'status' => 'error',
 				'message' => 'Ja has aplicat un descompte'
 			]);
 		}
 
-		$coupons = Coupon::where('coupon', request()->input('code'))
+		$coupons = Coupon::where('code', request()->input('code'))
 			->where('validity', '>', date('Y-m-d'))
 			->get();
 
@@ -31,6 +32,7 @@ class CouponController extends BaseController
 			return response()->json([
 				'items' => Cart::instance('shopping')->content(),
 				'total' => Cart::instance('shopping')->total(),
+				'status' => 'error',
 				'message' => 'El codi promocional no és vàlid.'
 			]);
 		}
@@ -55,6 +57,7 @@ class CouponController extends BaseController
 		return response()->json([
 			'items' => Cart::instance('shopping')->content(),
 			'total' => Cart::instance('shopping')->total(),
+			'status' => 'success',
 			'message' => 'Codi aplicat correctament'
 		]);
 

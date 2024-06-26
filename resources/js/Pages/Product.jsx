@@ -10,8 +10,9 @@ import {
   TextFormat,
   Tab,
   Icon,
+  Button,
 } from "@/components/atoms";
-import { Card } from "@/components/molecules";
+import { Card, Modal } from "@/components/molecules";
 import { TicketTable, TicketList } from "@/components/organisms";
 import { useCart } from "@/contexts/CartContext";
 import styles from "./Product.module.scss";
@@ -40,11 +41,13 @@ export default function Product({
 
   const [selectedRate, setSelectedRate] = useState(false);
 
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
   const [ticketView, setTicketView] = useState(
     availableDays.length == 1 ? "list" : "calendar"
   );
 
-  const { addToCart } = useCart();
+  const { addToCart, toggleCart } = useCart();
   const daySectionRef = useRef(null);
   const ticketSectionRef = useRef(null);
 
@@ -64,7 +67,7 @@ export default function Product({
       return ticket.day == day && ticket.hour == hour;
     })[0] ?? null;
 
-  const seats = currentTicket && JSON.parse(currentTicket.seats);
+  const seats = currentTicket && currentTicket.seats;
 
   const handleSelectDay = (e) => {
     const visitOptions = {
@@ -110,13 +113,25 @@ export default function Product({
   };
 
   const handleAddToCart = async (data) => {
-    const dataToCart = {
-      ...data,
-      product_id: product.id,
-      day,
-      hour,
-    };
+    const dataToCart = !!product.venue_id
+      ? {
+          qty: selectedSeats.count,
+          seats: selectedSeats,
+          rate: selectedRate,
+          product_id: product.id,
+          day,
+          hour,
+        }
+      : {
+          ...data,
+          product_id: product.id,
+          day,
+          hour,
+        };
     addToCart(dataToCart);
+    setSelectedRate(null);
+    setSelectedSeats([]);
+    toggleCart();
   };
 
   const targets = {
@@ -150,7 +165,11 @@ export default function Product({
         <div
           className={styles.productHeader}
           style={{
-            backgroundImage: "url('/image/" + product.image + "')",
+            backgroundImage: `url('${
+              product.image
+                ? "/image/" + product.image
+                : "/assets/img/placeholder.png"
+            }')`,
           }}
         ></div>
         <Container className={styles.productContainer}>
@@ -163,16 +182,6 @@ export default function Product({
           </Heading>
           <Grid columns={2}>
             <section>
-              {/* <Spacer bottom={3}>
-                <Flex gap={2}>
-                  <Button block={true} color="white" outline={true}>
-                    Descripció
-                  </Button>
-                  <Button block={true} color="white" outline={true}>
-                    Detalls
-                  </Button>
-                </Flex>
-              </Spacer> */}
               <Card>
                 <div
                   dangerouslySetInnerHTML={{
@@ -203,7 +212,11 @@ export default function Product({
               </Spacer> */}
               <Spacer bottom={3}>
                 <img
-                  src={"/image/" + product.image}
+                  src={
+                    product.image
+                      ? "/image/" + product.image
+                      : "/assets/img/placeholder.png"
+                  }
                   alt={product.title}
                   className={styles.thumbnail}
                 />
@@ -213,15 +226,17 @@ export default function Product({
                   {availableDays.length > 0 ? (
                     <Suspense fallback={<div>Carregant...</div>}>
                       <Flex>
-                        <Tab
-                          selected={ticketView == "calendar"}
-                          onClick={() => setTicketView("calendar")}
-                        >
-                          <Flex gap="1" alignItems="center">
-                            <Icon icon="calendar" />
-                            <span>Calendari</span>
-                          </Flex>
-                        </Tab>
+                        {availableDays.length > 1 && (
+                          <Tab
+                            selected={ticketView == "calendar"}
+                            onClick={() => setTicketView("calendar")}
+                          >
+                            <Flex gap="1" alignItems="center">
+                              <Icon icon="calendar" />
+                              <span>Calendari</span>
+                            </Flex>
+                          </Tab>
+                        )}
                         <Tab
                           selected={ticketView == "list"}
                           onClick={() => setTicketView("list")}
@@ -290,105 +305,64 @@ export default function Product({
                           maxQty={product.max_tickets}
                           selectRate={handleSelectRate}
                           close={handleCloseRate}
+                          venue={!!product.venue_id}
                         />
                       </Card>
                     </Suspense>
                   </Spacer>
                 </div>
               )}
-              {selectedRate && (
-                <Suspense fallback={<div>Carregant...</div>}>
-                  <VenueMap
-                    seats={seats}
-                    bookedSeats={[]}
-                    addToCart={(seat) =>
-                      handleAddToCart({
-                        qty: [1],
-                        seats: [
-                          {
-                            s: seat.s,
-                            f: seat.f,
-                            z: seat.z,
-                            r: selectedRate.id,
-                          },
-                        ],
-                      })
-                    }
-                  />
-                </Suspense>
-              )}
             </aside>
           </Grid>
-
-          {/* <section
-            id="tickets"
-            className={styles.tickets}
-            ref={ticketSectionRef}
-          >
-            <Grid columns={3}>
-              <section>
-                <Suspense fallback={<div>Carregant...</div>}>
-                  <Datepicker
-                    availableDays={availableDays}
-                    onSelectDay={handleSelectDay}
-                    selectedDay={selectedDay}
-                  />
-                </Suspense>
-              </section>
-              <section>
-                <TicketTable
-                  selectedDay={selectedDay}
-                  selectedHour={hour}
-                  productSlug={product.name}
-                  tickets={ticketsByDay()}
-                ></TicketTable>
-              </section>
-
-              <section>
-                {hour && (
-                  <RateSelect
-                    rates={rates}
-                    minQty={product.min_tickets}
-                    maxQty={product.max_tickets}
-                    addToCart={handleAddToCart}
-                    close={handleCloseRate}
-                  />
-                )}
-              </section>
-            </Grid>
-
-            {!!product.venue_id && hour && (
-              <div>
-                <TicketTable
-                  productSlug={product.name}
-                  tickets={ticketsByDay()}
-                ></TicketTable>
-                {!!seats && (
-                  <Suspense fallback={<div>Carregant...</div>}>
-                    <VenueMap
-                      seats={seats}
-                      bookedSeats={[]}
-                      addToCart={(seat) =>
-                        handleAddToCart({
-                          qty: [1],
-                          seats: [
-                            {
-                              s: seat.s,
-                              f: seat.f,
-                              z: seat.z,
-                              r: 10,
-                            },
-                          ],
-                        })
-                      }
-                    />
-                  </Suspense>
-                )}
-              </div>
-            )}
-          </section> */}
         </Container>
       </div>
+      {product.venue_id && seats && (
+        <Modal
+          width={700}
+          isOpen={selectedRate}
+          onClose={() => {
+            setSelectedRate(null);
+          }}
+        >
+          <Suspense fallback={<div>Carregant...</div>}>
+            <Heading tag="h3" size={3} spacerBottom={2}>
+              Tria les localitats
+            </Heading>
+            <VenueMap
+              seats={seats}
+              bookedSeats={[]}
+              selectedSeats={selectedSeats}
+              setSelectedSeats={setSelectedSeats}
+            />
+            <Spacer top={2}>
+              <Flex justifyContent="flex-end">
+                <Flex
+                  spacerTop={3}
+                  spacerBottom={3}
+                  gap={3}
+                  alignItems="flex-end"
+                  justifyContent="space-between"
+                >
+                  <TextFormat color="faded">
+                    {selectedSeats.length}{" "}
+                    {selectedSeats.length == 1
+                      ? "Entrada seleccionada"
+                      : "Entrades seleccionades"}
+                  </TextFormat>
+                  <Button
+                    block={true}
+                    onClick={handleAddToCart}
+                    size="lg"
+                    disabled={!selectedSeats.length}
+                  >
+                    Afegeix al cistell
+                  </Button>
+                </Flex>
+              </Flex>
+            </Spacer>
+          </Suspense>
+        </Modal>
+      )}
     </>
   );
 }

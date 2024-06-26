@@ -210,19 +210,26 @@ class ProductResource extends Resource
                                     ->label('Entrades')
                                     ->relationship('tickets')
                                     ->collapsed()
-                                    ->itemLabel(fn(array $state): ?string => $state['day'] ? ($state['day'] . ' - ' . $state['hour'].' ('.$state["tickets"].' entrades)' ?? null) : '')
+                                    ->itemLabel(fn(array $state): ?string => $state['day'] ? ($state['day'] . ' - ' . $state['hour'] . ' (' . $state["tickets"] . ' entrades)' ?? null) : '')
                                     ->schema([
                                         DatePicker::make('day')->label('Dia')->required(),
-                                        TimePicker::make('hour')->label('Hora')->required(),
+                                        TimePicker::make('hour')->label('Hora')->required()->format('H:i'),
                                         TextInput::make('tickets')
                                             ->label('Entrades')
-                                            ->hidden(!!$venue),
+                                            ->default(function ($record) use ($venue) {
+                                                return $venue ?? 0 ? count($venue->seats) : 0;
+                                            })
+                                            ->readOnly(!!$venue),
                                         Select::make('language')->label('Idioma')->options([
                                             'ca' => 'Català',
                                             'es' => 'Castellà'
                                         ]),
+                                        Forms\Components\Hidden::make('seats')->default(function () use ($venue) {
+                                            return $venue->seats;
+                                        })->hidden(!$venue),
                                         Placeholder::make('sold')
                                             ->label('Venudes')
+                                            ->hidden(fn($record) => !$record)
                                             ->content(fn($record): string => $record ? $record->bookings() : ''),
 
                                     ])->columns(6),
@@ -331,11 +338,12 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->label('Títol'),
+                Tables\Columns\TextColumn::make('title')->label('Títol')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('organizer.username')->label('Organitzador'),
                 Tables\Columns\TextColumn::make('category.title')->label('Categoria'),
                 Tables\Columns\TextColumn::make('bookings_count')->counts('bookings')->badge()->sortable()
-                    ->badge()->label('Entrades venudes')
+                    ->badge()->label('Entrades venudes'),
+                Tables\Columns\ToggleColumn::make('active')->label('Actiu'),
             ])
             ->filters([
                 //

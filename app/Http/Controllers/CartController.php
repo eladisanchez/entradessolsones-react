@@ -145,6 +145,10 @@ class CartController extends BaseController
 		$seats = request()->input('seats');
 		if ($seats) {
 			$this->addEvent($seats);
+			return response()->json([
+				'items' => Cart::instance('shopping')->content(),
+				'total' => Cart::instance('shopping')->total()
+			]);
 		}
 
 		$product_id = request()->input('product_id');
@@ -156,7 +160,9 @@ class CartController extends BaseController
 		$qtys = request()->input('qty');
 
 		if (!$qtys) {
-			return redirect()->back();
+			return response()->json([
+				'error' => 'No s\'ha seleccionat cap quantitat de productes'
+			]);
 		}
 
 		// Comprovar mímim d'entrades per a totes les tarifes
@@ -249,10 +255,13 @@ class CartController extends BaseController
 	/**
 	 * Add product with seats
 	 */
-	public function addEvent(array $seats): JsonResponse
+	public function addEvent(array $seats): void
 	{
 
 		$product_id = request()->input('product_id');
+		$rate_id = request()->input('rate');
+
+		$rate = Rate::findOrFail($rate_id);
 		$product = Product::findOrFail($product_id);
 
 		$day = request()->input('day');
@@ -270,10 +279,7 @@ class CartController extends BaseController
 
 		foreach ($seats as $seat) {
 
-			$rate_id = $seat['r'];
-
 			$price = $prices[$rate_id][$seat['z'] - 1];
-			$rate = Rate::find($rate_id);
 
 			if (Session::has('coupon.p' . $product->id . '_t' . $rate_id)) {
 				$price *= 1 - Session::get('coupon.discount') / 100;
@@ -299,11 +305,6 @@ class CartController extends BaseController
 		}
 
 		$this->convertToPack($product);
-
-		return response()->json([
-			'items' => Cart::instance('shopping')->content(),
-			'total' => Cart::instance('shopping')->total()
-		]);
 
 	}
 

@@ -1,9 +1,7 @@
 import { useState, useId } from "react";
 import { InputNumber } from "primereact/inputnumber";
 import { Button, Flex, Heading, TextFormat } from "@/components/atoms";
-import { Card } from "@/components/molecules";
 import styles from "./RateSelect.module.scss";
-import { useCart } from "@/contexts/CartContext";
 
 const RateSelect = ({
   rates,
@@ -15,7 +13,6 @@ const RateSelect = ({
   venue,
 }) => {
   const [selected, setSelected] = useState({});
-  const { toggleCart } = useCart();
   const inputId = useId();
 
   const handleAddTicket = (rate, qty) => {
@@ -50,7 +47,6 @@ const RateSelect = ({
       qty: selectedQtys,
       rates: selectedRates,
     });
-    toggleCart();
   };
 
   return (
@@ -69,55 +65,67 @@ const RateSelect = ({
               </label>
             </div>
             <div className={styles.quantityCol}>
-              <InputNumber
-                className={styles.inputNumber}
-                value={selected[rate.id] ?? 0}
-                onValueChange={(e) => handleAddTicket(rate.id, e.value)}
-                mode="decimal"
-                showButtons
-                buttonLayout="horizontal"
-                incrementButtonIcon={<span>+</span>}
-                decrementButtonIcon={<span>-</span>}
-                min={0}
-                max={maxQty}
-                inputId={inputId + "-" + rate.id}
-              />
+              {!venue ? (
+                <InputNumber
+                  className={styles.inputNumber}
+                  value={selected[rate.id] ?? 0}
+                  onValueChange={(e) => handleAddTicket(rate.id, e.value)}
+                  mode="decimal"
+                  showButtons
+                  buttonLayout="horizontal"
+                  incrementButtonIcon={<span>+</span>}
+                  decrementButtonIcon={<span>-</span>}
+                  min={0}
+                  max={maxQty}
+                  inputId={inputId + "-" + rate.id}
+                />
+              ) : (
+                <Button onClick={() => selectRate(rate.id)} size="sm">
+                  Selecciona&nbsp;seients
+                </Button>
+              )}
             </div>
 
-            <div className={styles.totalCol}>
-              <TextFormat>
-                {rate.pivot.price * (selected[rate.id] ?? 0)} €
-              </TextFormat>
-            </div>
+            {!venue && (
+              <div className={styles.totalCol}>
+                <TextFormat>
+                  {rate.pivot.price * (selected[rate.id] ?? 0)} €
+                </TextFormat>
+              </div>
+            )}
           </Flex>
         </>
       ))}
-      <Flex
-        spacerTop={3}
-        spacerBottom={3}
-        gap={3}
-        alignItems="flex-end"
-        justifyContent="space-between"
-      >
-        <TextFormat color="faded">
-          {countTickets}{" "}
-          {countTickets == 1
-            ? "Entrada seleccionada"
-            : "Entrades seleccionades"}
-        </TextFormat>
-        <div className={styles.totalCol}>
-          <TextFormat fontWeight="bold">{price()} €</TextFormat>
-        </div>
-      </Flex>
+      {!venue && (
+        <>
+          <Flex
+            spacerTop={3}
+            spacerBottom={3}
+            gap={3}
+            alignItems="flex-end"
+            justifyContent="space-between"
+          >
+            <TextFormat color="faded">
+              {countTickets}{" "}
+              {countTickets == 1
+                ? "Entrada seleccionada"
+                : "Entrades seleccionades"}
+            </TextFormat>
+            <div className={styles.totalCol}>
+              <TextFormat fontWeight="bold">{price()} €</TextFormat>
+            </div>
+          </Flex>
 
-      <Button
-        block={true}
-        onClick={handleAddToCart}
-        size="lg"
-        disabled={!countTickets}
-      >
-        Afegeix al cistell
-      </Button>
+          <Button
+            block={true}
+            onClick={handleAddToCart}
+            size="lg"
+            disabled={!countTickets}
+          >
+            Afegeix al cistell
+          </Button>
+        </>
+      )}
     </>
   );
 };

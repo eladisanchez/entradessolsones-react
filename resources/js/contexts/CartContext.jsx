@@ -60,7 +60,7 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
   };
 
   const applyCoupon = async (code) => {
-    const response = await fetch("/cart/code", {
+    const response = await fetch("/cart/coupon", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -87,7 +87,7 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
     <CartContext.Provider
       value={{
         items,
-        total: cart?.total ?? 0,
+        total: cart.total,
         count: countTickets(),
         showCart,
         setShowCart,

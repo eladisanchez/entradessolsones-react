@@ -21,9 +21,9 @@ class Product extends Model implements Sitemapable
 
     protected $table = 'products';
     protected $guarded = array('id');
-    protected $visible = ['id', 'name', 'title', 'description', 'organizer', 'venue', 'image', 'is_pack', 'summary','schedule','target'];
+    protected $visible = ['id', 'name', 'title', 'description', 'organizer', 'venue_id', 'image', 'is_pack', 'summary','schedule','target'];
     protected $appends = ['price', 'pricezone'];
-    protected $with = ['organizer', 'rates'];
+    protected $with = ['organizer', 'rates', 'venue'];
     public $language;
 
 

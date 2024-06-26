@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Common;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class PageController extends Controller
 {
@@ -21,32 +22,39 @@ class PageController extends Controller
     /**
      * Purchase conditions
      */
-    public function conditions(): View
+    public function conditions(): InertiaResponse
     {
-        $condicions = Common::optext('condicions');
-		return view('page')->with(['text'=>$condicions,'titol'=>"Condicions d'ús"]);
+        $conditions = Common::optext('condicions');
+        return Inertia::render('Basic', [
+            'title' => "Condicions d'ús",
+            'content' => $conditions,
+        ]);
     }
 
 
     /**
      * Privacy policy
      */
-    public function privacyPolicy(): View
+    public function privacyPolicy(): InertiaResponse
     {
         $text = Common::optext('politica-privacitat');
-		return view('page')->with(['text'=>$text,'titol'=>'Política de privacitat']);
+        return Inertia::render('Basic', [
+            'title' => 'Política de privacitat',
+            'content' => $text,
+        ]);
     }
 
 
     /**
      * Organizator signup form
      */
-    public function organitzators(): View
+    public function organitzators(): InertiaResponse
     {
         $text = Common::optext('organitzadors');
-		return view('solicitud-alta')->with([
-			'text'=>$text,
-			'titol'=>__("Com puc vendre entrades?")]);
+        return Inertia::render('Basic', [
+            'title' => "Com puc vendre entrades?",
+            'content' => $text,
+        ]);
     }
 
 }

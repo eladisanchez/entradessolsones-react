@@ -1,7 +1,12 @@
+@use "@/styles" as *;
+
 .map {
     display: grid;
-    gap: 3px;
-    width: 500px;
+    gap: 1px;
+    width: 100%;
+    @include media-query('sm') {
+        gap: 3px;
+    }
 }
 .seat {
     border-radius: 35% 35% 10% 10%;

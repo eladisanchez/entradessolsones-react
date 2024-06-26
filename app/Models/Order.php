@@ -61,7 +61,7 @@ class Order extends Model {
         return $this->hasMany(\App\Models\Refund::class)->where('refund',1);
     }
 
-    public function scopeIsPagat($query)
+    public function scopeIsPaid($query)
     {
         return $query->where('paid',1)->orWhere('payment','credit');
     }

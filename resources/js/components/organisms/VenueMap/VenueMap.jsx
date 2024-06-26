@@ -4,9 +4,8 @@ import { useCart } from "@/contexts/CartContext";
 import styles from "./VenueMap.module.scss";
 import classNames from "classnames";
 
-const VenueMap = ({ seats, bookedSeats, cartSeats, addToCart }) => {
+const VenueMap = ({ seats, bookedSeats, cartSeats, selectedSeats, setSelectedSeats, addToCart }) => {
   const { cart } = useCart();
-  const [selectedSeats, setSelectedSeats] = useState([]);
   const seatsX = seats.map((o) => {
     return o.x;
   });
@@ -40,7 +39,7 @@ const VenueMap = ({ seats, bookedSeats, cartSeats, addToCart }) => {
       });
       setSelectedSeats(newSelectedFiltered);
     } else {
-      addToCart(seat);
+      // addToCart(seat);
       newSelected.push(seat);
       setSelectedSeats(newSelected);
     }

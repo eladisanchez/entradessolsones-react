@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use Cart;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\Booking;
 use DB;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,7 +17,8 @@ class Ticket extends Model
     protected $guarded = ['id'];
     protected $casts = [
         'day' => 'datetime:Y-m-d',
-        'hour' => 'datetime:H:i'
+        'hour' => 'datetime:H:i',
+        'seats' => 'array'
     ];
 
 
@@ -53,33 +53,21 @@ class Ticket extends Model
 
     }
 
-
-
-
-    // Això resta les del cistell a les disponibles
+    // Available tickets by day and hour
     public function getAvailableAttribute()
     {
 
-        $value = $this->entrades - $this->bookings();
-
+        $value = $this->tickets - $this->bookings();
         $self = $this;
-        $cistell = Cart::search(function ($k, $v) use ($self) {
-            return $k->model && $k->model->id == $self->product_id && $k->options->day == $self->day->format('Y-m-d') && $k->options->hour == $self->hour->format('H:i:s');
+        $inCart = Cart::instance('shopping')->search(function ($k, $v) use ($self) {
+            return $k->model && $k->model->id == $self->product_id && $k->options->day == $self->day->format('Y-m-d') && $k->options->hour == $self->hour;
         });
-
-        $i = 0;
-
-        if ($cistell) {
-            foreach ($cistell as $row) {
-                //$prod = Cart::get($row);
-                $prod = $row;
-                $value -= $prod->qty;
-                $i++;
+        if ($inCart) {
+            foreach ($inCart as $row) {
+                $value -= $row->qty;
             }
         }
-
         return $value;
-
 
     }
 

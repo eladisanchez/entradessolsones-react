@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             'csrf_token' => csrf_token(),
             'cart' => [
                 'items' => session('cart')['shopping'] ?? [],
-                'total' => Cart::total()
+                'total' => Cart::instance('shopping')->total()
             ]
         ]);
     }

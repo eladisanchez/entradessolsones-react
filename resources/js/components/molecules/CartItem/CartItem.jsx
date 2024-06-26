@@ -6,7 +6,14 @@ const CartItem = ({ item, onRemove, ...props }) => {
   return (
     <Flex gap={2} spacerBottom={3} {...props}>
       <div className={styles.itemImg}>
-        <img src={"/image/" + item.options.image} alt={item.name} />
+        <img
+          src={
+            item.options.image
+              ? "/image/" + item.options.image
+              : "/assets/img/placeholder.png"
+          }
+          alt={item.name}
+        />
         <span className={styles.itemQty}>{item.qty}</span>
       </div>
       <div className={styles.itemContent}>
@@ -16,7 +23,7 @@ const CartItem = ({ item, onRemove, ...props }) => {
         <div className={styles.itemInfo}>
           {item.options.seat ? (
             <span>
-              {item.options.seat.s} / {item.options.seat.f}
+              Fila {item.options.seat.s} seient {item.options.seat.f}
             </span>
           ) : (
             <span>
@@ -25,7 +32,11 @@ const CartItem = ({ item, onRemove, ...props }) => {
               {item.options.hour}
             </span>
           )}
-          <button onClick={() => onRemove(item.rowId)} className={styles.delete} aria-label="Elimina">
+          <button
+            onClick={() => onRemove(item.rowId)}
+            className={styles.delete}
+            aria-label="Elimina"
+          >
             Elimina
           </button>
         </div>

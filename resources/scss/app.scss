@@ -41,6 +41,11 @@ button, input {
     background: #FFF;
 }
 
+.react-transform-component,
+.react-transform-wrapper {
+    width: 100% !important;
+}
+
 hr {
     border-top: 1px solid $light-color;
     height: 0;

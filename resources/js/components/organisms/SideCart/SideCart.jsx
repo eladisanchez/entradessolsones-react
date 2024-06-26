@@ -31,7 +31,9 @@ const SideCart = () => {
       {items.length ? (
         <>
           <Spacer bottom={3}>
-            <TextFormat textAlign="right">Total: {total} €</TextFormat>
+            <TextFormat textAlign="right">
+              Total: <strong>{total} €</strong>
+            </TextFormat>
           </Spacer>
           <Flex gap={1} flexDirection="column">
             <Button onClick={emptyCart} block={true} outline={true}>

@@ -10,7 +10,7 @@ import {
 } from "@/components/atoms";
 import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
-import { Head, useForm } from "@inertiajs/react";
+import { Link, Head, useForm, router } from "@inertiajs/react";
 import React, { useState } from "react";
 import styles from "./Checkout.module.scss";
 
@@ -21,11 +21,11 @@ export default function Checkout({ lastOrder }) {
     tel: "",
     cp: "",
     observations: "",
-    legal: false,
+    newsletter: false,
+    conditions: false,
   });
 
-  const { items, total, removeFromCart, applyCoupon } =
-    useCart();
+  const { items, total, removeFromCart, applyCoupon } = useCart();
 
   const [code, setCode] = useState("");
 
@@ -33,7 +33,7 @@ export default function Checkout({ lastOrder }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post("/checkout");
+    router.post('/checkout', data);
   };
 
   const handleLogin = (e) => {
@@ -43,10 +43,8 @@ export default function Checkout({ lastOrder }) {
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
-    applyCoupon()
+    applyCoupon();
   };
-
-  
 
   return (
     <>
@@ -60,7 +58,9 @@ export default function Checkout({ lastOrder }) {
                   <CartItem item={item} key={id} onRemove={removeFromCart} />
                 ))}
               <Spacer bottom={3}>
-                <TextFormat textAlign="right">Total: {total} €</TextFormat>
+                <TextFormat textAlign="right">
+                  Total: <strong>{total} €</strong>
+                </TextFormat>
               </Spacer>
               <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
@@ -156,13 +156,33 @@ export default function Checkout({ lastOrder }) {
                 rows={3}
               />
               <Spacer top={4} />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={data.conditions}
+                  onChange={(e) => setData("conditions", e.target.checked)}
+                />{" "}
+                <TextFormat color="faded">
+                  He llegit i accepto les{" "}
+                  <Link href="/condicions">condicions d'ús</Link> i la{" "}
+                  <Link href="/politica-privacitat">
+                    Política de privacitat
+                  </Link>
+                </TextFormat>
+              </label>
+              <Spacer top={4} />
               <TextFormat color="faded" block={true}>
                 Al confirmar la comanda sereu redirigits a la passarel·la de
                 pagament. Seguiu les instruccions d'autorització de la vostra
                 entitat bancària.
               </TextFormat>
               <Spacer top={4} />
-              <Button disabled={processing} size="lg" block={true}>
+
+              <Button
+                disabled={processing || !data.conditions}
+                size="lg"
+                block={true}
+              >
                 Finalitza la compra
               </Button>
             </form>
