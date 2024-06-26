@@ -28,6 +28,13 @@ class Category extends Model {
         static::addGlobalScope(new AscorderScope);
     }
 
+    protected static function booted()
+    {
+        static::creating(function ($category) {
+            $category->order = Category::max('order') + 1;
+        });
+    }
+
     // public function __construct()
     // {
     //     $this->language = LaravelLocalization::setLocale();
