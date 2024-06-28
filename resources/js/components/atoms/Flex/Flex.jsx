@@ -10,9 +10,10 @@ const Flex = ({
   children,
   spacerTop,
   spacerBottom,
+  className,
   ...props
 }) => {
-  const classes = classNames(styles.flex, {
+  const classes = classNames(styles.flex, className, {
     [styles[`justify-${justifyContent}`]]: justifyContent,
     [styles[`align-${alignItems}`]]: alignItems,
     [styles[`flex-${flexDirection}`]]: flexDirection,

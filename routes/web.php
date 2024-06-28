@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RefundController;
+use App\Http\Controllers\PackController;
+use App\Http\Controllers\AdminController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -25,10 +28,10 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 
 	Route::get('/', [ProductController::class, 'home'])->name('home');
 
-	Route::get('/cart/destroy', [CartController::class, 'destroy']);
-	Route::post('/cart/add', [CartController::class, 'add']);
-	Route::post('/cart/remove', [CartController::class, 'removeRow']);
-	Route::post('/cart/coupon', [CouponController::class, 'apply']);
+	Route::get('/cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
+	Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+	Route::post('/cart/remove', [CartController::class, 'removeRow'])->name('cart.remove');
+	Route::post('/cart/coupon', [CouponController::class, 'apply'])->name('cart.coupon');
 
 	Route::get('activitat/{name?}/{day?}/{hour?}', [ProductController::class, 'show'])
 		->where('day', '^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')
@@ -41,17 +44,10 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::get('search', [ProductController::class, 'search'])->name('search');
 
 	// Reserva d'un producte dins un pack
-	Route::post('pack/{id}', array('uses' => 'PackController@registraPack'));
-	Route::any('pack/{id}/esborra', array('uses' => 'PackController@esborraPack'));
-	Route::post('pack-afegeix', array('uses' => 'PackController@producteaPack'));
-	Route::get('pack-elimina/{id_pack}/{id_producte}', array('uses' => 'PackController@esborraProducte'));
-
-	// Route::get('cistell', [CartController::class, 'show'])->name('cart');
-	// Route::post('cistell/add', [CartController::class, 'add'])->name('cart.add');
-	// Route::post('cistell/addpack', [CartController::class, 'addPack'])->name('cart.add-pack');
-	// Route::post('cistell/addesdeveniment', [CartController::class, 'addEvent'])->name('cart.add-seats');
-	// Route::get('cistell/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
-	// Route::get('cistell/remove', [CartController::class, 'removeItem'])->name('cistell.remove')->name('cart.remove-item');
+	Route::post('pack/{id}', [PackController::class, 'register'])->name('pack.register');
+	Route::any('pack/{id}/esborra', [PackController::class, 'delete'])->name('pack.delete');
+	Route::post('pack-afegeix', [PackController::class, 'addTicket'])->name('pack.add');
+	Route::get('pack-elimina/{pack_id}/{product_id}', [PackController::class, 'removeTicket'])->name('pack.remove');
 
 	// Checkout
 	Route::get('confirmacio', [CartController::class, 'confirm'])->name('checkout');
@@ -59,46 +55,22 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	// Login client
 	Route::post('cistell/login', array('uses' => 'UserController@login'));
 
-	// Codis promocionals
-	Route::post('codi-promocional', array('as' => 'codi', 'uses' => 'CodiController@aplica'));
-
 	// Pagament
-	Route::post('checkout', [OrderController::class, 'store'])->name('checkout');
-	Route::get('checkout/card/order/{id}', [OrderController::class, 'checkoutTPV'])->name('checkout-tpv');
-	Route::get('confirmacio/{session}/{id}', [OrderController::class,'checkoutSuccess'])->name('checkout-success');
-	Route::get('confirmacio/error', [OrderController::class,'checkoutError'])->name('checkout-error');
+	Route::post('checkout', [OrderController::class, 'store'])->name('checkout.store');
+	Route::get('checkout/card/order/{id}', [OrderController::class, 'checkoutTPV'])->name('checkout.tpv');
+	Route::get('confirmacio/{session}/{id}', [OrderController::class, 'checkoutSuccess'])->name('checkout.success');
+	Route::get('confirmacio/error', [OrderController::class, 'checkoutError'])->name('checkout.error');
+
+	// Login web
+	Route::post('modal/login', [OrderController::class, 'login'])->name('modal-login');
+
+	// Pàgines estàtiques
+	Route::get('condicions', [PageController::class, 'condicions'])->name('condicions');
+	Route::get('politica-privacitat', [PageController::class, 'privacyPolicy'])->name('privacitat');
+	Route::get('organitzadors', [PageController::class, 'organitzadors'])->name('organitzadors');
 
 	// Devolucions
-	Route::get('devolucio/{hash}', array(
-		'as' => 'refund',
-		'uses' => 'DevolucioController@refund'
-	)
-	);
-
-	// Condicions
-	Route::get('condicions', array('as' => 'condicions', 'uses' => 'HomeController@condicions'));
-	Route::get('politica-privacitat', ['as' => 'politica-privacitat', 'uses' => 'HomeController@politicaPrivacitat']);
-
-	Route::get('organitzadors', array('as' => 'organitzadors', 'uses' => 'HomeController@organitzadors'));
-	Route::post('organitzadors', 'UserController@solicitudAlta');
-
-	// Petició
-	Route::post('peticio', array(
-		'as' => 'peticio',
-		'uses' => 'OrderController@peticio'
-	)
-	);
-
-	// Clients
-	Route::get(
-		'perfil',
-		function () {
-			return view('perfil');
-		}
-	)->middleware('role:admin');
-
-	// Devolucions
-	Route::get('devolucio/{id}', 'ReservaController@devolucio');
+	Route::get('devolucio/{id}', [RefundController::class, 'refund'])->name('refund');
 
 	// Calendari
 	Route::get('calendari', [ProductController::class, 'calendar'])->name('calendar');
@@ -106,20 +78,18 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 
 });
 
-// Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () {
-// 	Route::get('/venues/{id}/edit/map', [VenueMapController::class, 'edit'])->name('venue.edit');
-// 	Route::post('/venues/{id}/edit/map', [VenueMapController::class, 'update'])->name('venue.update');
-// });
-
-// Route::group(['prefix' => 'admin', 'middleware' => ['role:admin|organizer']], function () {
-// 	Route::get('producte/{id}/entrades/{dia}/{hora}/map', [AdminTicketController::class, 'map'])
-// 		->where('dia', '^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$')->name('ticket.map');
-// });
-
 Route::get('pdf/{session}/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
 
 // TPV responses
 Route::middleware('cors')->group(function () {
 	Route::any('tpv_response', [OrderController::class, 'tpvResponse'])->name('tpv_response');
 	Route::any('tpv_response_refund', [RefundController::class, 'tpvResponse'])->name('refund-tpv');
+});
+
+
+Route::group(['middleware' => ['role:admin']], function()
+{
+
+	Route::get('data', [AdminController::class, 'data'])->name('admin.data');
+
 });

@@ -48,7 +48,7 @@ class OrderController extends BaseController
 
 		$failedOrder = Order::where('session', Session::getId())->where('paid', 0)->where('payment', 'card')->orderBy('created_at', 'desc')->first();
 		if ($failedOrder) {
-			return redirect()->route('checkout-error', ['id' => $failedOrder->id]);
+			return redirect()->route('checkout.error', ['id' => $failedOrder->id]);
 		}
 
 		$this->cleanNonProcessed();
@@ -202,7 +202,6 @@ class OrderController extends BaseController
 			$payment = app()->environment(['local', 'development']) ? 'credit' : (Entrust::hasRole(['admin', 'organizer']) ? 'credit' : 'card');
 
 			if ($order->total == 0) {
-				$order->update(array('paid' => 1));
 				$payment = 'credit';
 			}
 
@@ -220,8 +219,10 @@ class OrderController extends BaseController
 					Session::forget('coupon');
 					Session::forget('coupon.name');
 
+					$order->update(array('paid' => 1));
+
 					// Missatge OK
-					return redirect()->route('checkout-success', [
+					return redirect()->route('checkout.success', [
 						'session' => Session::getId(), 
 						'id' => $order->id
 					]);
@@ -335,8 +336,8 @@ class OrderController extends BaseController
 			Session::forget('coupon');
 			Session::forget('coupon_name');
 			return Inertia::render('Basic',[
-				'title' => 'Pagament realitzat',
-				'content' => 'La teva comanda ha sigut processada correctament. En breu rebràs un correu amb la confirmació de la teva compra. Moltes gràcies!'
+				'title' => 'Gràcies per la teva compra!',
+				'content' => '<p><strong>Aquesta comanda és fictícia. Gràcies per participar al test.</strong></p><p>La teva comanda s\'ha processat correctament. En breu rebràs un correu electrònic amb les teves entrades.</p>'
 			]);
 
 		} else {
@@ -394,6 +395,17 @@ class OrderController extends BaseController
 		} else {
 			return abort('404');
 		}
+	}
+
+	public function login(){
+		$user = User::where('email', request()->input('email'))->first();
+		if ($user) {
+			if (\Hash::check(request()->input('password'), $user->password)) {
+				auth()->login($user);
+				return redirect()->route('checkout');
+			}
+		}
+		return redirect()->back()->withErrors('Les dades d\'accés no són correctes.');
 	}
 
 }

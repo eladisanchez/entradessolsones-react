@@ -7,6 +7,13 @@
     text-align: center;
 }
 
+.featuredGrid {
+    flex-direction: column;
+    @include media-query('sm') {
+        flex-direction: row;
+    }
+}
+
 .item {
     max-width: 300px;
     border-radius: $spacer;
@@ -40,7 +47,7 @@
         font-size: 1rem;
     }
     p {
-        margin-top: $spacer/2;
+        margin-top: $spacer * 0.5;
         margin-bottom: 0;
     }
 }

@@ -11,17 +11,17 @@
 .seat {
     border-radius: 35% 35% 10% 10%;
     aspect-ratio: 1;
-    background: #ddd;
+    background: darken($light-color, 5%);
     position: relative;
     &:hover {
-        background: #a3a3a3;
+        background: darken($light-color, 10%);
     }
     &.booked {
-        background: #d60916;
+        background: $danger-color;
         cursor: not-allowed;
     }
     &.selected {
-        background: #0aa10a;
+        background: $success-color;
     }
     &:after {
         content: '';
@@ -46,7 +46,24 @@
 }
 
 .tools {
+    display: flex;
+    gap: 3px;
     button {
-        border: 1px solid #aaa;
+        width: $spacer * 3;
+        height: $spacer * 3;
+        border-radius: $spacer * 0.5;
+        border: 0;
+        color: #FFF;
+        background: $primary-color;
+        font-size: 1.25rem;
+        line-height: 1.25rem;
     }
+}
+.stage {
+    margin-top: $spacer;
+    border-radius: $spacer * 0.5;
+    background: $light-color;
+    padding: $spacer * 0.5 $spacer;
+    text-align: center;
+    color: $faded-color;
 }

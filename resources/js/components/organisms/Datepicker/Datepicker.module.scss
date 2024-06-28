@@ -30,7 +30,7 @@
     }
 
     [class~="p-datepicker-header"] {
-        //padding: $spacer/2 $spacer;
+        //padding: $spacer * 0.5 $spacer;
         padding-bottom: $spacer*2;
         color: $primary-color;
         background: #FFF;
@@ -47,7 +47,7 @@
 
     [class~="p-datepicker-month"] {
         font-weight: bold;
-        margin-right: $spacer/2;
+        margin-right: $spacer * 0.5;
         text-transform: capitalize;
     }
 

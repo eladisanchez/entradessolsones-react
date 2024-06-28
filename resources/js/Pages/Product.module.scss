@@ -77,3 +77,10 @@
         display: block;
     }
 }
+
+.venueTickets {
+    flex-direction: column;
+    @include media-query("sm") {
+        flex-direction: row;
+    }
+}

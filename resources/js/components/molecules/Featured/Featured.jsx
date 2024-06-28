@@ -29,7 +29,7 @@ const Featured = () => {
   return (
     <div className={styles.featured}>
       <Container>
-        <Flex gap={2} justifyContent="center">
+        <Flex gap={2} justifyContent="center" className={styles.featuredGrid}>
           {featured.map((item, index) => (
             <Item key={index} product={item} />
           ))}

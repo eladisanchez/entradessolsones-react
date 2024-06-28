@@ -74,7 +74,7 @@
     background-image: url("/assets/img/home-bg.webp");
     background-position: center 80%;
     background-size: cover;
-    min-height: 454px;
+    min-height: 384px;
     // margin-bottom: -28px;
     &:before {
         content: "";
@@ -91,6 +91,9 @@
             rgba($primary-color, 0.64) 36.16%,
             rgba($primary-color, 0) 80.36%
         );
+    }
+    @include media-query('sm') {
+        min-height: 440px;
     }
 }
 .solid {

@@ -9,7 +9,7 @@
     transition: 0.5s ease all;
     label {
         display: block;
-        margin-bottom: $spacer/2;
+        margin-bottom: $spacer * 0.5;
     }
     input,
     textarea {
@@ -34,6 +34,6 @@
         color: $faded-color;
         display: block;
         letter-spacing: 0.05rem;
-        // padding-bottom: $spacer/2;
+        // padding-bottom: $spacer * 0.5;
     }
 }

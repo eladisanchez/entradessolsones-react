@@ -38,7 +38,7 @@
         font-size: 1rem;
         color: $dark-color;
         background: #ffffff;
-        padding: $spacer/2 $spacer;;
+        padding: $spacer * 0.5 $spacer;;
         border-top: 1px solid #d1d5db;
         border-bottom: 1px solid #d1d5db;
         border-left: 0;
@@ -56,10 +56,10 @@
         width: $spacer*4;
     }
     > [class~="p-inputnumber-button-down"] {
-        border-radius: $spacer/2 0 0 $spacer/2;
+        border-radius: $spacer * 0.5 0 0 $spacer * 0.5;
     }
     > [class~="p-inputnumber-button-up"] {
-        border-radius: 0 $spacer/2 $spacer/2 0;
+        border-radius: 0 $spacer * 0.5 $spacer * 0.5 0;
     }
 }
 

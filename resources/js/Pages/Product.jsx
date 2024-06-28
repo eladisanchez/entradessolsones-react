@@ -335,7 +335,7 @@ export default function Product({
               setSelectedSeats={setSelectedSeats}
             />
             <Spacer top={2}>
-              <Flex justifyContent="flex-end">
+              <Flex justifyContent="flex-end" className={styles.venueTickets}>
                 <Flex
                   spacerTop={3}
                   spacerBottom={3}

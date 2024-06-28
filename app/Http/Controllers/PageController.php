@@ -48,7 +48,7 @@ class PageController extends Controller
     /**
      * Organizator signup form
      */
-    public function organitzators(): InertiaResponse
+    public function organizers(): InertiaResponse
     {
         $text = Common::optext('organitzadors');
         return Inertia::render('Basic', [

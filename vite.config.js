@@ -8,7 +8,6 @@ export default defineConfig({
     laravel({
       input: [
         "resources/scss/app.scss",
-        "resources/scss/ensolsonat/app.scss",
         "resources/js/app.jsx",
         "resources/scss/admin.scss",
       ],

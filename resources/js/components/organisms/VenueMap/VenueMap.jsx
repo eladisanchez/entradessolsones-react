@@ -4,7 +4,14 @@ import { useCart } from "@/contexts/CartContext";
 import styles from "./VenueMap.module.scss";
 import classNames from "classnames";
 
-const VenueMap = ({ seats, bookedSeats, cartSeats, selectedSeats, setSelectedSeats, addToCart }) => {
+const VenueMap = ({
+  seats,
+  bookedSeats,
+  cartSeats,
+  selectedSeats,
+  setSelectedSeats,
+  addToCart,
+}) => {
   const { cart } = useCart();
   const seatsX = seats.map((o) => {
     return o.x;
@@ -50,9 +57,18 @@ const VenueMap = ({ seats, bookedSeats, cartSeats, selectedSeats, setSelectedSea
       {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
         <>
           <div className={styles.tools}>
-            <button onClick={() => zoomIn()} aria-label="Amplia">+</button>
-            <button onClick={() => zoomOut()} aria-label="Redueix">-</button>
-            <button onClick={() => resetTransform()} aria-label="Torna a la mida original">x</button>
+            <button onClick={() => zoomIn()} aria-label="Amplia">
+              +
+            </button>
+            <button onClick={() => zoomOut()} aria-label="Redueix">
+              -
+            </button>
+            <button
+              onClick={() => resetTransform()}
+              aria-label="Torna a la mida original"
+            >
+              &times;
+            </button>
           </div>
           <TransformComponent>
             <div
@@ -77,10 +93,11 @@ const VenueMap = ({ seats, bookedSeats, cartSeats, selectedSeats, setSelectedSea
               ))}
             </div>
           </TransformComponent>
+          <div className={styles.stage}>Escenari</div>
         </>
       )}
     </TransformWrapper>
   );
-}
+};
 
 export default VenueMap;
