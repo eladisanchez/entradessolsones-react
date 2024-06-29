@@ -32,8 +32,10 @@ const Header = ({ url }) => {
             </div>
             <div className={styles.topnav}>
               <Link href="/calendari">Calendari</Link>
-              <Link href="/ca/">Com puc vendre entrades?</Link>
-              <Link href="/ca/">Turisme Solsonès</Link>
+              <Link href="/organitzadors">Com puc vendre entrades?</Link>
+              <a href="https://turismesolsones.com" target="_blank">
+                Turisme Solsonès
+              </a>
             </div>
           </Container>
         </div>
@@ -83,13 +85,13 @@ const Header = ({ url }) => {
       </header>
       <nav className={menuClasses}>
         <Spacer top={2} bottom={2}>
-        <Flex gap="2" flexDirection="column">
-          <Link href="/#activitats">Activitats turístiques</Link>
-          <Link href="/#activitats">Espectacles i esdeveniments</Link>
-          <Link href="/calendari">Calendari</Link>
-          <Link href="/ca/">Com puc vendre entrades?</Link>
-          <Link href="/ca/">Turisme Solsonès</Link>
-        </Flex>
+          <Flex gap="2" flexDirection="column">
+            <Link href="/#activitats">Activitats turístiques</Link>
+            <Link href="/#activitats">Espectacles i esdeveniments</Link>
+            <Link href="/calendari">Calendari</Link>
+            <Link href="/ca/">Com puc vendre entrades?</Link>
+            <Link href="/ca/">Turisme Solsonès</Link>
+          </Flex>
         </Spacer>
         <Spacer top={2}>
           <SearchForm />

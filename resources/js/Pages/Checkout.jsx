@@ -8,7 +8,7 @@ import {
   Input,
   TextFormat,
   Spacer,
-  Icon
+  Icon,
 } from "@/components/atoms";
 import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
@@ -29,7 +29,7 @@ export default function Checkout({ lastOrder, loggedIn }) {
 
   //const { errors } = usePage().props;
 
-  const { items, total, removeFromCart, applyCoupon } = useCart();
+  const { items, total, removeFromCart, applyCoupon, emptyCart } = useCart();
 
   const [code, setCode] = useState("");
 
@@ -69,6 +69,9 @@ export default function Checkout({ lastOrder, loggedIn }) {
                   Total: <strong>{total} €</strong>
                 </TextFormat>
               </Spacer>
+              <Button onClick={emptyCart} block={true} outline={true}>
+                <Icon icon="delete" /> Buida el cistell
+              </Button>
               <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
                   <Input

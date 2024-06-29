@@ -139,12 +139,25 @@ class Product extends Model implements Sitemapable
     }
 
 
+    public function availableTickets()
+    {
+        return Ticket::where('product_id', $this->id)
+            ->where('day', '>=', now())
+            ->whereNull('cancelled')
+            ->get();
+    }
+
 
     public function availableDays()
     {
         $datetime = new \DateTime('today');
-        return Ticket::where('product_id', $this->id)->where('day', '>=', $datetime)->whereNull('cancelled')->groupBy('day')->pluck('day');
+        return Ticket::where('product_id', $this->id)
+            ->where('day', '>=', $datetime)
+            ->whereNull('cancelled')
+            ->groupBy('day')->pluck('day');
     }
+
+    
 
 
     public function allTickets()

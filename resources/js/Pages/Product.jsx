@@ -174,7 +174,11 @@ export default function Product({
         ></div>
         <Container className={styles.productContainer}>
           <Spacer className={styles.organizer}>
-            <Link href={"/#" + product.target}>{targets[product.target]}</Link>{" "}
+            <Link href="/">Inici</Link>
+            <span>&#x203A;</span>
+            <Link href={"/#" + product.target}>
+              {targets[product.target]}
+            </Link>{" "}
             <span>&#x203A;</span> {product.organizer.username}
           </Spacer>
           <Heading tag="h1" color="light" spacerTop={0} spacerBottom={6}>
@@ -222,11 +226,11 @@ export default function Product({
                 />
               </Spacer>
               <div ref={daySectionRef}>
-                <Spacer bottom={3}>
-                  {availableDays.length > 0 ? (
-                    <Suspense fallback={<div>Carregant...</div>}>
-                      <Flex>
-                        {availableDays.length > 1 && (
+                {availableDays.length > 0 ? (
+                  availableDays.length > 1 && (
+                    <Spacer bottom={3}>
+                      <Suspense fallback={<div>Carregant...</div>}>
+                        <Flex>
                           <Tab
                             selected={ticketView == "calendar"}
                             onClick={() => setTicketView("calendar")}
@@ -236,59 +240,60 @@ export default function Product({
                               <span>Calendari</span>
                             </Flex>
                           </Tab>
-                        )}
-                        <Tab
-                          selected={ticketView == "list"}
-                          onClick={() => setTicketView("list")}
-                        >
-                          <Flex gap="1" alignItems="center">
-                            <Icon icon="list" />
-                            <span>Properes sessions</span>
-                          </Flex>
-                        </Tab>
-                      </Flex>
-                      <Card hasTabs={true}>
-                        {ticketView == "calendar" && (
-                          <>
-                            <Datepicker
-                              availableDays={availableDays}
-                              onSelectDay={handleSelectDay}
-                              selectedDay={selectedDay}
-                            />
-                            {selectedDay && ticketsByDay().length > 1 && (
-                              <Spacer top={1}>
-                                <hr />
+
+                          <Tab
+                            selected={ticketView == "list"}
+                            onClick={() => setTicketView("list")}
+                          >
+                            <Flex gap="1" alignItems="center">
+                              <Icon icon="list" />
+                              <span>Properes sessions</span>
+                            </Flex>
+                          </Tab>
+                        </Flex>
+                        <Card hasTabs={true}>
+                          {ticketView == "calendar" && (
+                            <>
+                              <Datepicker
+                                availableDays={availableDays}
+                                onSelectDay={handleSelectDay}
+                                selectedDay={selectedDay}
+                              />
+                              {selectedDay && ticketsByDay().length > 1 && (
                                 <Spacer top={1}>
-                                  <TicketList
-                                    selectedDay={selectedDay}
-                                    selectedHour={hour}
-                                    productSlug={product.name}
-                                    tickets={ticketsByDay()}
-                                  />
+                                  <hr />
+                                  <Spacer top={1}>
+                                    <TicketList
+                                      selectedDay={selectedDay}
+                                      selectedHour={hour}
+                                      productSlug={product.name}
+                                      tickets={ticketsByDay()}
+                                    />
+                                  </Spacer>
                                 </Spacer>
-                              </Spacer>
-                            )}
-                          </>
-                        )}
-                        {ticketView == "list" && (
-                          <TicketTable
-                            selectedDay={selectedDay}
-                            selectedHour={hour}
-                            productSlug={product.name}
-                            tickets={tickets}
-                          ></TicketTable>
-                        )}
-                      </Card>
-                    </Suspense>
-                  ) : (
-                    <Card>
-                      <TextFormat color="faded" textAlign="center">
-                        Actualment no hi ha dates disponibles per aquesta
-                        activitat.
-                      </TextFormat>
-                    </Card>
-                  )}
-                </Spacer>
+                              )}
+                            </>
+                          )}
+                          {ticketView == "list" && (
+                            <TicketTable
+                              selectedDay={selectedDay}
+                              selectedHour={hour}
+                              productSlug={product.name}
+                              tickets={tickets}
+                            ></TicketTable>
+                          )}
+                        </Card>
+                      </Suspense>
+                    </Spacer>
+                  )
+                ) : (
+                  <Card>
+                    <TextFormat color="faded" textAlign="center">
+                      Actualment no hi ha dates disponibles per aquesta
+                      activitat.
+                    </TextFormat>
+                  </Card>
+                )}
               </div>
               {hour && (
                 <div ref={ticketSectionRef}>

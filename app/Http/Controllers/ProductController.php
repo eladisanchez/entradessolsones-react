@@ -67,6 +67,17 @@ class ProductController extends BaseController
 				abort(404);
 		}
 
+		
+		$availableTickets = $product->availableTickets();
+
+		if (!$hour && $availableTickets->count() == 1) {
+			return redirect()->route('product', [
+				'name' => $product->name,
+				'day' => $availableTickets[0]->day->format('Y-m-d'),
+				'hour' => $availableTickets[0]->hour->format('H:i'),
+			]);
+		}
+
 		$availableDays = $product->availableDays();
 
 		if ($product->is_pack) {
@@ -78,14 +89,6 @@ class ProductController extends BaseController
 				'hour' => $hour
 			]);
 		}
-
-		// if (!$day && !$hour && $availableDays->count() == 1) {
-		// 	return redirect()->route('product', [
-		// 		'name' => $product->name,
-		// 		'day' => $availableDays[0]->format('Y-m-d'),
-		// 		'hour' => null,
-		// 	]);
-		// }
 
 		return Inertia::render('Product', [
 			'product' => $product,
