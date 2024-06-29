@@ -1,7 +1,8 @@
 import { useState, useId } from "react";
 import { InputNumber } from "primereact/inputnumber";
-import { Button, Flex, Heading, TextFormat } from "@/components/atoms";
+import { Button, Flex, Icon, TextFormat } from "@/components/atoms";
 import styles from "./RateSelect.module.scss";
+import { Tooltip } from "react-tooltip";
 
 const RateSelect = ({
   rates,
@@ -57,7 +58,15 @@ const RateSelect = ({
           <Flex spacerBottom={1} gap={2} alignItems="center">
             <div className={styles.labelCol}>
               <label htmlFor={inputId + "-" + rate.id} class={styles.label}>
-                {rate.title}
+                <span
+                  className={
+                    rate.description ? styles.rateTitleWithTooltip : ""
+                  }
+                  data-tooltip-id={rate.description ? "rate-tooltip" : ""}
+                  data-tooltip-content={rate.description}
+                >
+                  {rate.title} {rate.description && <Icon icon="info" />}
+                </span>
                 <br />
                 <TextFormat color="faded" fontSize="sm">
                   {rate.pivot.price} € / entrada
@@ -126,6 +135,7 @@ const RateSelect = ({
           </Button>
         </>
       )}
+      <Tooltip id="rate-tooltip" place="top" />
     </>
   );
 };

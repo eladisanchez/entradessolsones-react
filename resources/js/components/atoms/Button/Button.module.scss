@@ -13,6 +13,12 @@
     cursor: pointer;
     box-sizing: border-box;
     transition: all .3s;
+    vertical-align: middle;
+    svg {
+        height: 1rem;
+        color: #FFF;
+        vertical-align: middle;
+    }
 }
 .color-primary {
     background: $primary-color;
@@ -23,6 +29,9 @@
     &.outline:hover {
         color: #FFF;
     }
+    svg {
+        color: #FFF;
+    } 
 }
 .color-white {
     background: #FFF;
@@ -35,6 +44,9 @@
     &:hover {
         background: rgba(#FFF,0);
     }
+    svg {
+        color: $primary-color;
+    }
 }
 .block {
     display: block;
@@ -46,10 +58,17 @@
     font-size: 1.25rem;
     padding: $spacer*1.5 $spacer*3;
 }
+.sm {
+    font-size: .75rem;
+    padding: $spacer*.5 $spacer;
+}
 .outline {
     border: 1px solid $primary-color;
     color: $primary-color;
     background: transparent;
+    svg {
+        color: $primary-color;
+    }
 }
 
 .disabled {
@@ -63,4 +82,11 @@
         background: rgba($primary-color, .1);
         border: 1px transparent solid;
     }
+    svg {
+        color: $primary-color;
+    }
+}
+
+.nowrap {
+    white-space: nowrap;
 }

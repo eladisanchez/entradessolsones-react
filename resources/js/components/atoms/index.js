@@ -1,3 +1,5 @@
+import Alert from "./Alert/Alert";
+import Badge from "./Badge/Badge";
 import Button from "./Button/Button";
 import Container from "./Container/Container";
 import Flex from "./Flex/Flex";
@@ -11,6 +13,8 @@ import Spacer from "./Spacer/Spacer";
 import Tab from "./Tab/Tab";
 
 export {
+  Alert,
+  Badge,
   Button,
   Container,
   Flex,

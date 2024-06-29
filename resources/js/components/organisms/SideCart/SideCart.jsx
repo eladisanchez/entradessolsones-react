@@ -37,7 +37,7 @@ const SideCart = () => {
           </Spacer>
           <Flex gap={1} flexDirection="column">
             <Button onClick={emptyCart} block={true} outline={true}>
-              Buida el cistell
+              <Icon icon="delete" /> Buida el cistell
             </Button>
             <Button
               onClick={handleCheckout}
@@ -57,7 +57,7 @@ const SideCart = () => {
       )}
       <Spacer top={2}>
         <Button onClick={() => setShowCart(false)} block={true} link={true}>
-          Continua comprant
+          <Icon icon="back" /> Continua comprant
         </Button>
       </Spacer>
     </div>

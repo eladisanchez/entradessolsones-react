@@ -10,11 +10,24 @@
     flex-direction: column;
     row-gap: $grid-gutter-width;
     @include media-query("sm") {
-        display: grid;
-        row-gap: $grid-gutter-width;
-        grid-template-columns: 1fr;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        column-gap: $grid-gutter-width;
+        // display: grid;
+        // row-gap: $grid-gutter-width;
+        // grid-template-columns: 1fr;
+        // grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        // column-gap: $grid-gutter-width;
+        flex-direction: row;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $grid-gutter-width;
+        justify-content: center;
+    }
+    > * {
+        @include media-query("sm") {
+            max-width: 300px;
+            flex: 1 1 220px;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }
 .two {

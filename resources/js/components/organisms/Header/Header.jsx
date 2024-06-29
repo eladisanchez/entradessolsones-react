@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Container, Flex, Icon, Logo, Spacer } from "@/components/atoms";
-import { SearchForm } from "@/components/molecules";
-import { useCart } from "@/contexts/CartContext";
+import { SearchForm, CartIcon } from "@/components/molecules";
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
 import styles from "./Header.module.scss";
 
 const Header = ({ url }) => {
-  const { toggleCart, count } = useCart();
   const isHome =
     url === "/" || url.includes("#") || url.startsWith("/calendari");
   const isCheckout = url.startsWith("/confirmacio");
@@ -52,9 +50,11 @@ const Header = ({ url }) => {
                 <Logo />
               </Link>
             </div>
-            {!isCheckout && (
+            {!isCheckout ? (
               <Flex alignItems="center" gap={1}>
-                <SearchForm />
+                <div className={styles.search}>
+                  <SearchForm />
+                </div>
                 <button
                   aria-label="Menú"
                   className={styles.menuButton}
@@ -62,25 +62,35 @@ const Header = ({ url }) => {
                 >
                   <Icon icon="menu" />
                 </button>
-                <button
-                  aria-label="Cistell de la compra"
-                  onClick={() => toggleCart()}
-                  className={styles.cartButton}
-                >
-                  <Icon icon="cart" />
-                  {!!count && <span className={styles.cartQty}>{count}</span>}
-                </button>
+                <CartIcon />
               </Flex>
+            ) : (
+              <button
+                aria-label="Menú"
+                className={styles.menuButton}
+                onClick={handleToggleMenu}
+              >
+                <Icon icon="menu" />
+              </button>
             )}
           </div>
+          {isHome && (
+            <div className={styles.headerContentSm}>
+              <SearchForm />
+            </div>
+          )}
         </Container>
       </header>
       <nav className={menuClasses}>
-        <Flex gap="1" flexDirection="column">
+        <Spacer top={2} bottom={2}>
+        <Flex gap="2" flexDirection="column">
+          <Link href="/#activitats">Activitats turístiques</Link>
+          <Link href="/#activitats">Espectacles i esdeveniments</Link>
           <Link href="/calendari">Calendari</Link>
           <Link href="/ca/">Com puc vendre entrades?</Link>
           <Link href="/ca/">Turisme Solsonès</Link>
         </Flex>
+        </Spacer>
         <Spacer top={2}>
           <SearchForm />
         </Spacer>

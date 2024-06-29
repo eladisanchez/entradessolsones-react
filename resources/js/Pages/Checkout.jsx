@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Container,
   Flex,
@@ -7,14 +8,15 @@ import {
   Input,
   TextFormat,
   Spacer,
+  Icon
 } from "@/components/atoms";
 import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
-import { Link, Head, useForm, router } from "@inertiajs/react";
+import { Link, Head, useForm, router, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
 import styles from "./Checkout.module.scss";
 
-export default function Checkout({ lastOrder }) {
+export default function Checkout({ lastOrder, loggedIn }) {
   const { data, setData, post, processing, errors } = useForm({
     email: lastOrder.email || "",
     name: lastOrder.name || "",
@@ -25,6 +27,8 @@ export default function Checkout({ lastOrder }) {
     conditions: false,
   });
 
+  //const { errors } = usePage().props;
+
   const { items, total, removeFromCart, applyCoupon } = useCart();
 
   const [code, setCode] = useState("");
@@ -33,12 +37,15 @@ export default function Checkout({ lastOrder }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    router.post('/checkout', data);
+    post("/checkout", data);
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    post("/login");
+    post("/login", {
+      email: data.email,
+      password: data.password,
+    });
   };
 
   const handleApplyCoupon = (e) => {
@@ -75,6 +82,7 @@ export default function Checkout({ lastOrder }) {
               </form>
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
+              {errors.generalError && <Alert>{errors.generalError}</Alert>}
               <Flex
                 spacerBottom={1}
                 justifyContent="space-between"
@@ -83,25 +91,27 @@ export default function Checkout({ lastOrder }) {
                 <Heading tag="h3" size={3}>
                   Correu electrònic
                 </Heading>
-                <TextFormat color="faded">
-                  Ja tens compte?{" "}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsLogin(true);
-                    }}
-                  >
-                    Inicia sessió
-                  </a>
-                </TextFormat>
+                {!loggedIn && (
+                  <TextFormat color="faded">
+                    Ja tens compte?{" "}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsLogin(true);
+                      }}
+                    >
+                      Inicia sessió
+                    </a>
+                  </TextFormat>
+                )}
               </Flex>
               <Input
                 type="email"
                 value={data.email}
                 onChange={(e) => setData("email", e.target.value)}
               />
-              {errors.email && <div>{errors.email}</div>}
+              {errors.email && <Alert>{errors.email}</Alert>}
               <Spacer top={2} />
               <label>
                 <input
@@ -125,8 +135,8 @@ export default function Checkout({ lastOrder }) {
                   onChange={(e) => setData("name", e.target.value)}
                 />
               </Flex>
-              {errors.name && <div>{errors.name}</div>}
-              <Flex spacerBottom={4} gap={1}>
+              {errors.name && <Alert>{errors.name}</Alert>}
+              <Flex gap={1}>
                 <div>
                   <Input
                     type="tel"
@@ -134,7 +144,7 @@ export default function Checkout({ lastOrder }) {
                     label="Telèfon"
                     onChange={(e) => setData("tel", e.target.value)}
                   />
-                  {errors.tel && <div>{errors.tel}</div>}
+                  {errors.tel && <Alert>{errors.tel}</Alert>}
                 </div>
                 <div>
                   <Input
@@ -143,10 +153,10 @@ export default function Checkout({ lastOrder }) {
                     label="Codi postal"
                     onChange={(e) => setData("cp", e.target.value)}
                   />
-                  {errors.cp && <div>{errors.cp}</div>}
+                  {errors.cp && <Alert>{errors.cp}</Alert>}
                 </div>
               </Flex>
-              <Heading tag="h3" size={3} spacerBottom={1}>
+              <Heading tag="h3" size={3} spacerBottom={1} spacerTop={4}>
                 Observacions
               </Heading>
               <Input
@@ -177,14 +187,18 @@ export default function Checkout({ lastOrder }) {
                 entitat bancària.
               </TextFormat>
               <Spacer top={4} />
-
-              <Button
-                disabled={processing || !data.conditions}
-                size="lg"
-                block={true}
-              >
-                Finalitza la compra
-              </Button>
+              <Flex gap={1}>
+                <Button href="/" size="lg" link noWrap>
+                  <Icon icon="back" /> Torna enrere
+                </Button>
+                <Button
+                  disabled={processing || !data.conditions}
+                  size="lg"
+                  block={true}
+                >
+                  Finalitza la compra
+                </Button>
+              </Flex>
             </form>
           </Grid>
         </Container>
@@ -205,12 +219,14 @@ export default function Checkout({ lastOrder }) {
                 onChange={(e) => setData("email", e.target.value)}
                 label="Correu electrònic"
               />
+              {errors.email && <Alert>{errors.email}</Alert>}
               <Input
                 type="password"
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}
                 label="Contrasenya"
               />
+              {errors.password && <Alert>{errors.password}</Alert>}
             </Flex>
             <Flex flexDirection="column" spacerBottom={2} gap={2}>
               <Button block>Inicia sessió</Button>

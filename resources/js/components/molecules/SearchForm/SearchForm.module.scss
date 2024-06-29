@@ -1,10 +1,13 @@
 @use '@/styles' as *;
 
 .search {
-    background: transparent;
+    background-color: transparent;
     color: #fff;
     border: 1px solid #fff;
-    display: none;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZT0iI0ZGRkZGRiIgY2xhc3M9InNpemUtNiI+CiAgPHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJtMjEgMjEtNS4xOTctNS4xOTdtMCAwQTcuNSA3LjUgMCAxIDAgNS4xOTYgNS4xOTZhNy41IDcuNSAwIDAgMCAxMC42MDcgMTAuNjA3WiIgLz4KPC9zdmc+Cg==);
+    background-position: center right $spacer;
+    background-size: $spacer*2.5;
+    background-repeat: no-repeat;
     input {
         &::placeholder {
             color: rgba(255, 255, 255, 0.7);
@@ -18,9 +21,7 @@
     @include media-query("md") {
         width: 320px !important;
     }
-    @include media-query("sm") {
-        display: block;
-    }
+    
     [placeholder]{
         text-overflow: ellipsis;
     }

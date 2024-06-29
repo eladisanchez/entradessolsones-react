@@ -400,6 +400,7 @@ class CartController extends BaseController
 			}
 		}
 		return Inertia::render('Checkout', [
+			'loggedIn' => auth()->check(),
 			'lastOrder' => $lastOrder,
 		]);
 	}

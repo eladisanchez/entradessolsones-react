@@ -7,8 +7,6 @@
     color: #fff;
     border-radius: $spacer;
     overflow: hidden;
-    //box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
-    //min-width: 300px;
     position: relative;
     aspect-ratio: 1;
     @include media-query('sm') {

@@ -20,6 +20,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Shanmuga\LaravelEntrust\Facades\LaravelEntrustFacade as Entrust;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Illuminate\Http\Request;
 
 class OrderController extends BaseController
 {
@@ -43,7 +44,7 @@ class OrderController extends BaseController
 	/**
 	 * Cart confirmation, store order
 	 */
-	public function store()
+	public function store(Request $request)
 	{
 
 		$failedOrder = Order::where('session', Session::getId())->where('paid', 0)->where('payment', 'card')->orderBy('created_at', 'desc')->first();
@@ -79,7 +80,7 @@ class OrderController extends BaseController
 
 		$validator = validator(request()->all(), $rules);
 		if ($validator->fails()) {
-			return response()->json(['errors' => $validator->errors()->all()]);
+			return redirect()->back()->withErrors($validator)->withInput();
 		}
 
 		// Create new user if password is submitted
@@ -89,7 +90,7 @@ class OrderController extends BaseController
 				'email' => 'unique:users,email'
 			]);
 			if ($validatorU->fails()) {
-				return response()->json(['errors' => $validator->errors()->all()]);
+				return redirect()->back()->withErrors($validatorU)->withInput();
 			}
 			$user = new User;
 			$user->username = request()->input('name');
@@ -112,15 +113,15 @@ class OrderController extends BaseController
 					})
 					->first();
 				if ($booked) {
-					return response()->back()->withErrors('Ho sentim, la localitat <strong>' . \App\Helpers\Common::seat($row->options->seat) . '</strong> per a <strong>' . $row->model->title . '</strong> ja ha sigut adquirida per un altre usuari. Si us plau, esculli una altra localitat.')->withInput();
+					return redirect()->back()->withErrors('Ho sentim, la localitat <strong>' . \App\Helpers\Common::seat($row->options->seat) . '</strong> per a <strong>' . $row->model->title . '</strong> ja ha sigut adquirida per un altre usuari. Si us plau, esculli una altra localitat.')->withInput();
 				}
 			} else {
 				if ($row->model->is_pack) {
 					// TODO: Programar que per cada producte del pack comprovi si queden entrades disponibles.
 				} else {
 					$ticketsDay = $row->model->ticketsDay($row->options->day, $row->options->hour);
-					if ($ticketsDay->available < 0) {
-						return response()->back()->with('message', 'Ho sentim, ja no hi ha entrades disponibles per al producte ' . $row->model->title . '. Redueixi la quantitat d\'entrades o canvii l\'hora o el dia de la visita.')->withInput();
+					if (!$ticketsDay || $ticketsDay->available < 0) {
+						return redirect()->back()->withError('generalError', 'Ho sentim, ja no hi ha entrades disponibles per al producte ' . $row->model->title . '. Redueixi la quantitat d\'entrades o canvii l\'hora o el dia de la visita.')->withInput();
 					}
 				}
 			}
@@ -223,7 +224,7 @@ class OrderController extends BaseController
 
 					// Missatge OK
 					return redirect()->route('checkout.success', [
-						'session' => Session::getId(), 
+						'session' => Session::getId(),
 						'id' => $order->id
 					]);
 
@@ -235,7 +236,7 @@ class OrderController extends BaseController
 
 		}
 
-		return response()->json(['errors' => ['Error al generar la comanda. Si us plau, posi\'s en contacte amb ' . config('mail.from.name') . ' (' . config('mail.from.address') . ')']]);
+		return redirect()->back()->withErrors(['generalError' => 'Error al generar la comanda. Si us plau, posi\'s en contacte amb ' . config('mail.from.name') . ' (' . config('mail.from.address') . ')'])->withInput();
 
 	}
 
@@ -335,7 +336,7 @@ class OrderController extends BaseController
 			Cart::destroy();
 			Session::forget('coupon');
 			Session::forget('coupon_name');
-			return Inertia::render('Basic',[
+			return Inertia::render('Basic', [
 				'title' => 'Gràcies per la teva compra!',
 				'content' => '<p><strong>Aquesta comanda és fictícia. Gràcies per participar al test.</strong></p><p>La teva comanda s\'ha processat correctament. En breu rebràs un correu electrònic amb les teves entrades.</p>'
 			]);
@@ -359,10 +360,10 @@ class OrderController extends BaseController
 			->orderBy('created_at', 'desc')->where('paid', '!=', 1)
 			->firstOrFail();
 
-			return Inertia::render('Basic',[
-				'title' => 'La comanda no s\'ha pogut processar',
-				'content' => 'La teva comanda no s\'ha pogut processar correctament. Si us plau, torna-ho a intentar o posa\'t en contacte amb nosaltres. Moltes gràcies!'
-			]);
+		return Inertia::render('Basic', [
+			'title' => 'La comanda no s\'ha pogut processar',
+			'content' => 'La teva comanda no s\'ha pogut processar correctament. Si us plau, torna-ho a intentar o posa\'t en contacte amb nosaltres. Moltes gràcies!'
+		]);
 
 	}
 
@@ -397,7 +398,8 @@ class OrderController extends BaseController
 		}
 	}
 
-	public function login(){
+	public function login()
+	{
 		$user = User::where('email', request()->input('email'))->first();
 		if ($user) {
 			if (\Hash::check(request()->input('password'), $user->password)) {

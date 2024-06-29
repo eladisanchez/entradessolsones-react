@@ -1,4 +1,4 @@
-import { Flex } from "@/components/atoms";
+import { Flex, Badge } from "@/components/atoms";
 import styles from "./CartItem.module.scss";
 import { dayFormatted } from "@/utils/date";
 
@@ -14,7 +14,7 @@ const CartItem = ({ item, onRemove, ...props }) => {
           }
           alt={item.name}
         />
-        <span className={styles.itemQty}>{item.qty}</span>
+        <Badge>{item.qty}</Badge>
       </div>
       <div className={styles.itemContent}>
         <h4 className={styles.itemName}>

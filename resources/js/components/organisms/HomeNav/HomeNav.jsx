@@ -7,22 +7,22 @@ const HomeNav = ({ view = "list", activeSection }) => {
   return (
     <div className={styles.homenav}>
       <div className={styles.nav}>
-        <a
-          href="#activitats"
+        <Link
+          href="/#activitats"
           className={activeSection == "activities" ? styles.currentSection : ""}
         >
           <span className={styles.titleDesktop}>Activitats turístiques</span>
           <span className={styles.titleMobile}>Turisme</span>
-        </a>
-        <a
-          href="#esdeveniments"
+        </Link>
+        <Link
+          href="/#esdeveniments"
           className={activeSection == "events" ? styles.currentSection : ""}
         >
           <span className={styles.titleDesktop}>
             Teatre, concerts i esdeveniments
           </span>
           <span className={styles.titleMobile}>Esdeveniments</span>
-        </a>
+        </Link>
       </div>
       <div className={styles.buttons}>
         <Link
@@ -32,7 +32,7 @@ const HomeNav = ({ view = "list", activeSection }) => {
           })}
           aria-label="Llista de productes"
         >
-          <Icon icon="list" />
+          <Icon icon="grid" />
         </Link>
         <Link
           href="/calendari"

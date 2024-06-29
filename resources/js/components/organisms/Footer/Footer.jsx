@@ -29,11 +29,18 @@ const Footer = () => {
             </div>
             <div>
               <Flex gap={1} flexDirection="column">
-                <Link href="">Com puc vendre entrades?</Link>
-                <Link href="">Condicions d'ús</Link>
-                <Link href="">Protecció de dades</Link>
-                <Link href="">Avís legal</Link>
-                <Link href="">Contacte</Link>
+                <Link href="/organitzadors">Com puc vendre entrades?</Link>
+                <Link href="/condicions">Condicions d'ús</Link>
+                <Link href="/politica-privacitat">Política de privacitat</Link>
+                <a
+                  href="https://turismesolsones.com/avis-legal"
+                  target="_blank"
+                >
+                  Avís legal
+                </a>
+                <a href="https://turismesolsones.com/contacte" target="_blank">
+                  Contacte
+                </a>
               </Flex>
             </div>
           </Grid>

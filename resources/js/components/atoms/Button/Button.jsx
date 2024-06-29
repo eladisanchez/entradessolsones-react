@@ -11,6 +11,7 @@ const Button = ({
   color = "primary",
   onClick,
   disabled,
+  noWrap,
   link,
   href, 
   preserveScroll,
@@ -21,8 +22,10 @@ const Button = ({
     [styles.outline]: outline,
     [styles['color-'+color]]: color,
     [styles.lg]: size == "lg",
+    [styles.sm]: size == "sm",
     [styles.block]: block,
     [styles.disabled]: disabled,
+    [styles.nowrap]: noWrap,
     [styles.link]: link,
   });
   if (href) {

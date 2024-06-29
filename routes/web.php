@@ -65,9 +65,9 @@ Route::middleware(['restrict.public'])->prefix(LaravelLocalization::setLocale())
 	Route::post('modal/login', [OrderController::class, 'login'])->name('modal-login');
 
 	// Pàgines estàtiques
-	Route::get('condicions', [PageController::class, 'condicions'])->name('condicions');
+	Route::get('condicions', [PageController::class, 'conditions'])->name('condicions');
 	Route::get('politica-privacitat', [PageController::class, 'privacyPolicy'])->name('privacitat');
-	Route::get('organitzadors', [PageController::class, 'organitzadors'])->name('organitzadors');
+	Route::get('organitzadors', [PageController::class, 'organizers'])->name('organitzadors');
 
 	// Devolucions
 	Route::get('devolucio/{id}', [RefundController::class, 'refund'])->name('refund');

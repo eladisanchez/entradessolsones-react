@@ -1,0 +1,27 @@
+@use "@/styles" as *;
+
+.cartIcon {
+    background: transparent;
+    border: 0;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    svg {
+        color: #FFF;
+    }
+}
+.cartQty {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    display: block;
+    background: $danger-color;
+    border-radius: 14px;
+    color: #FFF;
+    top: -6px;
+    right: -4px;
+    text-align: center;
+    font-size: 0.75rem;
+    padding-top: 2px;
+}

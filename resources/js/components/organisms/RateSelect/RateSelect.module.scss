@@ -71,3 +71,11 @@
     text-align: right;
     width: 100px !important;
 }
+.rateTitleWithTooltip {
+    border-bottom: 1px dotted $primary-color;
+    svg {
+        height: 1rem;
+        width: 1rem;
+        color: $primary-color;
+    }
+}

@@ -8,3 +8,11 @@
         padding-bottom: $i * $spacer !important;
     }
 }
+
+.bgWhite {
+    background-color: #FFF;
+}
+
+.bgLight {
+    background-color: $light-color;
+}

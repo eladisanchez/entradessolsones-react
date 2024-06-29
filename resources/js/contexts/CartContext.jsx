@@ -80,8 +80,10 @@ export const CartProvider = ({ children, initialCart, csrf }) => {
 
   const countTickets = () => {
     if (!items) return 0;
-    return items.reduce((t, item) => t + (item.qty??0), 0);
+    return items.reduce((t, item) => t + (item[1].qty??0), 0);
   }
+
+  console.log(items, countTickets());
 
   return (
     <CartContext.Provider

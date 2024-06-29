@@ -10,6 +10,7 @@ const TicketList = ({ productSlug, tickets, selectedDay, selectedHour }) => {
         {tickets.map((ticket, i) => (
           <Button
             href={`/activitat/${productSlug}/${ticket.day}/${ticket.hour}`}
+            size="sm"
             outline={
               !(ymd(selectedDay) == ticket.day && selectedHour == ticket.hour)
             }

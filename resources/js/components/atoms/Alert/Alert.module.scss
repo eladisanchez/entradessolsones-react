@@ -1,0 +1,9 @@
+@use "@/styles" as *;
+
+.alert {
+    margin: $spacer 0;
+    padding: $spacer $spacer * 2;
+    background: lighten($warning-color, 35%);
+    color: darken($warning-color, 35%);
+    border-radius: $spacer;
+}

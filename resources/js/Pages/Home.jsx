@@ -25,38 +25,39 @@ const Home = ({ products }) => {
           content="Portal de venda d'entrades de Turisme Solsonès. Visites guiades, teatre, esdeveniments i experiències singulars a la comarca del Solsonès. "
         />
       </Head>
-      <Container>
-        <HomeNav activeSection={activeSection} />
-        <Featured />
-        {Object.keys(types).map((type) => (
-          <div
-            id={types[type]}
-            key={type}
-            style={{ scrollPaddingTop: "100px" }}
-          >
-            <Waypoint onEnter={() => handleWaypointEnter(type)} />
-            {products && products[type].map((category) => (
+      <HomeNav activeSection={activeSection} />
+      <Featured />
+      {Object.keys(types).map((type) => (
+        <div id={types[type]} key={type} style={{ scrollPaddingTop: "100px" }}>
+          <Waypoint onEnter={() => handleWaypointEnter(type)} />
+          {products &&
+            products[type].map((category, i) => (
               <section className="category">
-                <Heading
-                  tag="h2"
-                  size={2}
-                  center={true}
-                  spacerTop={6}
-                  spacerBottom={6}
+                <Spacer
+                  top={6}
+                  bottom={6}
+                  background={i % 2 ? "light" : "white"}
                 >
-                  {category.title}
-                </Heading>
-                <Grid>
-                  {category.products.map((product) => (
-                    <Thumbnail key={product.id} product={product} />
-                  ))}
-                </Grid>
+                  <Container>
+                    <Heading
+                      tag="h2"
+                      size={2}
+                      center={true}
+                      spacerBottom={6}
+                    >
+                      {category.title}
+                    </Heading>
+                    <Grid>
+                      {category.products.map((product) => (
+                        <Thumbnail key={product.id} product={product} />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Spacer>
               </section>
             ))}
-          </div>
-        ))}
-      </Container>
-      <Spacer top={8} />
+        </div>
+      ))}
     </>
   );
 };

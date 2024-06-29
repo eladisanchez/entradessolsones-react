@@ -1,0 +1,17 @@
+@use "@/styles" as *;
+
+.badge {
+    position: absolute;
+    top: -$spacer;
+    right: -$spacer;
+    display: block;
+    background: $danger-color;
+    color: #FFF;
+    width: auto;
+    padding: 0 $spacer;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: $spacer*3;
+}
