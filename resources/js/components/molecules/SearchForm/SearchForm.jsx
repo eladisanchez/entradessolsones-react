@@ -15,7 +15,7 @@ const SearchForm = () => {
     }
     if (search.length > 2) {
       setPrevPage(currentPage);
-      router.get("/search?s=" + search);
+      router.get("/search?s=" + newSearch);
     } else {
       if (prevPage) {
         router.get(prevPage);
