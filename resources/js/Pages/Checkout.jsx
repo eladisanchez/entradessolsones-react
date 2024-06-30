@@ -73,18 +73,6 @@ export default function Checkout({ lastOrder, loggedIn }) {
                 ))}
               <Spacer bottom={3} />
 
-              <TextFormat textAlign="right">
-                Total: <strong>{total} €</strong>
-              </TextFormat>
-
-              <Spacer bottom={3} />
-
-              <Button onClick={emptyCart} block={true} outline={true}>
-                <Icon icon="delete" /> Buida el cistell
-              </Button>
-
-              <Spacer bottom={3} />
-
               <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
                   <Input
@@ -96,6 +84,21 @@ export default function Checkout({ lastOrder, loggedIn }) {
                   <Button>Aplica</Button>
                 </Flex>
               </form>
+
+              <Spacer bottom={3} />
+
+              <TextFormat textAlign="right">
+                Total: <strong>{total} €</strong>
+              </TextFormat>
+
+              <Spacer bottom={3} />
+
+              <Button onClick={emptyCart} block={true} outline={true}>
+                <Icon icon="delete" /> Buida el cistell
+              </Button>
+
+              <Spacer bottom={3} />
+              
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
               {errors.generalError && <Alert>{errors.generalError}</Alert>}
