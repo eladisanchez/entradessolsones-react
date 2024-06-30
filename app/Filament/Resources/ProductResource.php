@@ -92,33 +92,15 @@ class ProductResource extends Resource
                         Tabs\Tab::make('Descripció i horaris')
                             ->icon('heroicon-m-clock')
                             ->schema([
-                                Fieldset::make('Català')
-                                    ->columns(2)
-                                    ->schema([
-                                        TextInput::make('summary')
-                                            ->label('Resum')
-                                            ->maxLength(255)
-                                            ->required()
-                                            ->columnSpan('full'),
-                                        RichEditor::make('description_ca')
-                                            ->label('Descripció'),
-                                        RichEditor::make('schedule_ca')
-                                            ->label('Horaris i informació d\'interès'),
-                                    ]),
-                                Fieldset::make('Castellà')
-                                    ->columns(2)
-                                    ->schema([
-                                        TextInput::make('title_es')
-                                            ->label('Títol'),
-                                        TextInput::make('summary_es')
-                                            ->label('Resum')
-                                            ->maxLength(255)
-                                            ->columnSpan('full'),
-                                        RichEditor::make('description_es')
-                                            ->label('Descripció'),
-                                        RichEditor::make('schedule_es')
-                                            ->label('Horaris i informació d\'interès'),
-                                    ])
+                                TextInput::make('summary')
+                                    ->label('Resum')
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->columnSpan('full'),
+                                RichEditor::make('description')
+                                    ->label('Descripció'),
+                                RichEditor::make('schedule')
+                                    ->label('Horaris i informació d\'interès'),
                             ]),
                         Tabs\Tab::make('Espai i condicions de venda')
                             ->icon('heroicon-m-map-pin')
@@ -263,7 +245,7 @@ class ProductResource extends Resource
                                             ])->columns(3),
                                             Toggle::make('delete')->label('Elimina totes les entrades creades prèviament per aquest producte'),
                                         ])
-                                        ->action(function (array $data) use ($form,$id,$venue): void {
+                                        ->action(function (array $data) use ($form, $id, $venue): void {
                                             $product = Product::findOrFail($id);
                                             $w = [0, 1, 2, 3, 4, 5, 6];
                                             if ($data["weekdays"]) {
@@ -296,8 +278,8 @@ class ProductResource extends Resource
                                                             $ticket->language = $data["language"];
                                                             $ticket->tickets = $data["tickets"];
                                                         } else {
-							                                $ticket->seats = $venue->seats;
-							                                $ticket->tickets = count(json_decode($venue->seats));
+                                                            $ticket->seats = $venue->seats;
+                                                            $ticket->tickets = count(json_decode($venue->seats));
                                                         }
                                                         $ticket->save();
                                                     }
