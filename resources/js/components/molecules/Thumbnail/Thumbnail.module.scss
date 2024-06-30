@@ -70,5 +70,6 @@
 }
 .pack {
     aspect-ratio: auto;
-    grid-column: span 2;
+    flex: 2 1 512px;
+    max-width: 512px;
 }

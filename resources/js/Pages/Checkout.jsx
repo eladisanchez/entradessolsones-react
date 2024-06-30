@@ -13,7 +13,7 @@ import {
 import { Modal, CartItem } from "@/components/molecules";
 import { useCart } from "@/contexts/CartContext";
 import { Link, Head, useForm, router, usePage } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Checkout.module.scss";
 
 export default function Checkout({ lastOrder, loggedIn }) {
@@ -53,6 +53,13 @@ export default function Checkout({ lastOrder, loggedIn }) {
     applyCoupon();
   };
 
+  useEffect(() => {
+    // Redirect to home if no items in cart
+    if (!items || items.length === 0) {
+      router.get("/");
+    }
+  }, [items])
+
   return (
     <>
       <Head title="Finalitzar comanda" />
@@ -64,14 +71,18 @@ export default function Checkout({ lastOrder, loggedIn }) {
                 items.map(([id, item]) => (
                   <CartItem item={item} key={id} onRemove={removeFromCart} />
                 ))}
-              <Spacer bottom={3}>
-                <TextFormat textAlign="right">
-                  Total: <strong>{total} €</strong>
-                </TextFormat>
-              </Spacer>
+              <Spacer bottom={3} />
+
+              <TextFormat textAlign="right">
+                Total: <strong>{total} €</strong>
+              </TextFormat>
+
+              <Spacer bottom={3} />
+
               <Button onClick={emptyCart} block={true} outline={true}>
                 <Icon icon="delete" /> Buida el cistell
               </Button>
+
               <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
                   <Input

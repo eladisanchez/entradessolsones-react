@@ -23,8 +23,8 @@
     }
     > * {
         @include media-query("sm") {
-            max-width: 300px;
-            flex: 1 1 220px;
+            max-width: 244px;
+            flex: 1 1 244px;
             justify-content: center;
             align-items: center;
         }
