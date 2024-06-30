@@ -83,6 +83,8 @@ export default function Checkout({ lastOrder, loggedIn }) {
                 <Icon icon="delete" /> Buida el cistell
               </Button>
 
+              <Spacer bottom={3} />
+
               <form onSubmit={handleApplyCoupon}>
                 <Flex spacerBottom={1} justifyContent="space-between" gap={2}>
                   <Input
